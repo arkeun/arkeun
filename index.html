@@ -1350,6 +1350,13 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .wc-acts .btn { min-height: 50px; font-size: 15px; }
 .tabbar button { min-width: 0; }
 .tabbar .tnk { display: block; max-width: 100%; padding: 0 4px; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 게임 화면 보관함: 빼기는 ⋯ 안으로 (11/24) */
+.ownwrap { flex: 1; display: flex; position: relative; min-width: 0; }
+.ownwrap .ownlbl { flex: 1; cursor: default; }
+.ownrow .btn { white-space: nowrap; padding-inline: 8px; }
+.ownwrap .owndots { flex: none; margin-left: 2px; font-size: 18px; color: var(--ink-3); }
+.ownmenu { top: 46px; left: 0; right: auto; }
 </style>
 
 <div id="app"></div>
@@ -1848,6 +1855,14 @@ function byDay(plays) {
   sorted.forEach(p => { const last = out[out.length - 1]; if (last && last.date === p.date) last.plays.push(p); else out.push({ date: p.date, plays: [p] }); });
   return out;
 }
+// 같은 날 커플 둘이서 한 판과 모임 판을 다른 카드로 나눔
+function splitCouple(days, couples) {
+  const partners = new Set((couples || []).map(c => c.partner));
+  if (!partners.size) return days;
+  const isC = p => p.people.length === 1 && partners.has(p.people[0]);
+  return days.flatMap(d => { const c = d.plays.filter(isC), o = d.plays.filter(p => !isC(p));
+    return c.length && o.length ? [{ ...d, plays: o }, { ...d, plays: c, cp: 'c' }] : [d]; });
+}
 // 게임마다 내 첫 플레이 id
 function firstPlayIds(plays) {
   const f = {};
@@ -2171,7 +2186,7 @@ function GameQnA({ id, st, qa, say, inLayer }) {
   </div>`;
 }
 function Detail({ id, st, allReviews, back, startPlay, startReview, toggleOwn, toggleFav, toggleExp, hideReview, setShelfInfo, cm, toggleWish, qa, say }) {
-  const [dtab, setDtab] = useState('info');
+  const [dtab, setDtab] = useState('info'); const [ownMenu, setOwnMenu] = useState(false);
   const qn = qnaOf(st, id).length;
   const g = GAME[id];
   const pub = allReviews.filter(r => r.gameId === id && r.public && !(st.hiddenReviews || {})[r.id] && !(st.blocked || {})[r.author]);
@@ -2197,7 +2212,9 @@ function Detail({ id, st, allReviews, back, startPlay, startReview, toggleOwn, t
     <div className="actions one"><button className="btn primary" onClick=${() => startPlay(id)}>${I.dice}이 게임 기록하기</button></div>
     <div className="seg tabs dtabs" role="tablist">${[['info', '정보'], ['rate', '평가'], ['qa', '질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${dtab === k} onClick=${() => setDtab(k)}>${l}</button>`)}</div>
     ${dtab === 'info' ? html`<div className="ownrow">
-      <button className=${'btn' + (owned ? ' on' : '')} onClick=${() => toggleOwn(id)} aria-pressed=${owned}>${owned ? '✓ 보관함에 있어요' : '보관함에 담기'}</button>
+      ${owned ? html`<span className="ownwrap"><span className="btn on ownlbl">✓ 내 보관함</span><button className="iconbtn owndots" aria-label="보관함 메뉴" aria-expanded=${ownMenu} onClick=${() => setOwnMenu(!ownMenu)}>⋯</button>
+        ${ownMenu ? html`<div className="dm-scrim" onClick=${() => setOwnMenu(false)}></div><div className="daymenu ownmenu"><button className="dm-b danger" onClick=${() => { setOwnMenu(false); toggleOwn(id); }}>보관함에서 빼기</button></div>` : null}</span>` :
+        html`<button className="btn" onClick=${() => toggleOwn(id)} aria-pressed=${false}>보관함에 담기</button>`}
       <button className=${'btn' + ((st.favs || []).includes(id) ? ' on' : '')} aria-pressed=${(st.favs || []).includes(id)} onClick=${() => toggleFav(id)}>${(st.favs || []).includes(id) ? '✓ 즐겨찾기' : '즐겨찾기'}</button>
       ${!owned && toggleWish ? html`<button className=${'btn' + ((st.wish || []).includes(id) ? ' on' : '')} aria-pressed=${(st.wish || []).includes(id)} onClick=${() => toggleWish(id)}>${(st.wish || []).includes(id) ? '✓ 사고 싶어요' : '사고 싶어요'}</button>` : null}</div>    ${myPlays.length ? (() => {
       const dec = myPlays.filter(decided); const w = dec.filter(p => wonBy(p, '나')).length;
@@ -2366,7 +2383,7 @@ function Heat({ plays }) {
 function Log({ st, open, startPlay, editDay, openPerson, removeFromId, shareDay }) {
   const firsts = useMemo(() => firstPlayIds(st.plays), [st.plays]);
   const [dlim, setDlim] = useState(20);
-  const allDays = useMemo(() => byDay(st.plays), [st.plays]);
+  const allDays = useMemo(() => splitCouple(byDay(st.plays), st.couples), [st.plays, st.couples]);
   const groups = [];
   allDays.slice(0, dlim).forEach(d => { const k = d.date.slice(0, 7); const last = groups[groups.length - 1]; if (last && last.k === k) { last.items.push(d); last.n += d.plays.length; } else groups.push({ k, items: [d], n: d.plays.length }); });
   const ppl = {};
@@ -2382,7 +2399,7 @@ function Log({ st, open, startPlay, editDay, openPerson, removeFromId, shareDay 
       <div className="note">사람을 누르면 전적이 나와요. @아이디가 붙은 사람은 같은 앱을 써서, 같이 한 기록이 서로의 기록장에 들어가요.</div>` : null}
     ${groups.length ? groups.map(gr => html`<div key=${gr.k}>
         <div className="monthlabel">${gr.k.slice(0, 4) === thisYear ? '' : gr.k.slice(0, 4) + '년 '}${+gr.k.slice(5)}월 · ${st.plays.filter(p => p.date.startsWith(gr.k)).length}판</div>
-        ${gr.items.map(d => html`<${DayGroup} key=${d.date} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay}/>`)}</div>`) :
+        ${gr.items.map(d => html`<${DayGroup} key=${d.date + (d.cp || '')} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay}/>`)}</div>`) :
       html`<${Empty} title="아직 기록이 없어요" action=${html`<button className="btn primary" onClick=${() => startPlay(null)}>첫 기록 남기기</button>`}>한 판 하고 나서 바로 남겨두면 나중에 전적이 쌓여요.<//>`}
     ${allDays.length > dlim ? html`<${MoreBtn} left=${allDays.length - dlim} unit="일" onClick=${() => setDlim(dlim + 20)}/>` : null}
   </div>`;
@@ -3101,16 +3118,16 @@ function MoreBtn({ left, unit, onClick }) { return html`<button className="btn b
 // 날짜 묶음 목록: 수천 판이어도 20일씩
 function DayList({ plays, st, open, editDay, removeFromId, shareDay, empty, onMonth, variant, inGroupView }) {
   const [lim, setLim] = useState(20);
-  const days = useMemo(() => byDay(plays), [plays]);
+  const days = useMemo(() => splitCouple(byDay(plays), st.couples), [plays, st.couples]);
   const firsts = useMemo(() => firstPlayIds(st.plays), [st.plays]);
   if (!days.length) return empty || null;
   const mc = onMonth ? (() => { const o = {}; days.forEach(d => { const k = d.date.slice(0, 7); const x = o[k] = o[k] || [0, 0]; x[0]++; x[1] += d.plays.length; }); return o; })() : null;
   const thisY = today().slice(0, 4);
   const mh = k => html`<button key=${'m' + k} className="monthsep" onClick=${onMonth} aria-label="다른 달로 이동"><b>${k.slice(0, 4) === thisY ? '' : k.slice(0, 4) + '년 '}${+k.slice(5)}월</b><span className="chev">다른 달 ▾</span></button>`;
   if (mc) { const by = []; days.slice(0, lim).forEach(d => { const k = d.date.slice(0, 7); if (!by.length || by[by.length - 1].k !== k) by.push({ k, ds: [] }); by[by.length - 1].ds.push(d); });
-    return html`${by.map(m => html`<section key=${m.k} className="monthblk">${mh(m.k)}${m.ds.map(d => html`<${DayGroup} key=${d.date} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay} variant=${variant} inGroupView=${inGroupView}/>`)}</section>`)}
+    return html`${by.map(m => html`<section key=${m.k} className="monthblk">${mh(m.k)}${m.ds.map(d => html`<${DayGroup} key=${d.date + (d.cp || '')} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay} variant=${variant} inGroupView=${inGroupView}/>`)}</section>`)}
       ${days.length > lim ? html`<${MoreBtn} left=${days.length - lim} unit="일" onClick=${() => setLim(lim + 20)}/>` : null}`; }
-  return html`${days.slice(0, lim).map(d => html`<${DayGroup} key=${d.date} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay} variant=${variant} inGroupView=${inGroupView}/>`)}
+  return html`${days.slice(0, lim).map(d => html`<${DayGroup} key=${d.date + (d.cp || '')} day=${d} st=${st} open=${open} edit=${editDay} firsts=${firsts} removeFrom=${removeFromId} share=${shareDay} variant=${variant} inGroupView=${inGroupView}/>`)}
     ${days.length > lim ? html`<${MoreBtn} left=${days.length - lim} unit="일" onClick=${() => setLim(lim + 20)}/>` : null}`;
 }
 // 게임 고르기 칩: 많이 한 5개 + 나머지는 검색 (모임 기록·순위 탭 공용)
@@ -3791,7 +3808,7 @@ function App() {
   CHARS[st.me] = st.myChar || defaultChar(st.me); CHARS['나'] = CHARS[st.me];
   const [tab, setTab] = useState(readHash);
   const [stack, setStack] = useState({}); // 탭별 상세 화면
-  const [sheet, setSheet] = useState(null);
+  const [sheet, setSheet] = useState(null); const tabRef = useRef(null);
   const [qnaG, setQnaG] = useState(null);
   const [toast, setToast] = useState(null);
   const [q, setQ] = useState('');
@@ -3806,6 +3823,19 @@ function App() {
   const go = t => { if (t === tab) setStack(s => ({ ...s, [t]: null })); setTab(t); try { history.replaceState(null, '', '#' + t); } catch (e) {} window.scrollTo(0, 0); };
   const open = id => { setStack(s => ({ ...s, [tab]: id })); window.scrollTo(0, 0); };
   const back = () => { setStack(s => ({ ...s, [tab]: null })); };
+  // 휴대폰 뒤로 가기: 열린 시트 → 상세 화면 순서로 하나씩 닫기
+  tabRef.current = tab;
+  const navDepth = (stack[tab] ? 1 : 0) + (sheet ? 1 : 0);
+  const navRef = useRef({ pushed: 0, skip: 0, sheet, detail: !!stack[tab] });
+  navRef.current.sheet = sheet; navRef.current.detail = !!stack[tab];
+  useEffect(() => { const n = navRef.current; try {
+    while (n.pushed < navDepth) { history.pushState({ bgDepth: n.pushed + 1 }, '', location.hash); n.pushed++; }
+    if (n.pushed > navDepth) { const k = n.pushed - navDepth; n.pushed = navDepth; n.skip++; history.go(-k); }
+  } catch (e) {} }, [navDepth]);
+  useEffect(() => { const f = () => { const n = navRef.current; if (n.skip) { n.skip--; return; }
+    n.pushed = Math.max(0, n.pushed - 1);
+    if (n.sheet) setSheet(null); else if (n.detail) setStack(s => ({ ...s, [tabRef.current]: null })); };
+    window.addEventListener('popstate', f); return () => window.removeEventListener('popstate', f); }, []);
 
   const allReviews = useMemo(() => {
     const mine = st.reviews;
@@ -3857,9 +3887,12 @@ function App() {
   };
   const delReview = id => { update(s => ({ ...s, reviews: s.reviews.filter(x => x.id !== id) })); setSheet(null); say('평가를 지웠어요'); };
   const toggleOwn = id => {
-    const had = !!st.collection[id];
-    update(s => { const c = { ...s.collection }; if (had) delete c[id]; else c[id] = { at: today() + 'T' + Date.now() }; return { ...s, collection: c }; });
-    say(had ? '보관함에서 뺐어요' : '보관함에 담았어요');
+    const old = st.collection[id];
+    update(s => { const c = { ...s.collection }; if (old) delete c[id]; else c[id] = { at: today() + 'T' + Date.now() }; return { ...s, collection: c }; });
+    if (!old) { say('보관함에 담았어요'); return; }
+    clearTimeout(toastT.current);
+    setToast({ m: '보관함에서 뺐어요', undo: () => { update(s => ({ ...s, collection: { ...s.collection, [id]: old } })); setToast(null); } });
+    toastT.current = setTimeout(() => setToast(null), 5000);
   };
   const resetTo = kind => {
     if (kind === 'all') { setSt(empty()); say('모두 지웠어요'); return; }
