@@ -453,6 +453,8 @@ button.person { font: inherit; cursor: pointer; }
 .iconbtn svg { width: 22px; height: 22px; }
 .filton { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 13px; color: var(--ink-2); }
 .sh-ctl { margin-top: 10px; }
+.sh-stick { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; margin: 0 -16px; padding: 0 16px 8px; background: var(--bg); }
+.sh-stick .sortpanel { max-height: 60vh; overflow: auto; }
 .sortpanel { margin-top: 8px; padding: 10px 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
 .sp-g { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .sp-l { font-size: 12px; color: var(--ink-3); width: 40px; }
@@ -2440,7 +2442,7 @@ function Detail({ id, st, allReviews, back, startPlay, startReview, toggleOwn, t
       <div><b>${g.age ? g.age + '+' : '-'}</b><span>나이</span></div>
     </div>
     <div className="actions one"><button className="btn primary" onClick=${() => startPlay(id)}>${I.dice}이 게임 기록하기</button></div>
-    <div className="seg tabs dtabs" role="tablist">${[['info', '정보'], ['rate', '평가'], ['qa', '질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${dtab === k} onClick=${() => setDtab(k)}>${l}</button>`)}</div>
+    <div className="seg tabs dtabs" role="tablist">${[['info', '정보'], ['rate', '평가'], ['qa', '질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${dtab === k} onClick=${e => { const el = e.currentTarget.parentElement; setDtab(k); if (el.getBoundingClientRect().top < 0) el.scrollIntoView(); }}>${l}</button>`)}</div>
     ${dtab === 'info' ? html`<div className="ownrow">
       ${owned ? html`<span className="ownwrap"><span className="btn on ownlbl">✓ 내 보관함</span><button className="iconbtn owndots" aria-label="보관함 메뉴" aria-expanded=${ownMenu} onClick=${() => setOwnMenu(!ownMenu)}>⋯</button>
         ${ownMenu ? html`<div className="dm-scrim" onClick=${() => setOwnMenu(false)}></div><div className="daymenu ownmenu"><button className="dm-b danger" onClick=${() => { setOwnMenu(false); toggleOwn(id); }}>보관함에서 빼기</button></div>` : null}</span>` :
@@ -2569,11 +2571,11 @@ function Shelf({ st, open, go, openBarcode, embedded, ids: idsIn, plank = true, 
   if (isShelf && !Object.keys(st.collection).length) return html`${seg || null}<div className="emptyshelf"><div className="es-scene"><${Avatar} name=${ME.name} size=${64}/><div className="plank"></div></div>
     <b>첫 게임을 올려 보세요</b><span>BGG 보관함을 한 번에 가져오거나, 박스 바코드를 찍어요.</span><div className="emptyacts"><button className="btn primary" onClick=${() => NAV.settings && NAV.settings()}>BGG에서 가져오기</button><button className="btn" onClick=${openBarcode}>바코드로 담기</button></div></div>`;
   return html`<div className=${embedded ? 'shelfwrap' : 'screen shelfwrap'}>
-    <div className="sh-ctl">${seg || html`<span className="sub" style=${{ flex: 1 }}>${all.length}개</span>`}
+    <div className="sh-stick"><div className="sh-ctl">${seg || html`<span className="sub" style=${{ flex: 1 }}>${all.length}개</span>`}
       <button className=${'sortbtn' + (filt !== 'all' ? ' on' : '')} aria-expanded=${menu} aria-label="정렬·골라 보기" onClick=${() => setMenu(!menu)}>${I.sliders}${filt !== 'all' ? html`<span className="num">1</span>` : null}</button></div>
     ${menu ? html`<div className="sortpanel"><div className="sp-g"><span className="sp-l">정렬</span>${[['recent', '최근 산 순'], ['plays', '많이 한 순'], ['dust', '오래 안 한 순'], ['name', '이름순']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${sort === k} onClick=${() => setSort(k)}>${l}</button>`)}</div>
       ${Object.keys(F).length > 1 ? html`<div className="sp-g"><span className="sp-l">골라 보기</span>${Object.entries(F).map(([k, [l, fn]]) => { const c = all.filter(fn).length; return c || k === filt ? html`<button key=${k} className="pill sm" aria-pressed=${filt === k} onClick=${() => { setFilt(k); setLimit(60); }}>${l} <span className="cnt">${c}</span></button>` : null; })}</div>` : null}
-      <div className="sp-g"><span className="sp-l">보기</span>${[['shelf', '선반'], ['stack', '쌓아 보기']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</div></div>` : null}
+      <div className="sp-g"><span className="sp-l">보기</span>${[['shelf', '선반'], ['stack', '쌓아 보기']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</div></div>` : null}</div>
     ${filt !== 'all' && !menu ? html`<div className="filton"><span>${F[filt][0]} ${ids.length}개만 보는 중</span><button className="linkbtn" onClick=${() => { setFilt('all'); setLimit(60); }}>모두 보기</button></div>` : null}
     ${!ids.length ? html`<div className="note">여기 해당하는 게임이 없어요.</div>` : null}
     ${view === 'shelf' ? html`<div className=${'shelf2' + (plank ? ' planks' : '')} style=${{ '--cols': cols }}>${rows.map((r, ri) => html`<div key=${ri} className="srow2">${r.map(([id, i]) => box(id, i))}</div>`)}</div>` :
