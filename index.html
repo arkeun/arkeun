@@ -1595,6 +1595,53 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .grp-sug { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; margin-top: 6px; min-height: 40px; padding: 0 12px; border: 1px dashed var(--line); border-radius: 10px; background: none; font: inherit; font-size: 13.5px; color: var(--ink-2); text-align: left; }
 .grp-sug b { color: var(--accent); flex: none; }
 .find .pvline { margin-bottom: 8px; }
+/* ===== v66 국내 앱 기준 정리 (당근·토스·카카오톡·네이버와 나란히 비교) =====
+   칩 32px/14px · 작은 칩 28px/13px · 하위 탭은 밑줄 글자 탭 40px · 필터는 칩 줄 · 버튼 40px · 입력 42px
+   섹션 제목 16px · 단계 번호 동그라미 없앰 · 누르는 범위는 ::after로 넓힘 */
+.pill, .sheet .pill, .dates .pill { min-height: 32px; padding: 4px 12px; font-size: 14px; line-height: 1.3; display: inline-flex; align-items: center; }
+.pill.sm, .sheet .pill.sm, .dates .pill.sm { min-height: 28px; padding: 2px 10px; font-size: 13px; }
+.pill { position: relative; }
+.pill::after { content: ""; position: absolute; inset: -6px -2px; }
+.btn { min-height: 40px; padding: 8px 14px; }
+.btn.sm { min-height: 32px; padding: 4px 10px; font-size: 13px; }
+.datebox { min-height: 36px; font-size: 14px; border-radius: 999px; padding: 0 12px; }
+.input { padding: 10px 12px; }
+.search input { padding-block: 10px; font-size: 15px; }
+.wp, .modes button { min-height: 36px; font-size: 14px; }
+/* 위쪽 큰 두세 칸 고르기(목록/달력, 커플/친구/모임)는 회색 세그먼트 유지, 얇게 */
+.seg { border-radius: 10px; padding: 3px; }
+.seg button { min-height: 32px; font-size: 14px; padding: 4px 10px; }
+/* 화면 안 하위 탭: 회색 상자 대신 밑줄 글자 탭(당근 프로필·네이버 탭처럼) */
+.seg.tabs { display: flex !important; background: none; padding: 0; border-radius: 0; gap: 0; border-bottom: 1px solid var(--line); }
+.seg.tabs button { flex: 1; min-height: 42px; border-radius: 0; background: none !important; box-shadow: none !important; font-size: 15px; font-weight: 600; color: var(--ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 0 4px; }
+.seg.tabs button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.ctabs { grid-template-columns: none !important; }
+/* 시트 안 거르기(자주 같이 한·즐겨찾기·최근…): 칩 줄 */
+.sheet .seg:not(.tabs), .ptabs .seg, .seg.cwf { display: flex !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; width: auto; background: none; padding: 0; gap: 6px; border-radius: 0; grid-template-columns: none !important; }
+.sheet .seg:not(.tabs)::-webkit-scrollbar, .ptabs .seg::-webkit-scrollbar { display: none; }
+.sheet .seg:not(.tabs) button, .ptabs .seg button, .seg.cwf button { flex: none; min-height: 32px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); box-shadow: none; font-size: 14px; font-weight: 500; color: var(--ink-2); }
+.sheet .seg:not(.tabs) button[aria-pressed="true"], .ptabs .seg button[aria-pressed="true"], .seg.cwf button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); box-shadow: none; }
+/* 기록 시트 단계 제목: 번호 동그라미 없이 평범한 제목 */
+.stephd { font-size: 16px; gap: 6px; }
+.stephd .sn { display: none; }
+.stephd .solochip { min-height: 30px; padding: 2px 12px; font-size: 13px; }
+.stephint { font-size: 12.5px; margin-left: 0; }
+.field.step { margin-top: 12px; padding-top: 14px; }
+.picked { padding: 6px 8px; min-height: 0; gap: 6px; }
+.picked .pill.sm { min-height: 28px; }
+h2.sec { font-size: 16px; margin: 22px 0 8px; }
+.grpline { min-height: 40px; }
+.prow { padding: 9px 4px; }
+
+.rank.mate { grid-template-columns: 36px 1fr auto; gap: 12px; padding: 10px 0; }
+.prow { grid-template-columns: 32px 1fr auto; }
+.back, .backbtn { font-size: 0; min-width: 44px; padding: 0; min-height: 44px; margin-left: -10px; display: inline-flex; align-items: center; justify-content: center; }
+.back svg, .backbtn svg { width: 24px; height: 24px; }
+/* 화면 안 정렬·거르기 세그먼트(목록/달력, 커플/친구/모임 제외)는 칩 줄로 */
+.screen .seg:not(.tabs):not(.vsw):not(.hubseg) { display: flex !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; width: auto; background: none; padding: 0; gap: 6px; border-radius: 0; }
+.screen .seg:not(.tabs):not(.vsw):not(.hubseg) button { flex: none; min-height: 30px; padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); box-shadow: none; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.screen .seg:not(.tabs):not(.vsw):not(.hubseg) button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
 </style>
 
 <div id="app"></div>
@@ -2876,7 +2923,7 @@ function PeoplePicker({ st, people, links, toggle, addPerson }) {
   const onEnter = e => { e.preventDefault(); const nm = t.replace(/^@/, ''); const exact = mine.find(n => n === nm || handleOf(n) === tl);
     // 엔터로는 모르는 앱 사용자를 고르지 않음: 같은 이름 친구 > 하나뿐인 친구 후보 > 이름만 추가
     if (exact) pickMine(exact); else if (mineHits.length === 1 && !plainOk) pickMine(mineHits[0]); else if (plainOk) pickPlain(); };
-  const tabs = [['freq', '자주 같이 한'], ...((st.groups || []).length ? [['grp', '모임']] : []), ...((st.couples || []).length ? [['cpl', '♥ 커플']] : [])];
+  const tabs = [['freq', '자주 같이 한'], ...((st.groups || []).length ? [['grp', '모임']] : []), ...((st.couples || []).length ? [['cpl', '커플']] : [])];
   const rest = shown.filter(n => !people.includes(n));
   return html`<div>
     <div className="picked">${people.length ? people.map(n => html`<button key=${n} className="pill sm on" onClick=${() => toggle(n)} aria-label=${n + ' 빼기'}>${n}<span className="x">×</span></button>`) :
@@ -2885,17 +2932,17 @@ function PeoplePicker({ st, people, links, toggle, addPerson }) {
       <div className="search">${I.games}<input id="person-search" type="search" placeholder="이름이나 @아이디" value=${q} onInput=${e => setQ(e.target.value)} autoComplete="off"/></div>
       ${t ? html`<div className="plist">
         ${mineHits.map(n => html`<button type="button" key=${'m' + n} className="prow" onClick=${() => pickMine(n)}>
-          <${Avatar} name=${n}/><span className="pn">${n}${handleOf(n) ? html`<span className="handle"> @${handleOf(n)}</span>` : null}</span>
+          <${Avatar} name=${n} size=${32}/><span className="pn">${n}${handleOf(n) ? html`<span className="handle"> @${handleOf(n)}</span>` : null}</span>
           <span className="pt">${people.includes(n) ? '골랐어요' : handleOf(n) ? '친구' : '앱 안 씀'}${freq[n] ? ` · ${freq[n]}판` : ''}</span></button>`)}
         ${appHits.map(([h, n]) => html`<button type="button" key=${'a' + h} className="prow" onClick=${() => pickApp(h, n)}>
-          <${Avatar} name=${n}/><span className="pn">${n}<span className="handle"> @${h}</span></span><span className="pt add">${mine.includes(n) ? '친구 요청 · 이 사람이에요' : '친구 요청'}</span></button>`)}
+          <${Avatar} name=${n} size=${32}/><span className="pn">${n}<span className="handle"> @${h}</span></span><span className="pt add">${mine.includes(n) ? '친구 요청 · 이 사람이에요' : '친구 요청'}</span></button>`)}
         ${plainOk ? html`<button type="button" className="prow" onClick=${pickPlain}>
           <span className="avatar ghost">+</span><span className="pn">'${t}' 이름만 추가</span><span className="pt">앱 없는 친구</span></button>` : null}
         ${!mineHits.length && !appHits.length && !plainOk ? html`<div className="pempty">${t.startsWith('@') ? `@${tl} 아이디를 쓰는 사람이 없어요. @ 없이 이름만 적어도 돼요.` : '이미 골랐어요'}</div>` : null}
       </div>` : null}
     </form>
     ${t ? null : html`<div className="ptabs">
-      ${tabs.length > 1 ? html`<div className="seg tabs" role="tablist">${tabs.map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${ptab === k} onClick=${() => setPtab(k)}>${l}</button>`)}</div>` : null}
+      ${tabs.length > 1 ? html`<div className="seg" role="tablist">${tabs.map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${ptab === k} onClick=${() => setPtab(k)}>${l}</button>`)}</div>` : null}
       ${ptab === 'freq' ? html`<div className="dates">${rest.map(n => html`<button key=${n} className="pill" onClick=${() => toggle(n)}>${n}${handleOf(n) ? html`<span className="linkdot">${I.link}</span>` : null}</button>`)}
         ${mine.length > shown.length ? html`<button className="pill add" onClick=${() => setAll(all + 16)}>+${Math.min(16, mine.length - shown.length)}명 더</button>` : null}
         ${!rest.length && mine.length <= shown.length ? html`<span className="none">위에서 이름을 찾아 넣어요.</span>` : null}</div>` : null}
@@ -3062,7 +3109,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
         <div className="dates">${nameOnly.filter(n => !conv.has(n) && people.includes(n)).map(n => html`<button key=${n} className="pill sm" aria-pressed=${convFor === n} onClick=${() => setConvFor(convFor === n ? null : n)}>${n}</button>`)}
           ${[...conv].map(n => html`<span key=${'c' + n} className="pill sm done">${n} → 친구<span className="linkdot">${I.link}</span></span>`)}</div>
         ${convFor ? html`<div className="plist">${Object.entries(st.friends).filter(([f]) => f === convFor || !people.includes(f)).map(([f, h]) => html`<button key=${f} className="prow" onClick=${() => convert(convFor, f)}>
-            <${Avatar} name=${f}/><span className="pn">${f}<span className="handle"> @${h}</span></span><span className="pt">이 사람이에요</span></button>`)}
+            <${Avatar} name=${f} size=${32}/><span className="pn">${f}<span className="handle"> @${h}</span></span><span className="pt">이 사람이에요</span></button>`)}
           ${!Object.keys(st.friends).length ? html`<div className="pempty">아직 앱 친구가 없어요</div>` : null}
           <div className="note">${convFor}님이 누구인지 골라주세요. 저장하면 그 친구 기록장에도 들어가요.</div></div>` : null}
       </div>` : null}
@@ -4689,7 +4736,7 @@ function PeopleList({ st, openPerson }) {
     <div className="stickybar">${names.length > 12 ? html`<div className="search">${I.games}<input type="search" placeholder=${`${names.length}명 중에 찾기`} value=${pq} onInput=${e => { setPq(e.target.value); setPlim(30); }}/></div>` : null}
       <${Seg} value=${ps} options=${[['recent', '최근 같이 한 순'], ['n', '많이 한 순'], ['name', '이름순']]} onChange=${setPs} label="정렬"/></div>
     ${rows.slice(0, plim).map(([n, x]) => html`<button key=${n} className="rank mate" onClick=${() => openPerson(n)}>
-      <${Avatar} name=${n}/><span className="n">${n}${st.friends[n] ? html`<span className="linkdot">${I.link}</span>` : null}<span className="d">${x.last ? `마지막 ${relDay(x.last)}` : ''}</span></span>
+      <${Avatar} name=${n} size=${36}/><span className="n">${n}${st.friends[n] ? html`<span className="linkdot">${I.link}</span>` : null}<span className="d">${x.last ? `마지막 ${relDay(x.last)}` : ''}</span></span>
       <span className="v">${x.n}판${x.vsN ? html` · <b>${x.myWins}:${x.theirWins}</b>` : ''}</span></button>`)}${rows.length > plim ? html`<${MoreBtn} left=${rows.length - plim} unit="명" onClick=${() => setPlim(plim + 30)}/>` : null}
     <div className="note">같이 한 판 수와 ${ME.name} : 그 사람 이긴 횟수예요. 승부를 가린 판만 세요. 지금은 미리보기라 이 기기에 있는 기록만 써요.</div>`;
 }
