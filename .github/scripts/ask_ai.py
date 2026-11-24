@@ -62,13 +62,14 @@ def ask_gemini(meta, prompt, texts, images):
     parts = [{"text": prompt}] + [{"text": t} for t in texts]
     for p, mime, b64 in images:
         parts += [{"text": f"그림: {p}"}, {"inline_data": {"mime_type": mime, "data": b64}}]
-    models = [meta["model"]] if meta["model"] else ["gemini-flash-lite-latest", "gemini-flash-latest"]
+    models = [meta["model"]] if meta["model"] else ["gemini-flash-lite-latest", "gemini-flash-latest", "gemma-3-27b-it"]
     errors = []
     for m in models:
       for attempt in range(5):
         try:
             r = post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
-                     {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]},
+                     ({"contents": [{"role": "user", "parts": [{"text": SYSTEM}] + parts}]} if m.startswith("gemma") else
+                      {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]}),
                      {"x-goog-api-key": key})
             out = "".join(p.get("text", "") for p in r["candidates"][0]["content"]["parts"])
             return m, out
@@ -79,7 +80,13 @@ def ask_gemini(meta, prompt, texts, images):
             break
         except Exception as e:
             errors.append(f"{m}: {e}"); break
-    raise RuntimeError("모든 모델 실패\n" + "\n".join(errors))
+    try:
+        req = urllib.request.Request("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", headers={"x-goog-api-key": key})
+        names = [x["name"] for x in json.load(urllib.request.urlopen(req, timeout=60)).get("models", []) if "generateContent" in x.get("supportedGenerationMethods", [])]
+        errors.append("쓸 수 있는 모델: " + ", ".join(names))
+    except Exception as e:
+        errors.append(f"모델 목록 실패: {e}")
+    raise RuntimeError("모든 모델 실패\n" + "\n".join(e[:400] for e in errors))
 
 def ask_openai(meta, prompt, texts, images):
     key = os.environ.get("OPENAI_API_KEY")
