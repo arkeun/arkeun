@@ -68,7 +68,7 @@ def ask_gemini(meta, prompt, texts, images):
             out = "".join(p.get("text", "") for p in r["candidates"][0]["content"]["parts"])
             return m, out
         except urllib.error.HTTPError as e:
-            errors.append(f"{m}: {e.code} {e.read().decode(errors='replace')[:300]}")
+            errors.append(f"{m}: {e.code} {e.read().decode(errors='replace')[:900]}")
             if e.code in (500, 503) and attempt < 3:
                 time.sleep(20 * (attempt + 1)); continue
             break
@@ -89,7 +89,7 @@ def ask_openai(meta, prompt, texts, images):
                  {"model": model, "instructions": SYSTEM, "input": [{"role": "user", "content": content}]},
                  {"Authorization": f"Bearer {key}"})
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"{model}: {e.code} {e.read().decode(errors='replace')[:300]}")
+        raise RuntimeError(f"{model}: {e.code} {e.read().decode(errors='replace')[:900]}")
     out = "".join(c.get("text", "") for item in r.get("output", []) if item.get("type") == "message" for c in item.get("content", []))
     return model, out
 
