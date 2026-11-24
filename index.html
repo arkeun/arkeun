@@ -1085,6 +1085,9 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.55; }
 .sheet-foot.two { display: flex; gap: 8px; } .sheet-foot.two .btn { flex: 1; }
 .hcal { background: var(--surface); border-radius: 14px; padding: 10px 10px 12px; margin: 6px 0 12px; }
 .hc-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.mnav { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; }
+.mnav b { font-size: 16px; min-width: 8.5em; text-align: center; }
+.mnav.sticky { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; margin: 0 -16px 4px; padding: 0 16px; background: var(--bg); }
 .hc-h b { font-size: 16px; }
 .hc-nav { width: 44px; height: 44px; border: 0; background: none; font-size: 22px; color: var(--ink-2); border-radius: 10px; }
 .hc-nav:disabled { opacity: .3; }
@@ -2043,6 +2046,9 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const setView = v => { setView0(v); try { localStorage.setItem('bg-home-view', v); } catch (e) {} };
   const [mon, setMon] = useState('');
   const [monOpen, setMonOpen] = useState(false);
+  const minYm = useMemo(() => (st.plays.reduce((m, p) => !m || p.date < m ? p.date : m, '') || today()).slice(0, 7), [st.plays]);
+  const goYm = k => { if (k < minYm || k > today().slice(0, 7)) return; setCalYm(k); };
+  const swipe = useSwipe(() => goYm(ymShift(calYm, -1)), () => goYm(ymShift(calYm, 1)));
   const [bell, setBell] = useState(false);
   const mineR = st.reviews;
   const un = mineR.flatMap(r => ((st.comments || {})[r.id] || []).filter(c => c.unread && !(st.blocked || {})[c.author]).map(c => [r, c])).sort((a, b) => b[1].date.localeCompare(a[1].date));
@@ -2077,9 +2083,12 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
     ${mon ? html`<div className="note" style=${{ marginTop: 0 }}>${mon.slice(0, 4)}년 ${+mon.slice(5)}월부터 보고 있어요 · <button className="linkbtn inl" onClick=${() => setMon('')}>최근으로</button></div>` : null}
     ${monOpen ? html`<div className="monlist" role="dialog" aria-label="달 고르기"><div className="ml-h"><b>어느 달로 갈까요?</b><button className="linkbtn" onClick=${() => setMonOpen(false)}>닫기</button></div>
       ${monthList.map(([k, n]) => html`<button key=${k} className=${'ml-r' + (mon === k ? ' on' : '')} onClick=${() => { setMon(k); setMonOpen(false); window.scrollTo(0, 0); }}><span>${k.slice(0, 4)}년 ${+k.slice(5)}월</span></button>`)}</div>` : null}
-    ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${setCalYm}/>` : null}
-    <${DayList} key=${hq + mon + view + calYm} onMonth=${view === 'cal' ? null : () => setMonOpen(true)} plays=${view === 'cal' ? plays.filter(p => p.date.slice(0, 7) === calYm) : plays} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}
+    <div ...${swipe}>
+    ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${goYm}/>` : !hq.trim() && st.plays.length ? html`<${MonthNav} ym=${calYm} setYm=${goYm} minYm=${minYm} sticky/>` : null}
+    ${!hq.trim() && st.plays.length && !plays.some(p => p.date.slice(0, 7) === calYm) ? html`<div className="note">${+calYm.slice(5)}월에는 기록이 없어요.</div>` : null}
+    <${DayList} key=${hq + view + calYm} onMonth=${null} plays=${hq.trim() ? plays : plays.filter(p => p.date.slice(0, 7) === calYm)} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}
       empty=${html`<${Empty} title="아직 기록이 없어요" action=${html`<div className="emptyacts"><button className="btn primary" onClick=${() => startPlay(null)}>첫 기록 남기기</button><button className="btn" onClick=${openSettings}>BGG에서 기록·보관함 가져오기</button></div>`}>BGG를 쓰셨다면 지난 기록과 보관함을 한 번에 가져올 수 있어요.<//>`}/>
+    </div>
     ${st.hasSample ? html`<div className="note">처음 둘러보기 좋게 예시 기록을 넣어뒀어요. ${ME.name} 탭의 설정에서 지울 수 있어요.</div>` : null}
   </div>`;
 }
@@ -2293,6 +2302,13 @@ function Games({ st, open, q, setQ, openBarcode, go, pickWhat, openShelfImg }) {
 
 /* ---------- 게임 상세 ---------- */
 /* ---------- 홈 달력형 ---------- */
+// 좌우로 밀어 달 넘기기 (세로 스크롤과 헷갈리지 않게 가로로 충분히 밀었을 때만)
+function useSwipe(onPrev, onNext) { const r = useRef(null);
+  return { onTouchStart: e => { const t = e.touches[0]; r.current = [t.clientX, t.clientY]; },
+    onTouchEnd: e => { if (!r.current) return; const t = e.changedTouches[0]; const dx = t.clientX - r.current[0], dy = t.clientY - r.current[1]; r.current = null; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 2) (dx > 0 ? onPrev : onNext)(); } }; }
+const ymShift = (ym, k) => { const [y, m] = ym.split('-').map(Number); const d = new Date(y, m - 1 + k, 1); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; };
+function MonthNav({ ym, setYm, minYm, sticky }) { const [y, m] = ym.split('-').map(Number);
+  return html`<div className=${'mnav' + (sticky ? ' sticky' : '')}><button className="hc-nav" onClick=${() => setYm(ymShift(ym, -1))} disabled=${minYm && ym <= minYm} aria-label="지난달">‹</button><b>${y}년 ${m}월</b><button className="hc-nav" onClick=${() => setYm(ymShift(ym, 1))} disabled=${ym >= today().slice(0, 7)} aria-label="다음 달">›</button></div>`; }
 function HomeCal({ plays, st, onDay, ym, setYm }) {
   const [y, m] = ym.split('-').map(Number);
   const first = new Date(y, m - 1, 1); const nDays = new Date(y, m, 0).getDate();
@@ -2302,7 +2318,7 @@ function HomeCal({ plays, st, onDay, ym, setYm }) {
   const cpls = st.couples || [];
   const monthPlays = plays.filter(p => p.date.slice(0, 7) === ym);
   return html`<div className="hcal">
-    <div className="hc-h"><button className="hc-nav" onClick=${() => shift(-1)} aria-label="지난달">‹</button><b>${y === +today().slice(0, 4) ? '' : y + '년 '}${m}월</b><button className="hc-nav" onClick=${() => shift(1)} aria-label="다음 달" disabled=${ym >= today().slice(0, 7)}>›</button></div>
+    <${MonthNav} ym=${ym} setYm=${setYm}/>
     <div className="hc-grid" role="grid">${DOW.map((w, i) => html`<span key=${'w' + i} className=${'hc-w' + (i === 0 ? ' sun' : '')}>${w}</span>`)}
       ${cells.map((dd, i) => { if (!dd) return html`<span key=${'e' + i}></span>`; const ds = `${ym}-${pad(dd)}`; const ps = byD[ds]; const isT = ds === today();
         if (!ps) return html`<span key=${ds} className=${'hc-d' + (isT ? ' today' : '') + (ds > today() ? ' fut' : '')}><i>${dd}</i></span>`;
