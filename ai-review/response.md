@@ -1,4 +1,4 @@
-id: q-20261124-132834-30828
+id: q-20261124-134142-18020
 status: error
 model: gemini
 ---
@@ -43,35 +43,16 @@ gemini-flash-lite-latest: 503 {
   }
 }
 
-gemini-flash-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
-gemini-flash-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
 gemini-flash-latest: 429 {
   "error": {
     "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 18h23m6.699411223s.",
-    "status": "RESOURCE_EXHAUSTED",
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.Help",
-        "links": [
-          {
-            "description": "Learn more about Gemini API quotas",
-            "url": "https://aistudio.google.com/docs/rate-limits"
-          }
-        ]
-      },
-    
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_
+gemma-3-27b-it: 404 {
+  "error": {
+    "code": 404,
+    "message": "models/gemma-3-27b-it is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.",
+    "status": "NOT_FOUND"
+  }
+}
+
+쓸 수 있는 모델: models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it, models/gemini-flash-latest, models/gemini-flash-lite-latest, models/gemini-pro-latest, models/gemini-2.5-flash-lite, models/gemini-2.5-flash-image, models/gemini-3-flash-preview, models/gemini-3.1-pro-preview, models/ge
