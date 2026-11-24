@@ -7,7 +7,7 @@ request.md 형식 (맨 위 몇 줄은 설정, 나머지는 질문):
   ---
   질문 내용...
 """
-import time, base64, json, mimetypes, os, pathlib, sys, urllib.request, urllib.error
+import re, time, base64, json, mimetypes, os, pathlib, sys, urllib.request, urllib.error
 
 ROOT = pathlib.Path(".")
 REQ = ROOT / "ai-review/request.md"
@@ -44,7 +44,12 @@ def load_files(paths):
         if mime.startswith("image/"):
             images.append((p, mime, base64.b64encode(f.read_bytes()).decode()))
         else:
-            texts.append(f"===== 파일: {p} =====\n{f.read_text(encoding='utf-8', errors='replace')}")
+            body = f.read_text(encoding='utf-8', errors='replace')
+            if p.endswith(".html"):
+                # 기능을 보는 데 필요 없는 꾸밈(CSS)과 그림 데이터는 빼서 무료 한도 안에 들게 함
+                body = re.sub(r"<style[^>]*>.*?</style>", "<style>/* 생략 */</style>", body, flags=re.S)
+                body = re.sub(r"data:[a-z/+.-]+;base64,[A-Za-z0-9+/=]{200,}", "data:(그림 생략)", body)
+            texts.append(f"===== 파일: {p} =====\n{body}")
     return texts, images
 
 SYSTEM = ("너는 보드게임 기록 앱 초안을 검토하는 독립 검토자다. 코드는 직접 고치지 않고 의견만 낸다. "
