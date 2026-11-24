@@ -1,7 +1,8 @@
 name: Codex PR Review
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
@@ -63,7 +64,7 @@ jobs:
               "",
               "---",
               "_자동 생성된 검토 의견입니다. 병합 전 사람이 확인하세요._"
-            ].join("\n");
+            ].join("\\n");
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
