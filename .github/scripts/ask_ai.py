@@ -10,8 +10,8 @@ request.md 형식 (맨 위 몇 줄은 설정, 나머지는 질문):
 import re, time, base64, json, mimetypes, os, pathlib, sys, urllib.request, urllib.error
 
 ROOT = pathlib.Path(".")
-REQ = ROOT / "ai-review/request.md"
-OUT = ROOT / "ai-review/response.md"
+REQ = ROOT / os.environ.get("AI_REQUEST", "ai-review/request.md")
+OUT = ROOT / os.environ.get("AI_RESPONSE", "ai-review/response.md")
 
 def parse():
     text = REQ.read_text(encoding="utf-8")
@@ -36,7 +36,7 @@ def post(url, data, headers):
 def load_files(paths):
     texts, images = [], []
     for p in paths:
-        f = ROOT / p
+        f = pathlib.Path(p) if p.startswith("/") else ROOT / p
         if not f.is_file():
             texts.append(f"[파일 없음: {p}]")
             continue

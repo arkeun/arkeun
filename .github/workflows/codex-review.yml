@@ -11,7 +11,8 @@ permissions:
 
 jobs:
   review:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    # OpenAI 잔액이 0원이라 잠시 멈춤. 충전 후 저장소 Settings → Variables 에 CODEX_ENABLED=true 를 넣으면 다시 돎.
+    if: vars.CODEX_ENABLED == 'true' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     outputs:
       final_message: ${{ steps.codex.outputs.final-message }}
