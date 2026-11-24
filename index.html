@@ -1423,6 +1423,167 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .ownrow .btn { white-space: nowrap; padding-inline: 8px; }
 .ownwrap .owndots { flex: none; margin-left: 2px; font-size: 18px; color: var(--ink-3); }
 .ownmenu { top: 46px; left: 0; right: auto; }
+/* 모임 v60: 만들기·찾기·홈·게시판 */
+.field .lb .req { font-size: 11.5px; font-weight: 600; color: var(--accent); margin-left: 6px; }
+.lb2 { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 0 0 6px; }
+.lb2 .hint { font-weight: 400; margin-left: 6px; font-size: 12px; color: var(--ink-3); }
+.sub-f { margin-top: 12px; }
+.modepick, .joinpick { display: grid; gap: 6px; }
+.mp-b, .jp-b { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; min-height: 52px; font: inherit; color: var(--ink); }
+.mp-b b, .jp-b b { font-size: 14.5px; font-weight: 600; }
+.mp-b span, .jp-b span { font-size: 12.5px; color: var(--ink-3); }
+.mp-b[aria-pressed="true"], .jp-b[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.chkrow { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 14px; }
+.chkrow input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--accent); flex: none; }
+.chkrow > span { display: flex; flex-direction: column; } .chkrow b { font-weight: 600; } .chkrow span span { font-size: 12.5px; color: var(--ink-3); }
+.sf-miss { align-self: center; font-size: 12.5px; color: var(--ink-3); white-space: nowrap; }
+.gsub { margin: 0 0 10px; background: none; padding: 0; border-radius: 0; border-bottom: 1px solid var(--line); gap: 0; }
+.gsub button { border-radius: 0; background: none !important; box-shadow: none !important; padding: 10px 4px; font-size: 14.5px; color: var(--ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.gsub button[aria-pressed="true"] { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink); }
+.pc-gm { font-size: 12px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pc-gm::before { content: "자주 다루는 게임 "; color: var(--ink-3); font-weight: 600; }
+.gl-req { font-size: 11.5px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 1px 5px; }
+.muted-ic { font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
+.fchips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 8px -16px 10px; padding: 0 16px; }
+.fchips::-webkit-scrollbar { display: none; }
+.fchips .pill { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; min-height: 34px; }
+.fchips .pill svg { width: 15px; height: 15px; }
+.fchips .pill.on { border-color: var(--ink); font-weight: 600; }
+.f-sum { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-3); margin-bottom: 4px; }
+.fsec { margin-bottom: 6px; }
+.fs-h { display: flex; justify-content: space-between; align-items: baseline; }
+.fs-h h2.sec { margin-top: 20px; }
+.fs-d { margin: -6px 0 4px; font-size: 12.5px; color: var(--ink-3); }
+.fs-g { margin-top: 16px; }
+.pcard { display: flex; align-items: flex-start; border-bottom: 1px solid var(--line); }
+.pc-main { flex: 1; min-width: 0; display: flex; gap: 12px; align-items: flex-start; border: 0; background: none; padding: 12px 0; text-align: left; font: inherit; color: var(--ink); }
+.pc-main .gbadge { flex: none; border-radius: 12px; }
+.pc-b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.pc-n { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pc-l { font-size: 13.5px; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-m { font-size: 12.5px; color: var(--ink-3); }
+.pc-t { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 4px; }
+.tg { font-size: 12px; line-height: 18px; padding: 0 6px; border-radius: 4px; background: var(--sunk); color: var(--ink-2); white-space: nowrap; }
+.tg.rc { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.tg.nt { background: var(--ink); color: var(--bg); font-weight: 700; }
+.tg.on { background: color-mix(in srgb, #2d4a7a 14%, var(--surface)); color: #2d4a7a; font-weight: 600; }
+.pc-g { display: inline-flex; gap: 3px; margin-left: 2px; }
+.pc-gc { width: 20px; height: 20px; border-radius: 3px; overflow: hidden; display: inline-block; position: relative; }
+.pc-gc .cover { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+.pc-gc .cover .t { display: none; }
+.pc-save { flex: none; width: 44px; height: 44px; margin-top: 8px; border: 0; background: none; font-size: 20px; color: var(--ink-3); }
+.pc-save[aria-pressed="true"] { color: #c94a5a; }
+.gi-tags { margin: 8px 0 4px; }
+.gi-dl { margin: 12px 0 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px 12px; }
+.gi-dl div { display: grid; grid-template-columns: 84px 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.gi-dl div:last-child { border-bottom: 0; }
+.gi-dl dt { color: var(--ink-3); } .gi-dl dd { margin: 0; min-width: 0; }
+.gi-body { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 14px 0 0; white-space: pre-line; }
+.gi-ev { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.gi-ev b { font-weight: 600; } .gi-ev span { color: var(--ink-3); font-size: 13px; flex: 1; min-width: 0; }
+.gi-post { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.gi-post b { flex: 1; min-width: 0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gi-post .muted { font-size: 12px; color: var(--ink-3); flex: none; }
+.gi-foot { display: flex; gap: 8px; align-items: stretch; }
+.gi-foot .btn.block { flex: 1; }
+.gi-save { width: 52px; flex: none; font-size: 20px; padding: 0; }
+.gi-save[aria-pressed="true"] { color: #c94a5a; }
+.gi-req .btn { white-space: nowrap; flex: none; }
+.gi-req { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 6px 8px 6px 12px; font-size: 13.5px; }
+.gtabs button { padding-left: 2px; padding-right: 2px; }
+.ghome .hsec { margin-top: 4px; }
+.hs-h { display: flex; justify-content: space-between; align-items: baseline; }
+.hs-h h2.sec { margin: 22px 0 8px; }
+.gwel { display: flex; flex-direction: column; gap: 4px; background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; font-size: 14px; }
+.gwel b { font-size: 15px; } .gwel .gw-s { font-size: 12.5px; color: var(--ink-2); } .gwel .linkbtn { align-self: flex-start; }
+.gstart { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 4px; margin-bottom: 10px; }
+.gstart > b { font-size: 14.5px; margin-bottom: 4px; }
+.gs-r { display: flex; align-items: center; gap: 10px; min-height: 44px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; font: inherit; font-size: 14px; color: var(--ink); padding: 0; }
+.gs-r .ck { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 12px; flex: none; }
+.gs-r.done { color: var(--ink-3); text-decoration: line-through; } .gs-r.done .ck { background: var(--accent); border-color: var(--accent); color: #fff; }
+.gpin { width: 100%; text-align: left; font: inherit; color: var(--ink); align-items: center; }
+.gpin .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .gpin .chev { color: var(--ink-3); }
+.hchat { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; border-bottom: 1px solid var(--line); background: none; padding: 8px 0; font: inherit; font-size: 14px; color: var(--ink); text-align: left; }
+.hchat b { flex: none; font-weight: 600; } .hchat span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
+.prow2 { display: flex; flex-direction: column; gap: 2px; width: 100%; border: 0; border-bottom: 1px solid var(--line); background: none; padding: 11px 0; text-align: left; font: inherit; color: var(--ink); }
+.pr-k { display: flex; gap: 6px; align-items: center; }
+.pr-k .pinic svg { width: 13px; height: 13px; color: var(--ink-3); }
+.pr-g { font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pr-t { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pr-b { font-size: 13.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pr-rc { font-size: 13px; color: var(--accent); font-weight: 600; }
+.pr-m { font-size: 12px; color: var(--ink-3); }
+.bd-top { display: flex; gap: 8px; align-items: center; }
+.bd-top .search { flex: 1; min-width: 0; margin: 0; }
+.bd-top .btn { flex: none; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
+.bd-top .btn svg { width: 16px; height: 16px; }
+.bd-sort { margin-bottom: 4px; }
+.pview .backbtn { margin-bottom: 6px; }
+.pv-k { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ink-3); }
+.pv-t { font-size: 19px; font-weight: 700; margin: 8px 0 8px; letter-spacing: -0.01em; line-height: 1.35; word-break: keep-all; }
+.pv-by { position: relative; display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+.pv-by .muted { color: var(--ink-3); font-size: 12.5px; } .pv-by .dots { margin-left: auto; min-width: 44px; min-height: 36px; }
+.pv-b { font-size: 15px; line-height: 1.65; margin: 14px 0 0; white-space: pre-line; }
+.pv-game { display: flex; align-items: center; gap: 10px; margin-top: 12px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 10px 6px 6px; font: inherit; font-size: 14px; color: var(--ink); width: 100%; text-align: left; }
+.pv-game.st { padding: 10px 12px; }
+.pg-c { width: 36px; height: 36px; border-radius: 6px; overflow: hidden; position: relative; flex: none; }
+.pg-c .cover { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; } .pg-c .cover .t { display: none; }
+.pv-act { display: flex; gap: 6px; margin-top: 14px; }
+.pv-ch { font-size: 14px; font-weight: 700; margin: 20px 0 6px; padding-top: 14px; border-top: 1px solid var(--line); }
+.pcm { position: relative; display: flex; gap: 8px; padding: 8px 0; }
+.pcm.rp { margin-left: 34px; padding-top: 4px; }
+.pcm .cb { flex: 1; min-width: 0; }
+.pcm .ch { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.pcm .ch .dt { font-size: 12px; color: var(--ink-3); }
+.pcm .ch .dots { margin-left: auto; }
+.pcm .ct { font-size: 14px; line-height: 1.5; margin-top: 1px; }
+.pcm .rpl { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+.cm-menu { position: absolute; right: 0; top: 28px; z-index: 20; min-width: 160px; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; box-shadow: var(--shadow); }
+.cm-menu.pm { top: auto; position: relative; margin-top: 6px; }
+.pv-in { position: sticky; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); background: var(--bg); padding: 8px 0; flex-wrap: wrap; }
+.pv-in .to { width: 100%; font-size: 12.5px; color: var(--ink-3); }
+.kpick { margin-top: 6px; }
+.rcform { margin-top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+.rcbox { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.rc-row { display: flex; gap: 10px; font-size: 14px; padding: 3px 0; }
+.rc-row span { width: 48px; flex: none; color: var(--ink-3); } .rc-row b { font-weight: 600; min-width: 0; }
+.gpick-l { margin-top: 6px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.gpick-l .prow { display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px; font: inherit; font-size: 14px; color: var(--ink); }
+.gpick-l .prow .muted { color: var(--ink-3); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gpick-v { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+.wrow { position: relative; display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.wr-c { width: 40px; height: 40px; border-radius: 6px; overflow: hidden; position: relative; flex: none; border: 0; padding: 0; background: var(--sunk); display: grid; place-items: center; font-weight: 700; color: var(--ink-3); }
+.wr-c .cover { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; } .wr-c .cover .t { display: none; }
+.wr-b { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wr-b b { font-size: 14.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wr-m, .wr-n { font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wr-n { color: var(--ink-2); }
+.wr-like { flex: none; white-space: nowrap; }
+.wrow .dots { min-width: 32px; min-height: 36px; margin: 0; }
+.cm-menu.wm { top: 46px; }
+.ev-tags { margin-top: 8px; }
+.ev-info { margin-top: 8px; font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
+.ev-info div { display: flex; gap: 8px; } .ev-info span { width: 58px; flex: none; color: var(--ink-3); }
+.ev-cnt { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+.ev-my { font-size: 13px; background: var(--sunk); border-radius: 8px; padding: 7px 10px; margin-top: 8px; }
+.ev-pend { margin-top: 6px; }
+.ev-act { flex-wrap: wrap; }
+.ev-opt { margin-top: 12px; }
+.ev-opt .dates .pill { min-height: 34px; }
+.evcard .linkbtn { margin-top: 6px; }
+.rq { border-bottom: 1px solid var(--line); } .rq:last-child { border-bottom: 0; }
+.rq-a { font-size: 13px; padding: 0 0 8px 38px; display: flex; flex-direction: column; gap: 2px; }
+.rq-a span { display: block; font-size: 12px; color: var(--ink-3); }
+.rp { padding: 8px 0; border-top: 1px solid var(--line); }
+.rp-t { font-size: 14px; display: flex; gap: 6px; align-items: baseline; } .rp-m { font-size: 12px; color: var(--ink-3); margin: 2px 0 6px; }
+.rp .r { display: flex; gap: 6px; }
+.rp-pick .prow { display: block; font: inherit; font-size: 15px; color: var(--ink); text-align: left; min-height: 48px; }
+.mrow-w { position: relative; }
+.cm-menu.mm { top: 40px; }
+.chip.own { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.grp-sug { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; margin-top: 6px; min-height: 40px; padding: 0 12px; border: 1px dashed var(--line); border-radius: 10px; background: none; font: inherit; font-size: 13.5px; color: var(--ink-2); text-align: left; }
+.grp-sug b { color: var(--accent); flex: none; }
+.find .pvline { margin-bottom: 8px; }
 </style>
 
 <div id="app"></div>
@@ -1609,6 +1770,7 @@ function prepState(st) {
   registerCustom(st.customGames);
   if (st.hasSample) registerCustom(FILLER);
   if (!st.v28) st = addV27(st);
+  if (!st.v60) st = addV60(st);
   return st;
 }
 // 가장 최근 기록의 멤버 = 다음 기록의 기본값
@@ -2770,7 +2932,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
   const [items, setItems] = useState(initItems);
   const [grp, setGrp] = useState(editing ? (editPlays.find(p => p.groupId !== undefined) || {}).groupId : dr ? dr.grp : evNow ? evNow[0].id : undefined); // undefined = 자동
   const autoG = bestGroup(st, people);
-  const grpRaw = grp === undefined ? (autoG ? autoG.id : null) : grp;
+  const grpRaw = grp === undefined ? null : grp; // 기본은 모임 없음. 겹치는 모임은 제안만 해요
   const grpObj = grpRaw ? (st.groups || []).find(g => g.id === grpRaw) : null;
   const duo = people.length === 1 && (st.couples || []).some(c => c.partner === people[0]);
   const grpId = grpObj && !duo && people.some(n => memSet(grpObj).has(n)) ? grpRaw : null;
@@ -2866,7 +3028,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
       ${people.length && !duo ? (() => { const ps = new Set(people); const opts = (st.groups || []).map(g => { let k = 0; ps.forEach(n => memSet(g).has(n) && k++); return [g, k]; }).filter(x => x[1] && x[0].id !== grpId).sort((a, b) => b[1] - a[1] || a[0].members.length - b[0].members.length).slice(0, 15).map(x => x[0]);
         const cur = (st.groups || []).find(g => g.id === grpId);
         return html`<div className="grpline"><span className="gl-l">어느 모임 기록이에요?</span><span className="gl-v">${cur ? cur.name : '모임 없음'}</span><span className="chev">▾</span>
-          <select aria-label="이 기록의 모임" value=${grpId || ''} onChange=${e => setGrp(e.target.value || null)}>${cur ? html`<option value=${cur.id}>${cur.name}</option>` : null}${opts.map(g => html`<option key=${g.id} value=${g.id}>${g.name}</option>`)}<option value="">모임 없음</option></select></div>`; })() : null}
+          <select aria-label="이 기록의 모임" value=${grpId || ''} onChange=${e => setGrp(e.target.value || null)}>${cur ? html`<option value=${cur.id}>${cur.name}</option>` : null}${opts.map(g => html`<option key=${g.id} value=${g.id}>${g.name}</option>`)}<option value="">모임 없음</option></select></div>${!cur && grp === undefined && autoG ? html`<button className="grp-sug" onClick=${() => setGrp(autoG.id)}>${autoG.name} 기록인가요? <b>넣기</b></button>` : null}`; })() : null}
       ${nameOnly.length ? html`<div className="convbox">
         <div className="d">이름만 적힌 사람${nameOnly.filter(n => !conv.has(n)).length ? '이에요. 눌러서 친구로 바꿀 수 있어요' : ''}</div>
         <div className="dates">${nameOnly.filter(n => !conv.has(n) && people.includes(n)).map(n => html`<button key=${n} className="pill sm" aria-pressed=${convFor === n} onClick=${() => setConvFor(convFor === n ? null : n)}>${n}</button>`)}
@@ -3150,6 +3312,89 @@ function rivalOf(plays, me, names) {
     return { n, vs: vs.length, a: vs.filter(p => wonBy(p, me)).length, b: vs.filter(p => wonBy(p, n)).length }; }).filter(r => r.vs).sort((a, b) => b.vs - a.vs || Math.abs(a.a - a.b) - Math.abs(b.a - b.b));
   return rows[0] || null;
 }
+/* ---------- 모임: 성격·찾기 ---------- */
+const G_TOPICS = [['bg', '보드게임'], ['digital', '디지털 보드게임'], ['pc', 'PC·콘솔 게임']];
+const G_TOPIC = Object.fromEntries(G_TOPICS);
+const G_TAGS = { bg: ['전략', '유로', '엔진 빌딩', '덱 빌딩', '협력', '추리', '파티', '가족', '2인', '입문', '신작', '확장', '룰 설명', '후기'],
+  digital: ['Steam 보드게임', 'BGA', 'Tabletop Simulator', 'Tabletopia', '실물판도 같이', '입문', '전략', '협력'],
+  pc: ['협동', '경쟁', '생존', '전략', '파티', '시뮬레이션', '멀티 같이 할 사람', '공략'] };
+const G_MODES = [['talk', '대화'], ['online', '온라인 플레이'], ['offline', '오프라인 만남']];
+const G_PLAT = ['Steam', 'BGA', 'Tabletop Simulator', 'Tabletopia', '모바일 앱'];
+const G_FREQS = [['weekly', '매주'], ['biweekly', '격주'], ['monthly', '매달'], ['flash', '번개로'], ['need', '필요할 때만'], ['talk', '일정 없이 대화만']];
+const G_FREQ = Object.fromEntries(G_FREQS);
+const G_JOIN = { open: '바로 가입', ask: '승인 후 가입', invite: '초대받은 사람만' };
+const G_AREAS = ['성수', '홍대', '강남', '잠실', '신촌', '판교', '수원', '인천', '대전', '대구', '부산', '광주'];
+const POST_KINDS = [['free', '자유'], ['ask', '질문·추천'], ['recruit', '같이 할 사람'], ['tip', '전략·룰'], ['review', '후기'], ['news', '신작·확장'], ['help', '접속·설정 도움'], ['notice', '공지']];
+const PK = Object.fromEntries(POST_KINDS);
+const WANT_ST = [['talk', '이야기 중'], ['want', '해보고 싶어요'], ['planned', '일정 잡힘'], ['played', '해봤어요'], ['again', '또 하고 싶어요']];
+const WS = Object.fromEntries(WANT_ST);
+// 예전 모임(필드 없음)도 그대로 열리게 기본값을 채워 읽어요
+const gx = g => { const it = g.intro || {}; return { topic: g.topic || 'bg', tags: g.tags || [], modes: g.modes || ['offline'], platforms: g.platforms || [], area: g.area || it.area || '', freq: g.freq || '', join: g.join || it.join || 'invite', beginner: g.beginner || null, hidden: !!g.hidden, cap: g.cap || null }; };
+const modeText = m => m.includes('online') && m.includes('offline') ? '온·오프라인' : m.includes('online') ? '온라인' : m.includes('offline') ? '오프라인' : '대화 중심';
+const placeText = x => [x.modes.includes('online') && x.platforms.length ? x.platforms.slice(0, 2).join('·') : null, x.modes.includes('offline') && x.area ? x.area : null].filter(Boolean).join(' · ');
+const roleOf = (g, n) => n === '나' ? (g.owner ? 'owner' : (g.staff || []).includes('나') ? 'staff' : 'member') : !g.owner && g.ownerName === n ? 'owner' : (g.staff || []).includes(n) ? 'staff' : 'member';
+const ROLE = { owner: '모임장', staff: '운영진' };
+const memCount = g => Math.max(g.members.length + 1, g.pub && g.n ? g.n : 0); // 예시 큰 모임은 멤버 이름을 300명까지만 불러와요
+const canRun = g => !!(g.owner || (g.staff || []).includes('나'));
+const agoT = at => { const m = Math.round((Date.now() - at) / 60000); if (m < 1) return '방금'; if (m < 60) return `${m}분 전`; const h = Math.round(m / 60); if (h < 24) return `${h}시간 전`; return relDay(ymd(new Date(at))); };
+const gameName = x => x.gameId && GAME[x.gameId] ? GAME[x.gameId].ko : x.gname || '';
+const H = 3600000, DAY = 86400000;
+
+// 모임 찾기 예시: 예시 데이터를 켠 사람에게만 보여요. 실제처럼 보이지 않게 화면에 '예시'라고 밝혀요.
+const PUB_HAND = [
+  ['보드게임 처음 시작하는 사람들', '뭘 사야 할지, 어떻게 하는지 편하게 물어봐요', 'bg', ['입문', '가족', '2인'], ['talk'], [], '', 'talk', 'open', 'new', [13, 178900, 163412], 1840, 0, 400],
+  ['윙스팬 좋아하는 사람들', '확장, 카드 조합, 플레이 후기를 나눠요', 'bg', ['엔진 빌딩', '확장', '후기'], ['talk', 'offline'], [], '홍대', 'monthly', 'open', 'new', [266192, 199792, 295947], 312, 0, 220],
+  ['Steam 보드게임 같이 해요', '금요일 밤마다 디지털 보드게임 한두 판', 'digital', ['Steam 보드게임', '입문'], ['talk', 'online'], ['Steam'], '', 'weekly', 'open', 'new', [266192, 162886, 167791], 96, 0, 40],
+  ['BGA 저녁 한 판', '퇴근하고 Board Game Arena에서 짧게', 'digital', ['BGA', '전략'], ['online'], ['BGA'], '', 'flash', 'open', null, [230802, 148228, 124361], 58, 1, 18],
+  ['성수 평일 저녁 보드게임', '퇴근하고 성수에서 두 시간, 가벼운 게임 위주', 'bg', ['파티', '전략'], ['talk', 'offline'], [], '성수', 'weekly', 'ask', 'new', [178900, 70323, 230802], 64, 0, 90],
+  ['협력 게임만 해요', '같이 이기고 같이 지는 게임을 좋아하는 사람들', 'bg', ['협력', '추리'], ['talk', 'online', 'offline'], ['Tabletop Simulator'], '강남', 'biweekly', 'ask', null, [30549, 162886, 284083], 140, 2, 300],
+  ['무거운 유로 게임', '3시간 넘는 게임도 끝까지 하는 사람들', 'bg', ['전략', '유로'], ['offline'], [], '잠실', 'monthly', 'ask', 'exp', [224517, 342942, 220308], 38, 4, 500],
+  ['TTS 레거시 캠페인', '글룸헤이븐 캠페인을 매주 이어서 해요', 'digital', ['Tabletop Simulator', '협력'], ['online'], ['Tabletop Simulator'], '', 'weekly', 'invite', 'exp', [174430], 6, 3, 150],
+  ['부산 주말 보드게임', '서면에서 토요일 오후마다 모여요', 'bg', ['파티', '입문'], ['talk', 'offline'], [], '부산', 'weekly', 'open', 'new', [13, 9209, 39856], 210, 1, 700],
+  ['2인 게임 추천 나눠요', '둘이 할 만한 게임만 이야기해요', 'bg', ['2인', '후기'], ['talk'], [], '', 'talk', 'open', 'new', [163412, 54043, 12333], 520, 0, 260],
+  ['협동 생존 게임 같이 할 사람', 'Steam 협동 게임 멀티 파티 구해요', 'pc', ['협동', '생존', '멀티 같이 할 사람'], ['talk', 'online'], ['Steam'], '', 'flash', 'open', 'new', [], 230, 0, 12],
+  ['전략 게임 공략 모임', 'PC 전략 게임 빌드와 공략을 나눠요', 'pc', ['전략', '공략'], ['talk'], ['Steam'], '', 'talk', 'open', null, [], 88, 5, 600],
+  ['아크 노바 연구소', '아크 노바 카드 조합과 전략 토론', 'bg', ['전략', '유로', '확장'], ['talk', 'online', 'offline'], ['BGA'], '판교', 'monthly', 'open', 'exp', [342942], 74, 2, 160],
+  ['막 만든 신촌 보드게임', '이번 달에 만들었어요. 같이 키워 가요', 'bg', ['입문', '파티'], ['talk', 'offline'], [], '신촌', 'flash', 'open', 'new', [178900, 254640], 4, 0, 3],
+];
+const PUB_THEME = [['보드게임', 'bg', ['입문', '파티']], ['전략겜', 'bg', ['전략', '유로']], ['파티겜', 'bg', ['파티']], ['협력겜', 'bg', ['협력']], ['2인팟', 'bg', ['2인']], ['신작팟', 'bg', ['신작', '확장']], ['추리겜', 'bg', ['추리']], ['가족 보드게임', 'bg', ['가족', '입문']]];
+const PUB_ON = [['Steam 보드게임', 'digital', ['Steam 보드게임'], ['Steam']], ['BGA', 'digital', ['BGA'], ['BGA']], ['TTS', 'digital', ['Tabletop Simulator'], ['Tabletop Simulator']], ['협동 겜', 'pc', ['협동', '멀티 같이 할 사람'], ['Steam']], ['전략 겜', 'pc', ['전략'], ['Steam']]];
+let _pub = null;
+function pubGroups(st) {
+  if (!st.hasSample) return [];
+  if (_pub) return _pub;
+  const gl = GAMES.filter(g => !g.custom).map(g => g.id);
+  const mk = (r, i) => { const [name, line, topic, tags, modes, platforms, area, freq, join, beginner, games, n, act, made] = r; const h = hash(name);
+    return { id: 'p' + i, name, topic, tags, modes, platforms, area, freq, join, beginner, games, n, act, made, recruit: h % 3 !== 0, ownerName: CROWD[h % 300], staff: n > 30 ? [CROWD[(h + 7) % 300]] : [],
+      intro: { line, rules: join === 'ask' ? [['가입 질문', '주로 하는 게임을 한 줄 적어 주세요.'], ['못 올 때', '참석했다가 못 오면 전날까지 불참으로 바꿔 주세요.']] : [['분위기', '처음 온 분도 편하게 질문해요. 서로 존댓말 써요.']],
+        questions: join === 'ask' ? ['주로 어떤 게임을 하세요?', '온라인·오프라인 중 어떤 활동을 원하세요?'] : [], welcome: '반가워요! 게시판 맨 위 공지부터 읽어 보세요.' }, pub: true, sample: true }; };
+  const out = PUB_HAND.map(mk);
+  let i = out.length;
+  G_AREAS.forEach((a, ai) => PUB_THEME.forEach(([t, topic, tags], ti) => { const h = hash(a + t); const n = [3, 8, 15, 26, 40, 75, 130, 260][h % 8];
+    out.push(mk([`${a} ${t}`, `${a}에서 ${['평일 저녁', '주말 오후', '격주 토요일', '가끔 번개로'][h % 4]} 만나요`, topic, tags, h % 4 ? ['talk', 'offline'] : ['offline'], [], a, ['weekly', 'biweekly', 'monthly', 'flash'][h % 4], ['open', 'ask', 'open', 'invite'][h % 4], h % 3 === 0 ? 'new' : h % 7 === 0 ? 'exp' : null,
+      [gl[h % gl.length], gl[(h >> 3) % gl.length]], n, h % 40, 3 + h % 900], i++)); }));
+  ['평일 밤', '주말', '새벽', '점심'].forEach((w, wi) => PUB_ON.forEach(([t, topic, tags, plat], ti) => { const h = hash(w + t); const n = [5, 12, 30, 60, 150, 400][h % 6];
+    out.push(mk([`${w} ${t} 모임`, `${w}에 ${plat[0]}에서 같이 해요`, topic, tags, ['talk', 'online'], plat, '', ['weekly', 'flash', 'need'][h % 3], ['open', 'open', 'ask'][h % 3], h % 2 ? 'new' : null, topic === 'pc' ? [] : [gl[h % gl.length]], n, h % 20, 2 + h % 400], i++)); }));
+  return (_pub = out);
+}
+// 미리보기에 보이는 글·일정·관심 게임 (가입하면 내 기기에 저장돼요)
+function pubDetail(p) {
+  const h = hash(p.id); const who = k => CROWD[(h + k * 13) % 300]; const now = Date.now();
+  const x = gx(p); const online = x.modes.includes('online'), offline = x.modes.includes('offline');
+  const g0 = p.games[0], g1 = p.games[1];
+  const posts = [
+    { id: p.id + 'n', kind: 'notice', title: '처음 오셨다면 읽어 주세요', body: `${modeText(x.modes)}으로 활동하는 모임이에요. 궁금한 건 질문·추천 글로 올려 주세요. 광고 글은 운영진이 내려요.`, by: p.ownerName, at: now - (p.made || 30) * DAY, pinned: true, likes: [who(1), who(2)], comments: [] },
+    { id: p.id + 'a', kind: 'ask', title: p.topic === 'pc' ? '이번 주말 같이 할 협동 게임 추천해 주세요' : '2명이서 할 만한 게임 추천해 주세요', body: '둘이서 30분 안쪽으로 끝나는 게임이면 좋겠어요.', by: who(3), at: now - (p.act + 1) * DAY, likes: [who(4)], comments: [{ id: p.id + 'c1', by: who(5), text: g0 && GAME[g0] ? `${GAME[g0].ko} 추천해요. 둘이서도 재밌어요` : '스팀 할인할 때 같이 사요', at: now - p.act * DAY }] },
+    ...(g0 && GAME[g0] ? [{ id: p.id + 'r', kind: 'review', title: `${GAME[g0].ko} 처음 해본 후기`, body: '룰은 20분이면 익혀요. 두 번째 판부터 재밌어요.', by: who(6), gameId: g0, at: now - (p.act + 3) * DAY, likes: [who(7), who(8), who(9)], comments: [] }] : []),
+    ...(online ? [{ id: p.id + 'm', kind: 'recruit', title: `오늘 밤 ${x.platforms[0] || '온라인'}에서 같이 하실 분`, body: '처음이어도 괜찮아요. 방 만들고 링크 드릴게요.', by: who(10), at: now - 3 * H, likes: [], comments: [],
+      rc: { date: today(), time: '22:00', platform: x.platforms[0] || 'Steam', gameId: g1 || g0 || null, cap: 4, voice: true, own: p.topic !== 'bg', beginner: true, joined: [who(10), who(11)] } }] : []),
+  ];
+  const events = offline || online ? [{ id: p.id + 'e1', kind: offline ? 'off' : 'on', title: offline ? '정모' : '온라인 같이 하기', date: daysAgo(-(2 + h % 5)), time: offline ? '14:00' : '21:00', place: offline ? `${x.area} 보드게임카페` : '', platform: offline ? '' : x.platforms[0] || 'Steam', how: offline ? '' : '시작 10분 전에 대화에 방 링크를 올려요', gameId: g0 || null,
+    cap: offline ? 12 : 6, apply: x.join === 'ask' ? 'ok' : 'first', open: x.join === 'open', going: [p.ownerName, who(12), who(14), who(15)], no: [], maybe: [who(16)], wait: [], pending: [], comments: [] }] : [];
+  const wants = p.games.filter(id => GAME[id]).map((id, i) => ({ id: p.id + 'w' + i, gameId: id, platform: online && !offline ? x.platforms[0] : '', by: who(20 + i), likes: Array.from({ length: (h + i * 5) % 9 + 1 }, (_, k) => who(30 + k + i)), status: i ? 'want' : 'played', at: now - (i + 2) * DAY }));
+  return { posts, events, wants };
+}
+const pubMembers = p => [...new Set([p.ownerName, ...p.staff, ...CROWD.slice(hash(p.id) % 20, (hash(p.id) % 20) + Math.min(300, Math.max(0, p.n - 1 - (p.staff || []).length - 1)))])].filter(n => n !== '나');
 function GroupCard({ g, st, onOpen }) {
   const ps = useMemo(() => groupPlaysOf(st, g), [st.plays, g]);
   const last = ps.map(p => p.date).sort().pop();
@@ -3159,20 +3404,74 @@ function GroupCard({ g, st, onOpen }) {
     <div className="gm">${g.members.length + 1}명 · ${ps.length ? `${ps.length}판 · 마지막 ${relDay(last)}` : '아직 기록 없음'}</div>
   </button>`;
 }
-function NewGroupSheet({ st, close, onCreate }) {
-  const [name, setName] = useState('');
+function NewGroupSheet({ st, close, onCreate, edit }) {
+  const e0 = edit ? gx(edit) : null; const it0 = (edit && edit.intro) || {};
+  const [name, setName] = useState(edit ? edit.name : '');
+  const [line, setLine] = useState(it0.line || '');
+  const [topic, setTopic] = useState(e0 ? e0.topic : 'bg');
+  const [tags, setTags] = useState(e0 ? e0.tags : []);
+  const [tagIn, setTagIn] = useState('');
+  const [modes, setModes] = useState(e0 ? e0.modes : []);
+  const [plats, setPlats] = useState(e0 ? e0.platforms : []);
+  const [area, setArea] = useState(e0 ? e0.area : '');
+  const [freq, setFreq] = useState(e0 ? e0.freq : '');
+  const [join, setJoin] = useState(edit ? e0.join : '');
+  const [hidden, setHidden] = useState(e0 ? e0.hidden : false);
+  const [beginner, setBeginner] = useState(e0 ? e0.beginner : null);
+  const [cap, setCap] = useState(e0 && e0.cap ? String(e0.cap) : '');
+  const [qs, setQs] = useState(it0.questions && it0.questions.length ? it0.questions : ['주로 어떤 게임을 하세요?']);
+  const [body, setBody] = useState(it0.body || '');
+  const [welcome, setWelcome] = useState(it0.welcome || '');
+  const [rules, setRules] = useState((it0.rules || []).map(([t, b]) => `${t}: ${b}`).join('\n'));
+  const [more, setMore] = useState(!!edit);
   const [mem, setMem] = useState([]);
+  const [showMem, setShowMem] = useState(false);
   const freqN = {}; st.plays.forEach(p => p.people.forEach(n => freqN[n] = (freqN[n] || 0) + 1));
   const cands = [...new Set([...Object.keys(st.friends), ...st.people])].filter(n => !(st.blocked || {})[n]).sort((a, b) => (freqN[b] || 0) - (freqN[a] || 0));
-  const tog = n => setMem(mem.includes(n) ? mem.filter(x => x !== n) : [...mem, n]);
-  return html`<${Sheet} title="모임 만들기" close=${close}>
-    <div className="field" style=${{ marginTop: 8 }}><span className="lb">모임 이름</span>
-      <input id="group-name" className="input" placeholder="예: 목요일 보드게임, 회사 점심팟" maxLength="20" value=${name} onInput=${e => setName(e.target.value)} autoFocus/></div>
-    <div className="field"><span className="lb">같이 할 사람<span className="hint">나중에 초대 링크로 더 불러도 돼요</span></span>
-      ${mem.length ? html`<div className="hint" style=${{ margin: '0 0 6px' }}>${mem.length}명 골랐어요</div>` : null}
-      <${PickList} cands=${cands} sel=${mem} onTog=${tog} mark=${n => st.friends[n]}/>
-      <div className="note">안 골라도 돼요. 모임을 먼저 만들고 나중에 초대해도 돼요. 앱이 없는 사람은 이름만 들어가요. 지금은 미리보기라 초대 알림은 아직 안 가요.</div></div>
-    <div className="sheet-foot"><button className="btn primary" disabled=${!name.trim()} onClick=${() => onCreate({ id: 'g' + uid(), name: name.trim(), members: mem, at: today(), owner: true })}>만들기</button></div>
+  const tog = (arr, set, v) => set(arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v]);
+  const addTag = () => { const t = tagIn.trim().replace(/^#/, ''); if (t && !tags.includes(t) && tags.length < 8) setTags([...tags, t]); setTagIn(''); };
+  const ok = name.trim() && line.trim() && modes.length && join;
+  const miss = !name.trim() ? '모임 이름' : !line.trim() ? '한 줄 소개' : !modes.length ? '활동 방식' : !join ? '가입 방식' : null;
+  const done = () => {
+    const intro = { ...it0, line: line.trim(), body: body.trim(), welcome: welcome.trim(), questions: join === 'ask' ? qs.map(q => q.trim()).filter(Boolean) : [],
+      rules: rules.split('\n').map(r => r.trim()).filter(Boolean).map(r => { const k = r.indexOf(':'); return k > 0 ? [r.slice(0, k).trim(), r.slice(k + 1).trim()] : ['안내', r]; }) };
+    const info = { name: name.trim(), topic, tags, modes, platforms: modes.includes('online') ? plats : [], area: modes.includes('offline') ? area.trim() : '', freq, join, hidden, beginner, cap: +cap || null, intro };
+    onCreate(edit ? info : { id: 'g' + uid(), ...info, members: mem, at: today(), owner: true, joinedAt: { '나': today(), ...Object.fromEntries(mem.map(n => [n, today()])) }, posts: [], wants: [], events: [], chat: [] });
+  };
+  const L = (t, req, hint) => html`<span className="lb">${t}${req ? html`<span className="req">필수</span>` : null}${hint ? html`<span className="hint">${hint}</span>` : null}</span>`;
+  return html`<${Sheet} title=${edit ? '모임 정보 고치기' : '모임 만들기'} close=${close}>
+    <div className="field" style=${{ marginTop: 8 }}>${L('모임 이름', true)}
+      <input id="group-name" className="input" placeholder="예: Steam 보드게임 같이 해요" maxLength="24" value=${name} onInput=${e => setName(e.target.value)} autoFocus=${!edit}/></div>
+    <div className="field">${L('한 줄 소개', true, '모임 찾기에 이름과 같이 보여요')}
+      <input className="input" placeholder="예: 금요일 밤마다 디지털 보드게임 한두 판" maxLength="40" value=${line} onInput=${e => setLine(e.target.value)}/></div>
+    <div className="field">${L('주제', true)}
+      <div className="dates">${G_TOPICS.map(([k, l]) => html`<button key=${k} className="pill" aria-pressed=${topic === k} onClick=${() => { setTopic(k); setTags(tags.filter(t => !Object.values(G_TAGS).flat().includes(t) || G_TAGS[k].includes(t))); }}>${l}</button>`)}</div>
+      <div className="dates" style=${{ marginTop: 8 }}>${[...G_TAGS[topic], ...tags.filter(t => !G_TAGS[topic].includes(t))].map(t => html`<button key=${t} className="pill sm" aria-pressed=${tags.includes(t)} onClick=${() => tog(tags, setTags, t)}>${t}</button>`)}</div>
+      <form className="addrow" style=${{ marginTop: 6 }} onSubmit=${e => { e.preventDefault(); addTag(); }}><input className="input" placeholder="직접 넣기 (예: 카탄, 발로란트)" maxLength="16" value=${tagIn} onInput=${e => setTagIn(e.target.value)}/><button className="btn" type="submit" disabled=${!tagIn.trim()}>넣기</button></form></div>
+    <div className="field">${L('활동 방식', true, '여러 개 골라도 돼요')}
+      <div className="modepick">${G_MODES.map(([k, l]) => html`<button key=${k} className="mp-b" aria-pressed=${modes.includes(k)} onClick=${() => tog(modes, setModes, k)}><b>${l}</b><span>${k === 'talk' ? '글·대화로 정보 나누기' : k === 'online' ? 'Steam·BGA 등에서 같이' : '카페·집에서 직접 만나기'}</span></button>`)}</div>
+      ${modes.includes('online') ? html`<div className="sub-f"><span className="lb2">어디서 해요?</span><div className="dates">${G_PLAT.map(p => html`<button key=${p} className="pill sm" aria-pressed=${plats.includes(p)} onClick=${() => tog(plats, setPlats, p)}>${p}</button>`)}</div></div>` : null}
+      ${modes.includes('offline') ? html`<div className="sub-f"><span className="lb2">주로 어디서 만나요?</span><input className="input" placeholder="예: 성수, 부산 서면" maxLength="20" value=${area} onInput=${e => setArea(e.target.value)}/>
+        <div className="dates" style=${{ marginTop: 6 }}>${G_AREAS.slice(0, 8).map(a => html`<button key=${a} className="pill sm" aria-pressed=${area === a} onClick=${() => setArea(area === a ? '' : a)}>${a}</button>`)}</div></div>` : null}
+      <div className="sub-f"><span className="lb2">얼마나 자주?</span><div className="dates">${G_FREQS.map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${freq === k} onClick=${() => setFreq(freq === k ? '' : k)}>${l}</button>`)}</div></div></div>
+    <div className="field">${L('가입 방식', true)}
+      <div className="joinpick">${[['open', '누르면 바로 가입돼요'], ['ask', '운영진이 신청을 보고 받아요'], ['invite', '초대받은 사람만 들어와요']].map(([k, d]) => html`<button key=${k} className="jp-b" aria-pressed=${join === k} onClick=${() => { setJoin(k); if (k === 'invite') setHidden(true); }}><b>${G_JOIN[k]}</b><span>${d}</span></button>`)}</div>
+      ${join === 'ask' ? html`<div className="sub-f"><span className="lb2">가입할 때 물어볼 것<span className="hint">짧게, 꼭 필요한 것만</span></span>
+        ${qs.map((q, i) => html`<div key=${i} className="addrow" style=${{ marginTop: 6 }}><input className="input" maxLength="40" value=${q} placeholder="예: 온라인·오프라인 중 어떤 활동을 원하세요?" onInput=${e => setQs(qs.map((x, j) => j === i ? e.target.value : x))}/>${qs.length > 1 ? html`<button className="btn ghost" aria-label="질문 빼기" onClick=${() => setQs(qs.filter((_, j) => j !== i))}>${I.close}</button>` : null}</div>`)}
+        ${qs.length < 3 ? html`<button className="linkbtn" style=${{ marginTop: 6 }} onClick=${() => setQs([...qs, ''])}>+ 질문 더하기</button>` : null}</div>` : null}
+      ${join ? html`<label className="chkrow"><input type="checkbox" checked=${!hidden} onChange=${e => setHidden(!e.target.checked)}/><span><b>모임 찾기에 보이기</b><span>${hidden ? '검색에 안 떠요. 링크나 초대로만 들어와요' : '누구나 찾아서 소개와 공개 글을 볼 수 있어요'}</span></span></label>` : null}</div>
+    ${more ? html`
+      <div className="field">${L('분위기')}<div className="dates">${[['new', '초보 환영'], ['exp', '해본 사람 위주']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${beginner === k} onClick=${() => setBeginner(beginner === k ? null : k)}>${l}</button>`)}</div></div>
+      <div className="field">${L('정원', false, '비우면 제한 없어요')}<input className="input num" inputMode="numeric" style=${{ maxWidth: 140 }} placeholder="없음" value=${cap} onInput=${e => setCap(e.target.value.replace(/\D/g, '').slice(0, 4))}/></div>
+      <div className="field">${L('자세한 소개')}<textarea className="input" rows="3" maxLength="600" placeholder="어떤 사람들이 무엇을 하는 모임인지 적어 주세요" value=${body} onInput=${e => setBody(e.target.value)}></textarea></div>
+      <div className="field">${L('규칙', false, '한 줄에 하나, "제목: 내용"')}<textarea className="input" rows="3" maxLength="600" placeholder=${'회비: 없어요\n못 올 때: 전날까지 불참으로 바꿔 주세요'} value=${rules} onInput=${e => setRules(e.target.value)}></textarea></div>
+      <div className="field">${L('새 멤버 환영 인사', false, '가입하면 모임 홈 맨 위에 보여요')}<input className="input" maxLength="80" placeholder="예: 반가워요! 공지부터 읽어 보세요" value=${welcome} onInput=${e => setWelcome(e.target.value)}/></div>` :
+      html`<button className="btn ghost block" onClick=${() => setMore(true)}>분위기·정원·규칙도 적기 (나중에 해도 돼요)</button>`}
+    ${edit ? null : html`<div className="field">${showMem ? html`${L('아는 사람 먼저 넣기', false, '안 넣어도 돼요')}
+      <${PickList} cands=${cands} sel=${mem} onTog=${n => tog(mem, setMem, n)} mark=${n => st.friends[n]}/>
+      <div className="note">앱이 없는 사람은 이름만 들어가요. 미리보기라 초대 알림은 아직 안 가요.</div>` :
+      html`<button className="linkbtn" onClick=${() => setShowMem(true)}>아는 사람 먼저 넣기${cands.length ? '' : ' (나중에)'}</button>`}</div>`}
+    <div className="sheet-foot">${miss ? html`<span className="sf-miss">${miss}${hasJong(miss) ? '을' : '를'} 채워 주세요</span>` : null}<button className="btn primary" disabled=${!ok} onClick=${done}>${edit ? '저장' : '만들기'}</button></div>
   <//>`;
 }
 // 긴 목록 공통: '더 보기 · N개 남음'
@@ -3511,6 +3810,45 @@ function addV27(s) {
   const wish = [...new Set([...(s.wish || []), ...GAMES.filter(g => !g.custom && !(s.collection || {})[g.id]).slice(3, 9).map(g => g.id)])];
   return { ...s, v28: true, plays, photos, groups, wish };
 }
+// v60: 모임 = 관심사 커뮤니티. 예시 모임에 주제·활동 방식·게시판·관심 게임을 채워요.
+function addV60(s) {
+  if (s.v60) return s;
+  if (!s.hasSample) return { ...s, v60: true };
+  const now = Date.now(); const c = (id, by, text, h, replyTo) => ({ id, by, text, at: now - h * H, replyTo: replyTo || null });
+  const groups = (s.groups || []).map(g => {
+    if (g.id === 'g1') return { ...g, topic: 'bg', tags: ['전략', '파티', '2인'], modes: ['talk', 'online', 'offline'], platforms: ['BGA'], area: '성수', freq: 'weekly', join: 'ask', beginner: 'new', hidden: true, staff: ['지민'],
+      joinedAt: { '나': g.at, '지민': g.at, '현우': daysAgo(40), '소연': daysAgo(9) },
+      intro: { ...(g.intro || {}), body: '회사 친구들끼리 시작한 모임이에요. 목요일엔 성수에서 만나고, 못 만나는 주에는 BGA로 한 판씩 해요.', questions: ['누구 소개로 오셨어요?'], welcome: '반가워요! 목요일 일정에서 참석만 누르면 돼요.' },
+      events: (g.events || []).map((e, i) => ({ ...e, kind: 'off', ...(i === 0 ? { repeat: 'weekly', bring: '각자 음료', cost: '카페 이용료 1인 6천 원' } : {}) })).concat([{ id: 'eon1', kind: 'on', title: 'BGA 아줄', date: daysAgo(-2), time: '22:00', platform: 'BGA', how: '시작 5분 전 대화에 방 링크를 올려요', gameId: 230802, cap: 4, apply: 'first', going: ['현우', '소연', '지민'], no: [], maybe: [], wait: [], pending: [], comments: [] }]),
+      posts: [
+        { id: 'pp1', kind: 'notice', title: '처음 오신 분은 읽어 주세요', body: '목요일 저녁 7시 성수에서 만나요. 게임은 들고 온 사람이 룰을 설명해요. 못 오는 주엔 일정에서 불참만 눌러 주세요.', by: '나', at: now - 50 * DAY, pinned: true, likes: ['지민', '현우'], comments: [] },
+        { id: 'pp2', kind: 'ask', title: '2명이서 할 만한 게임 추천해 주세요', body: '주말에 둘이 할 게임 하나 사려고요. 30분 안쪽이면 좋겠어요.', by: '소연', at: now - 26 * H, likes: ['지민'], comments: [c('pc1', '지민', '패치워크요! 둘이 하기 제일 좋아요', 24), c('pc2', '현우', '자이푸르도 추천해요', 20), c('pc3', '소연', '둘 다 찾아볼게요 고마워요', 18, 'pc1')] },
+        { id: 'pp3', kind: 'recruit', title: '오늘 밤 10시 BGA 스플렌더 하실 분', body: '한 판만 하고 잘 거예요.', by: '현우', at: now - 2 * H, likes: [], comments: [], rc: { date: today(), time: '22:00', platform: 'BGA', gameId: 148228, cap: 4, voice: false, own: false, beginner: true, joined: ['현우', '소연'] } },
+        { id: 'pp4', kind: 'review', title: '윙스팬 유럽 확장 넣고 해봤어요', body: '새 먹이 카드 덕분에 초반이 덜 답답해요. 4명이면 1시간 반 걸려요.', by: '지민', gameId: 266192, at: now - 4 * DAY, likes: ['나', '현우', '소연'], comments: [c('pc4', '나', '다음 주에 들고 갈게요', 90)] },
+        { id: 'pp5', kind: 'tip', title: '아줄 점수 계산 헷갈리는 것 정리', body: '가로줄 2점, 세로줄 7점, 같은 색 5개 10점. 바닥줄은 -1, -1, -2, -2, -2, -3, -3이에요.', by: '현우', gameId: 230802, at: now - 9 * DAY, likes: ['지민', '소연'], comments: [] },
+      ],
+      wants: [{ id: 'w1', gameId: 342942, platform: '', by: '현우', note: '한 번 제대로 해보고 싶어요', likes: ['현우', '지민', '나'], status: 'want', at: now - 3 * DAY },
+        { id: 'w2', gameId: 162886, platform: 'Steam', by: '지민', likes: ['지민', '소연'], status: 'talk', at: now - 6 * DAY },
+        { id: 'w3', gameId: 266192, platform: '', by: '나', likes: ['나', '지민', '현우', '소연'], status: 'again', at: now - 30 * DAY }],
+      requests: (g.requests || []).map((n, i) => ({ n, ans: [i ? '현우 회사 동료예요' : '지민 친구예요'] })),
+      reports: [{ id: 'rp1', what: 'comment', ref: 'pcx', text: '중고 게임 싸게 팔아요, 오픈채팅으로 오세요', who: '박도윤', reason: '광고·도배', by: '소연', at: now - 5 * H, state: 'review' }] };
+    if (g.id === 'g2') { const kinds = ['free', 'ask', 'recruit', 'tip', 'review', 'news', 'help'];
+      const T = { free: ['이번 주 정모 사진 올려요', '처음 왔는데 다들 친절하셨어요', '홍대 카페 자리 넓은 곳 아세요?'], ask: ['6명이 할 만한 파티 게임 있을까요', '테라포밍 마스 확장 뭐부터 살까요', '입문용 협력 게임 추천'], recruit: ['토요일 오후 테라포밍 마스 하실 분', '일요일 저녁 BGA 한 판'], tip: ['스플렌더 초반 귀족 노리는 법', '카탄 첫 배치 팁'], review: ['캐스캐디아 해봤어요', '루트 4인 후기'], news: ['아크 노바 확장 한글판 나온대요', '윙스팬 새 확장 소식'], help: ['BGA 친구 추가 어떻게 해요?', 'TTS 모드 설치하는 법'] };
+      const posts = Array.from({ length: 140 }, (_, i) => { const k = kinds[i % kinds.length]; const by = i % 9 === 0 ? '태호' : CROWD[(i * 7) % 300]; const at = now - (i * 7 + 2) * H;
+        return { id: 'g2p' + i, kind: k, title: T[k][i % T[k].length], body: k === 'ask' ? '아시는 분 댓글 부탁해요.' : '', by, at, likes: CROWD.slice(i % 50, i % 50 + (i * 3) % 12), gameId: [167791, 148228, 13, 295947, 237182, 342942, 266192][i % 7],
+          comments: Array.from({ length: (i * 5) % 7 }, (_, j) => c('g2c' + i + '_' + j, CROWD[(i + j * 11) % 300], ['저도 궁금해요', '좋아요!', '다음엔 저도 갈게요', '정리 감사해요'][j % 4], (i * 7 + 2) - j - 1)),
+          ...(k === 'recruit' ? { rc: { date: i < 30 ? daysAgo(-(1 + i % 5)) : daysAgo(i % 40 + 1), time: '14:00', platform: i % 2 ? 'BGA' : '홍대 레드버튼', cap: 5, voice: false, own: false, beginner: true, joined: CROWD.slice(i, i + 2 + i % 3) } } : {}) }; });
+      posts[0] = { ...posts[0], kind: 'notice', title: '동호회 이용 안내 (꼭 읽어 주세요)', body: '토요일 정모는 일정 탭에서 참석을 눌러 주세요. 정원이 차면 대기로 받아요. 회비는 한 달 5천 원이에요.', by: '태호', pinned: true };
+      return { ...g, topic: 'bg', tags: ['입문', '파티', '전략'], modes: ['talk', 'offline'], area: '홍대', freq: 'weekly', join: 'open', beginner: 'new', hidden: false, cap: 400, owner: false, ownerName: '태호', staff: ['소연', '나'],
+        joinedAt: Object.fromEntries([['나', daysAgo(180)], ...g.members.map((n, i) => [n, daysAgo(i % 200)])]),
+        intro: { ...(g.intro || {}), body: '서울에서 주말마다 모이는 보드게임 동호회예요. 처음 오는 분이 제일 많아요.', welcome: '반가워요! 토요일 정모에서 봬요.' },
+        events: (g.events || []).map(e => ({ ...e, kind: 'off', title: e.title || '주말 정모', apply: 'first', open: true, wait: g.members.slice(20, 23), going: [...(e.going || []), ...g.members.slice(14, 20)], maybe: g.members.slice(30, 34), guests: ['처음온사람'], cost: '회비 있는 회원은 무료', repeat: 'weekly' })),
+        posts, wants: [167791, 342942, 237182, 316554, 199792].map((id, i) => ({ id: 'g2w' + i, gameId: id, platform: '', by: CROWD[i * 17], likes: CROWD.slice(i * 9, i * 9 + 18 - i * 3), status: i === 0 ? 'planned' : 'want', at: now - (i + 1) * DAY })) }; }
+    if (String(g.id).startsWith('gx')) { const h = hash(g.id); const a = (g.name.match(/^(\S+)/) || [])[1] || ''; return { ...g, topic: 'bg', modes: h % 5 === 0 ? ['talk', 'online'] : ['talk', 'offline'], platforms: h % 5 === 0 ? ['BGA'] : [], area: G_AREAS.includes(a) ? a : '', freq: ['weekly', 'monthly', 'flash'][h % 3], join: 'invite', hidden: true, joinedAt: { '나': g.at } }; }
+    return g;
+  });
+  return { ...s, v60: true, groups, savedGroups: s.savedGroups || ['p1', 'p4'] };
+}
 
 function GroupBadge({ g, size }) {
   const c = COVER_COLORS[hash(g.id) % COVER_COLORS.length];
@@ -3524,64 +3862,340 @@ function Comments({ st, list, onAdd, ph }) {
     <form className="addrow cform" onSubmit=${e => { e.preventDefault(); if (t.trim()) { onAdd(t.trim()); setT(''); } }}>
       <input className="input" placeholder=${ph || '댓글 남기기'} maxLength="300" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim()}>등록</button></form></div>`;
 }
-function EventCard({ e, g, st, upEv }) {
+function PubCard({ p, saved, onOpen, onSave }) {
+  const x = gx(p); const pl = placeText(x);
+  const gs = (p.games || []).filter(id => GAME[id]).slice(0, 3);
+  return html`<div className="pcard"><button className="pc-main" onClick=${onOpen}>
+      <${GroupBadge} g=${p} size=${44}/>
+      <span className="pc-b"><span className="pc-n">${p.name}</span>
+        <span className="pc-l">${(p.intro || {}).line}</span>
+        <span className="pc-m">${[modeText(x.modes), pl, `멤버 ${p.n.toLocaleString()}명`, p.act === 0 ? '오늘 활동' : p.act < 7 ? `${p.act}일 전 활동` : null].filter(Boolean).join(' · ')}</span>
+        <span className="pc-t">${p.recruit ? html`<span className="tg rc">모집 중</span>` : null}<span className="tg">${G_JOIN[x.join]}</span>${x.beginner === 'new' ? html`<span className="tg">초보 환영</span>` : x.beginner === 'exp' ? html`<span className="tg">해본 사람 위주</span>` : null}${x.tags.slice(0, 2).map(t => html`<span key=${t} className="tg">#${t}</span>`)}
+</span>${gs.length ? html`<span className="pc-gm">${gs.map(id => GAME[id].ko).join(' · ')}</span>` : null}</span></button>
+    <button className="pc-save" aria-pressed=${saved} aria-label=${saved ? '찜 풀기' : '찜하기'} onClick=${onSave}>${saved ? '♥' : '♡'}</button></div>`;
+}
+const SIZE = { s: ['20명 이하', n => n <= 20], m: ['21~100명', n => n > 20 && n <= 100], l: ['100명 넘게', n => n > 100] };
+function FindGroups({ st, openPub, newGroup, toggleSaveGroup, setMyArea }) {
+  const mine = new Set((st.groups || []).map(g => g.id));
+  const all = useMemo(() => pubGroups(st), [st.hasSample]);
+  const list = all.filter(p => !mine.has(p.id));
+  const saved = new Set(st.savedGroups || []);
+  const [q, setQ] = useState(''); const [f, setF] = useState({}); const [sheet, setSheet] = useState(false); const [lim, setLim] = useState(30);
+  const set = (k, v) => { setF(o => ({ ...o, [k]: o[k] === v ? null : v })); setLim(30); };
+  const myArea = st.myArea || '';
+  const nq = normName(q.trim());
+  const hit = p => { if (!nq) return true; const x = gx(p); return [p.name, p.intro.line, G_TOPIC[x.topic], ...x.tags, ...x.platforms, x.area, ...(p.games || []).filter(id => GAME[id]).flatMap(id => [GAME[id].ko, GAME[id].en])].some(s => s && normName(s).includes(nq)); };
+  const pass = p => { const x = gx(p);
+    if (f.saved && !saved.has(p.id)) return false;
+    if (f.mode === 'talk' && !(x.modes.length === 1 && x.modes[0] === 'talk')) return false;
+    if (f.mode === 'online' && !x.modes.includes('online')) return false;
+    if (f.mode === 'offline' && !x.modes.includes('offline')) return false;
+    if (f.mode === 'mix' && !(x.modes.includes('online') && x.modes.includes('offline'))) return false;
+    if (f.topic && x.topic !== f.topic) return false;
+    if (f.plat && !x.platforms.includes(f.plat)) return false;
+    if (f.area && !(x.modes.includes('offline') && x.area === f.area)) return false;
+    if (f.size && !SIZE[f.size][1](p.n)) return false;
+    if (f.freq && x.freq !== f.freq) return false;
+    if (f.join && x.join !== f.join) return false;
+    if (f.beg && x.beginner !== f.beg) return false;
+    if (f.recent && p.act > 7) return false;
+    if (f.recruit && !p.recruit) return false;
+    return hit(p); };
+  const nf = Object.values(f).filter(Boolean).length;
+  const active = nq || nf;
+  const res = active ? list.filter(pass).sort((a, b) => a.act - b.act || b.n - a.n) : [];
+  const card = p => html`<${PubCard} key=${p.id} p=${p} saved=${saved.has(p.id)} onOpen=${() => openPub(p.id)} onSave=${() => toggleSaveGroup(p.id)}/>`;
+  // 추천 칸: 인기 순만 보이지 않게 새 모임·작은 모임도 섞어요
+  const myGames = useMemo(() => { const c = {}; st.plays.forEach(p => c[p.gameId] = (c[p.gameId] || 0) + 1); Object.keys(st.collection || {}).forEach(id => c[id] = (c[id] || 0) + 3); return c; }, [st.plays, st.collection]);
+  const secs = useMemo(() => { if (active) return []; const used = new Set(); const take = (arr, n) => { const o = arr.filter(p => !used.has(p.id)).slice(0, n); o.forEach(p => used.add(p.id)); return o; };
+    const fit = list.map(p => [p, (p.games || []).reduce((a, id) => a + (myGames[id] || 0), 0)]).filter(x => x[1]).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+    return [['관심 게임이 겹치는 모임', '내 기록과 보관함 게임 기준', take(fit, 3), null],
+      ['지금 멤버 모집 중', null, take(list.filter(p => p.recruit).sort((a, b) => a.act - b.act), 3), ['recruit', true]],
+      ['새로 생긴 모임', '아직 작아도 같이 키울 수 있어요', take(list.filter(p => p.made <= 45).sort((a, b) => a.made - b.made), 3), null],
+      ['온라인으로 같이 하기', '지역 상관없이 들어갈 수 있어요', take(list.filter(p => gx(p).modes.includes('online')).sort((a, b) => a.act - b.act), 3), ['mode', 'online']],
+      [myArea ? `${myArea} 근처에서 만나요` : '근처에서 만나요', null, myArea ? take(list.filter(p => gx(p).modes.includes('offline') && gx(p).area === myArea).sort((a, b) => a.act - b.act), 3) : [], myArea ? ['area', myArea] : null],
+      ['처음이어도 괜찮은 모임', null, take(list.filter(p => gx(p).beginner === 'new').sort((a, b) => a.act - b.act), 3), ['beg', 'new']],
+      ['대화만 하는 모임', '만나지 않고 글과 대화로만 이야기해요', take(list.filter(p => gx(p).modes.join() === 'talk'), 3), ['mode', 'talk']]]; }, [list.length, myArea, active, myGames]);
+  const chip = (k, v, l) => html`<button className="pill sm" aria-pressed=${f[k] === v} onClick=${() => set(k, v)}>${l}</button>`;
+  const Grp = ({ t, k, opts }) => html`<div className="fs-g"><span className="lb2">${t}</span><div className="dates">${opts.map(([v, l]) => html`<button key=${v} className="pill sm" aria-pressed=${f[k] === v} onClick=${() => set(k, v)}>${l}</button>`)}</div></div>`;
+  if (!all.length) return html`<${Empty} title="아직 둘러볼 모임이 없어요" action=${html`<button className="btn primary" onClick=${newGroup}>모임 만들기</button>`}>정식 버전에서는 다른 사람들이 만든 공개 모임이 여기 떠요. 먼저 모임을 만들고 '모임 찾기에 보이기'를 켜 두면 새 멤버가 찾아올 수 있어요.<//>`;
+  return html`<div className="find">
+    <div className="pvline">예시 모임이에요. 정식 버전에서는 다른 사람들이 만든 공개 모임이 떠요.</div>
+    <div className="search">${I.games}<input type="search" placeholder="모임, 게임, 주제, Steam, 지역" value=${q} onInput=${e => { setQ(e.target.value); setLim(30); }}/></div>
+    <div className="dates fchips"><button className=${'pill sm' + (nf ? ' on' : '')} onClick=${() => setSheet(true)}>${I.sliders}필터${nf ? ` ${nf}` : ''}</button>
+      ${chip('saved', true, `찜${saved.size ? ' ' + saved.size : ''}`)}${chip('mode', 'online', '온라인')}${chip('mode', 'offline', '오프라인')}${chip('mode', 'talk', '대화만')}${chip('beg', 'new', '초보 환영')}${chip('recruit', true, '모집 중')}${chip('join', 'open', '바로 가입')}</div>
+    ${active ? html`<div className="f-sum"><span>${res.length.toLocaleString()}개</span>${nf ? html`<button className="linkbtn" onClick=${() => setF({})}>필터 지우기</button>` : null}</div>
+      ${res.slice(0, lim).map(card)}
+      ${res.length > lim ? html`<${MoreBtn} left=${res.length - lim} unit="개" onClick=${() => setLim(lim + 30)}/>` : null}
+      ${!res.length ? html`<div className="note">${f.saved ? '찜한 모임이 없어요. 모임 카드의 ♡를 누르면 여기 모여요.' : `맞는 모임이 없어요. 필터를 줄이거나, 직접 만들어 보세요.`}${f.saved ? null : html` <button className="linkbtn" onClick=${newGroup}>모임 만들기</button>`}</div>` : null}` :
+      secs.map(([t, d, ps, more], i) => i === 4 && !myArea ? html`<section key="area" className="fsec"><h2 className="sec">근처에서 만나요</h2><div className="hint" style=${{ marginBottom: 6 }}>지역을 고르면 그 근처 오프라인 모임을 보여줘요</div>
+          <div className="dates">${G_AREAS.map(a => html`<button key=${a} className="pill sm" onClick=${() => setMyArea(a)}>${a}</button>`)}</div></section>` :
+        ps.length ? html`<section key=${t} className="fsec"><div className="fs-h"><h2 className="sec">${t}</h2>${more ? html`<button className="linkbtn" onClick=${() => set(more[0], more[1])}>더 보기</button>` : null}</div>${d ? html`<div className="hint fs-d">${d}${i === 4 ? html` · <button className="linkbtn" onClick=${() => setMyArea('')}>지역 바꾸기</button>` : null}</div>` : null}${ps.map(card)}</section>` : null)}
+    ${sheet ? html`<${Sheet} title="모임 필터" close=${() => setSheet(false)}>
+      <${Grp} t="활동 방식" k="mode" opts=${[['talk', '대화만'], ['online', '온라인 플레이'], ['offline', '오프라인'], ['mix', '온·오프라인']]}/>
+      <${Grp} t="주제" k="topic" opts=${G_TOPICS}/>
+      <${Grp} t="온라인 플랫폼" k="plat" opts=${G_PLAT.map(p => [p, p])}/>
+      <div className="fs-g"><span className="lb2">오프라인 지역<span className="hint">온라인 모임은 지역과 상관없이 보여요</span></span><div className="dates">${G_AREAS.map(a => html`<button key=${a} className="pill sm" aria-pressed=${f.area === a} onClick=${() => set('area', a)}>${a}</button>`)}</div></div>
+      <${Grp} t="규모" k="size" opts=${Object.entries(SIZE).map(([k, v]) => [k, v[0]])}/>
+      <${Grp} t="얼마나 자주" k="freq" opts=${G_FREQS}/>
+      <${Grp} t="가입 방식" k="join" opts=${Object.entries(G_JOIN)}/>
+      <${Grp} t="분위기" k="beg" opts=${[['new', '초보 환영'], ['exp', '해본 사람 위주']]}/>
+      <${Grp} t="활동" k="recent" opts=${[[true, '일주일 안에 활동']]}/>
+      <div className="sheet-foot"><button className="btn ghost" onClick=${() => setF({})}>모두 지우기</button><button className="btn primary" onClick=${() => setSheet(false)}>${list.filter(pass).length.toLocaleString()}개 보기</button></div>
+    <//>` : null}
+  </div>`;
+}
+
+// 모임 소개: 가입 전 미리보기 겸, 가입한 사람의 '소개 보기'
+function GroupIntro({ g, st, back, open, counts, joined, say, saved, toggleSave, req, onJoin, onAsk, onCancelAsk, visit, onVisit }) {
+  const it = g.intro || {}; const x = gx(g);
+  const d = g.pub && !joined ? pubDetail(g) : g;
+  const color = COVER_COLORS[hash(g.id) % COVER_COLORS.length];
+  const top = Object.entries(counts || {}).sort((a, b) => b[1] - a[1]).map(x => +x[0]).filter(id => GAME[id]).slice(0, 8);
+  const total = Object.values(counts || {}).reduce((a, b) => a + b, 0);
+  const n = g.pub && !joined ? g.n : memCount(g);
+  const mem = g.pub && !joined ? pubMembers(g) : ['나', ...g.members];
+  const staff = mem.filter(m => roleOf(g, m) !== 'member');
+  const [asking, setAsking] = useState(false); const [ans, setAns] = useState((it.questions || []).map(() => ''));
+  const posts = (d.posts || []).filter(p => !p.hidden).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.at - a.at).slice(0, 3);
+  const evs = (d.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 2);
+  const wants = (d.wants || []).filter(w => w.status !== 'played').slice(0, 6);
+  const rows = [['활동', [modeText(x.modes), placeText(x)].filter(Boolean).join(' · ')], ['얼마나 자주', G_FREQ[x.freq]], ['멤버', `${n.toLocaleString()}명${x.cap ? ` · 정원 ${x.cap}명` : ''}`], ['운영', staff.length ? staff.slice(0, 3).map(m => `${nmOf(st, m)}(${ROLE[roleOf(g, m)]})`).join(', ') : null],
+    ['가입', G_JOIN[x.join] + (x.join === 'ask' && (it.questions || []).length ? ` · 질문 ${it.questions.length}개` : '')], ['분위기', x.beginner === 'new' ? '초보 환영' : x.beginner === 'exp' ? '해본 사람 위주' : null]].filter(r => r[1]);
+  return html`<div className="screen gintro">
+    <div className="gi-hero" style=${{ '--gc': color }}>${g.photo ? html`<img src=${g.photo} alt=""/>` : null}
+      <button className="gi-back" onClick=${back} aria-label="뒤로">${I.back}</button><span className="gi-badge"><${GroupBadge} g=${g} size=${64}/></span></div>
+    <h1 className="gi-n">${g.name}</h1>
+    ${it.line ? html`<p className="gi-l">${it.line}</p>` : null}
+    <div className="pc-t gi-tags"><span className="tg">${G_TOPIC[x.topic]}</span>${x.tags.map(t => html`<span key=${t} className="tg">#${t}</span>`)}</div>
+    <dl className="gi-dl">${rows.map(([k, v]) => html`<div key=${k}><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
+    ${it.body ? html`<p className="gi-body">${it.body}</p>` : null}
+    ${evs.length ? html`<h2 className="sec">다가오는 일정</h2>${evs.map(e => html`<div key=${e.id} className="gi-ev"><b>${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}</b><span>${[e.title, e.kind === 'on' ? e.platform : e.place, e.cap ? `${(e.going || []).length}/${e.cap}명` : null].filter(Boolean).join(' · ')}</span>
+        ${!joined && e.open ? html`<button className=${'btn sm' + (visit && visit[e.id] ? ' on' : '')} aria-pressed=${!!(visit && visit[e.id])} onClick=${() => onVisit(e)}>${visit && visit[e.id] ? '✓ 신청함' : '이것만 참여'}</button>` : null}</div>`)}
+      ${!joined && evs.some(e => e.open) ? html`<div className="hint">공개 일정은 가입 안 해도 신청할 수 있어요. 그때는 '외부 참가'로 보여요.</div>` : null}` : null}
+    ${wants.length ? html`<h2 className="sec">같이 해보고 싶은 게임</h2><div className="dates">${wants.map(w => w.gameId && GAME[w.gameId] ? html`<button key=${w.id} className="pill sm" onClick=${() => open(w.gameId)}>${GAME[w.gameId].ko} · 관심 ${(w.likes || []).length}</button>` : html`<span key=${w.id} className="pill sm">${gameName(w)}</span>`)}</div><div className="ms-cap">멤버들이 제안한 게임이에요. 실제로 한 게임과는 따로 세요</div>` : null}
+    ${top.length ? html`<h2 className="sec">자주 한 게임</h2><div className="mini-shelf">${top.map(id => html`<button key=${id} className="ms-b" onClick=${() => open(id)} aria-label=${GAME[id].ko}><span className="ms-art" style=${{ aspectRatio: `1 / ${boxRatio(id)}` }}><${Cover} g=${GAME[id]}/></span></button>`)}</div><div className="ms-cap">모임 기록 ${total}판 기준</div>` : null}
+    ${posts.length ? html`<h2 className="sec">${joined ? '최근 글' : '공개 글'}</h2>${posts.map(p => html`<div key=${p.id} className="gi-post"><span className="tg">${PK[p.kind]}</span><b>${p.title}</b><span className="muted">${(p.comments || []).length ? `댓글 ${p.comments.length}` : ''}</span></div>`)}
+      ${joined ? null : html`<div className="hint">가입하면 글을 쓰고 댓글을 달 수 있어요.</div>`}` : null}
+    ${(it.rules || []).length ? html`<h2 className="sec">규칙</h2>${it.rules.map(([t, b]) => html`<details key=${t} className="gi-rule"><summary>${t}</summary><p>${b}</p></details>`)}` : null}
+    ${joined ? null : html`<div className="gi-foot"><button className="btn gi-save" aria-pressed=${saved} aria-label=${saved ? '찜 풀기' : '찜하기'} onClick=${toggleSave}>${saved ? '♥' : '♡'}</button>
+      ${x.join === 'invite' ? html`<button className="btn block" disabled>초대받은 사람만 들어갈 수 있어요</button>` :
+        req ? html`<div className="gi-req"><span><b>가입 신청함</b> · 운영진이 보고 받아요</span><button className="btn ghost sm" onClick=${onCancelAsk}>신청 취소</button></div>` :
+        x.join === 'ask' ? html`<button className="btn primary block" onClick=${() => (it.questions || []).length ? setAsking(true) : onAsk([])}>가입 신청</button>` :
+        html`<button className="btn primary block" onClick=${onJoin}>가입하기</button>`}</div>`}
+    ${asking ? html`<${Sheet} title="가입 신청" close=${() => setAsking(false)}>
+      <div className="hint" style=${{ margin: '4px 0 10px' }}>${g.name} 운영진이 보고 받아 줘요. 짧게 적어도 돼요.</div>
+      ${(it.questions || []).map((q, i) => html`<div key=${i} className="field"><span className="lb">${q}</span><input className="input" maxLength="100" value=${ans[i]} onInput=${e => setAns(ans.map((a, j) => j === i ? e.target.value : a))}/></div>`)}
+      <div className="note">미리보기라 신청이 실제로 운영진에게 가지는 않아요.</div>
+      <div className="sheet-foot"><button className="btn primary" onClick=${() => { onAsk(ans.map(a => a.trim())); setAsking(false); }}>신청 보내기</button></div>
+    <//>` : null}
+  </div>`;
+}
+/* ---------- 모임 게시판 ---------- */
+function GamePick({ value, onPick, allowFree }) {
+  const [q, setQ] = useState(''); const hits = q.trim() ? searchGames(q).slice(0, 6) : [];
+  if (value) return html`<div className="gpick-v"><span>${value.gameId && GAME[value.gameId] ? GAME[value.gameId].ko : value.gname}</span><button className="linkbtn" onClick=${() => onPick(null)}>바꾸기</button></div>`;
+  return html`<div className="gpick"><input className="input" type="search" placeholder="게임 이름 찾기" value=${q} onInput=${e => setQ(e.target.value)}/>
+    ${hits.length || (allowFree && q.trim()) ? html`<div className="gpick-l">${hits.map(g => html`<button key=${g.id} className="prow" onClick=${() => { onPick({ gameId: g.id }); setQ(''); }}>${g.ko}<span className="muted">${g.en}</span></button>`)}
+      ${allowFree && q.trim() && !hits.some(g => g.ko === q.trim()) ? html`<button className="prow" onClick=${() => { onPick({ gname: q.trim() }); setQ(''); }}>'${q.trim()}' 그대로 쓰기<span className="muted">목록에 없는 게임</span></button>` : null}</div>` : null}</div>`;
+}
+function PostSheet({ g, close, onSave, kind0, staff }) {
+  const x = gx(g);
+  const kinds = POST_KINDS.filter(([k]) => k !== 'notice' || staff);
+  const [kind, setKind] = useState(kind0 || 'free'); const [title, setTitle] = useState(''); const [body, setBody] = useState(''); const [game, setGame] = useState(null);
+  const [rc, setRc] = useState({ date: today(), time: '21:00', platform: x.platforms[0] || (x.modes.includes('online') ? 'Steam' : ''), cap: '4', voice: false, own: false, beginner: true });
+  const r = (k, v) => setRc({ ...rc, [k]: v });
+  const ok = title.trim() && (kind !== 'recruit' || rc.date);
+  return html`<${Sheet} title=${kind === 'recruit' ? '같이 할 사람 모으기' : '글쓰기'} close=${close}>
+    <div className="dates kpick">${kinds.map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${kind === k} onClick=${() => setKind(k)}>${l}</button>`)}</div>
+    <input className="input" style=${{ marginTop: 10 }} maxLength="60" placeholder=${kind === 'recruit' ? '예: 오늘 밤 10시 BGA 아줄 하실 분' : kind === 'ask' ? '예: 2명이서 할 만한 게임 추천해 주세요' : '제목'} value=${title} onInput=${e => setTitle(e.target.value)} autoFocus/>
+    <textarea className="input" style=${{ marginTop: 6 }} rows="4" maxLength="2000" placeholder="내용 (안 써도 돼요)" value=${body} onInput=${e => setBody(e.target.value)}></textarea>
+    ${kind === 'recruit' ? html`<div className="rcform">
+      <div className="sirow"><label>날짜<input className="input" type="date" min=${today()} value=${rc.date} onChange=${e => r('date', e.target.value)}/></label><label>시간<input className="input" type="time" value=${rc.time} onChange=${e => r('time', e.target.value)}/></label></div>
+      <div className="sirow" style=${{ marginTop: 6 }}><label>어디서<input className="input" list="plat-list" placeholder="Steam, BGA, 카페 이름" value=${rc.platform} onInput=${e => r('platform', e.target.value)}/></label><label>몇 명<input className="input num" inputMode="numeric" value=${rc.cap} onInput=${e => r('cap', e.target.value.replace(/\D/g, '').slice(0, 3))}/></label></div>
+      <datalist id="plat-list">${G_PLAT.map(p => html`<option key=${p} value=${p}/>`)}</datalist>
+      <div className="dates" style=${{ marginTop: 8 }}>${[['voice', '음성 채팅 써요'], ['own', '게임 갖고 있어야 해요'], ['beginner', '처음이어도 돼요']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${!!rc[k]} onClick=${() => r(k, !rc[k])}>${l}</button>`)}</div></div>` : null}
+    <div className="field"><span className="lb">게임 연결<span className="hint">안 해도 돼요</span></span><${GamePick} value=${game} onPick=${setGame} allowFree/></div>
+    <div className="sheet-foot"><button className="btn primary" disabled=${!ok} onClick=${() => onSave({ id: 'po' + uid(), kind, title: title.trim(), body: body.trim(), by: '나', at: Date.now(), ...(game || {}), likes: [], comments: [], pinned: kind === 'notice',
+      ...(kind === 'recruit' ? { rc: { ...rc, cap: +rc.cap || null, gameId: game && game.gameId || null, joined: ['나'] } } : {}) })}>올리기</button></div>
+  <//>`;
+}
+function RcBox({ p, st, onJoin }) {
+  const rc = p.rc; const j = rc.joined || []; const mine = j.includes('나'); const full = rc.cap && j.length >= rc.cap && !mine;
+  const past = rc.date < today();
+  return html`<div className="rcbox">
+    <div className="rc-row"><span>언제</span><b>${evDay(rc.date)} ${fmtTime(rc.time)}</b></div>
+    ${rc.platform ? html`<div className="rc-row"><span>어디서</span><b>${rc.platform}</b></div>` : null}
+    ${gameName(rc) || gameName(p) ? html`<div className="rc-row"><span>게임</span><b>${gameName(rc) || gameName(p)}</b></div>` : null}
+    <div className="rc-row"><span>인원</span><b>${j.length}${rc.cap ? `/${rc.cap}` : ''}명</b></div>
+    <div className="pc-t">${rc.voice ? html`<span className="tg">음성 채팅</span>` : null}${rc.own ? html`<span className="tg">게임 있어야 해요</span>` : null}${rc.beginner ? html`<span className="tg">처음이어도 돼요</span>` : null}</div>
+    ${j.length ? html`<div className="ev-ppl"><span className="avstack">${j.slice(0, 6).map(n => html`<${Avatar} key=${n} name=${nmOf(st, n)} size=${22}/>`)}</span><span className="pn">${j.slice(0, 3).map(n => nmOf(st, n)).join(', ')}${j.length > 3 ? ` 외 ${j.length - 3}명` : ''}</span></div>` : null}
+    ${p.by === '나' ? null : html`<button className=${'btn block' + (mine ? '' : ' primary')} style=${{ marginTop: 8 }} disabled=${full || past} aria-pressed=${mine} onClick=${onJoin}>${past ? '끝난 모집이에요' : full ? '자리가 다 찼어요' : mine ? '✓ 참여해요 · 취소하려면 누르기' : '참여할게요'}</button>`}
+  </div>`;
+}
+function PostRow({ p, st, onOpen, saved }) {
+  return html`<button className=${'prow2' + (p.pinned ? ' pin' : '')} onClick=${onOpen}>
+    <span className="pr-k"><span className=${'tg' + (p.kind === 'notice' ? ' nt' : p.kind === 'recruit' ? ' rc' : '')}>${PK[p.kind]}</span>${p.pinned ? html`<span className="pinic" aria-label="고정">${I.pin}</span>` : null}${gameName(p) ? html`<span className="pr-g">${gameName(p)}</span>` : null}</span>
+    <span className="pr-t">${p.title}</span>
+    ${p.kind === 'recruit' && p.rc ? html`<span className="pr-rc">${evDay(p.rc.date)} ${fmtTime(p.rc.time)}${p.rc.platform ? ' · ' + p.rc.platform : ''} · ${(p.rc.joined || []).length}${p.rc.cap ? '/' + p.rc.cap : ''}명</span>` : p.body ? html`<span className="pr-b">${p.body}</span>` : null}
+    <span className="pr-m">${nmOf(st, p.by)} · ${agoT(p.at)}${(p.likes || []).length ? ` · 공감 ${p.likes.length}` : ''}${(p.comments || []).length ? ` · 댓글 ${p.comments.length}` : ''}${saved ? ' · 저장함' : ''}</span></button>`;
+}
+function PostView({ g, p, st, upPost, close, say, report, canMod, delPost, open }) {
+  const [t, setT] = useState(''); const [to, setTo] = useState(null); const [menu, setMenu] = useState(null);
+  const mySaved = (g.mySaved || []).includes(p.id);
+  const liked = (p.likes || []).includes('나');
+  const hid = new Set(g.myHidden || []);
+  const cs = (p.comments || []).filter(c => !hid.has(c.id) && !c.hidden);
+  const top = cs.filter(c => !c.replyTo); const rep = id => cs.filter(c => c.replyTo === id);
+  const send = e => { e.preventDefault(); if (!t.trim()) return; upPost(x => ({ ...x, comments: [...(x.comments || []), { id: 'pc' + uid(), by: '나', text: t.trim(), at: Date.now(), replyTo: to ? to.id : null }] })); setT(''); setTo(null); };
+  const Cm = ({ c, reply }) => html`<div className=${'pcm' + (reply ? ' rp' : '')}><${Avatar} name=${nmOf(st, c.by)} size=${reply ? 22 : 26}/><div className="cb"><div className="ch"><b>${nmOf(st, c.by)}</b>${roleOf(g, c.by) !== 'member' ? html`<span className="chip">${ROLE[roleOf(g, c.by)]}</span>` : null}<span className="dt">${agoT(c.at)}</span>
+      <button className="dots sm" aria-label="댓글 메뉴" onClick=${() => setMenu(menu === c.id ? null : c.id)}>⋯</button></div><div className="ct">${c.text}</div>
+      ${reply ? null : html`<button className="linkbtn rpl" onClick=${() => setTo(c)}>답글</button>`}
+      ${menu === c.id ? html`<div className="cm-menu">${c.by === '나' || canMod ? html`<button className="dm-b danger" onClick=${() => { setMenu(null); upPost(x => ({ ...x, comments: x.comments.filter(y => y.id !== c.id && y.replyTo !== c.id) })); say('댓글을 지웠어요'); }}>지우기</button>` : null}
+        ${c.by !== '나' ? html`<button className="dm-b" onClick=${() => { setMenu(null); report('comment', c.id, c.text, c.by); }}>신고하기</button>` : null}</div>` : null}</div></div>`;
+  return html`<div className="pview">
+    <button className="backbtn" onClick=${close}>${I.back}게시판</button>
+    <div className="pv-k"><span className=${'tg' + (p.kind === 'notice' ? ' nt' : '')}>${PK[p.kind]}</span>${p.pinned ? html`<span className="muted">맨 위 고정</span>` : null}</div>
+    <h2 className="pv-t">${p.title}</h2>
+    <div className="pv-by"><${Avatar} name=${nmOf(st, p.by)} size=${26}/><b>${nmOf(st, p.by)}</b>${roleOf(g, p.by) !== 'member' ? html`<span className="chip">${ROLE[roleOf(g, p.by)]}</span>` : null}<span className="muted">${agoT(p.at)}</span>
+      <button className="dots" aria-label="글 메뉴" onClick=${() => setMenu(menu === 'p' ? null : 'p')}>⋯</button></div>
+    ${menu === 'p' ? html`<div className="cm-menu pm">
+      ${canMod ? html`<button className="dm-b" onClick=${() => { setMenu(null); upPost(x => ({ ...x, pinned: !x.pinned })); say(p.pinned ? '고정을 풀었어요' : '게시판 맨 위에 고정했어요'); }}>${p.pinned ? '고정 풀기' : '맨 위에 고정'}</button>` : null}
+      ${p.by === '나' || canMod ? html`<button className="dm-b danger" onClick=${() => { setMenu(null); delPost(p.id); }}>글 지우기</button>` : null}
+      ${p.by !== '나' ? html`<button className="dm-b" onClick=${() => { setMenu(null); report('post', p.id, p.title, p.by); close(); }}>신고하기</button>` : null}</div>` : null}
+    ${p.body ? html`<p className="pv-b">${p.body}</p>` : null}
+    ${p.gameId && GAME[p.gameId] ? html`<button className="pv-game" onClick=${() => open(p.gameId)}><span className="pg-c"><${Cover} g=${GAME[p.gameId]}/></span><span>${GAME[p.gameId].ko}<span className="muted"> 게임 정보 ›</span></span></button>` : p.gname ? html`<div className="pv-game st"><span>${p.gname}</span></div>` : null}
+    ${p.kind === 'recruit' && p.rc ? html`<${RcBox} p=${p} st=${st} onJoin=${() => upPost(x => { const j = x.rc.joined || []; return { ...x, rc: { ...x.rc, joined: j.includes('나') ? j.filter(n => n !== '나') : [...j, '나'] } }; })}/>` : null}
+    <div className="pv-act"><button className=${'btn sm' + (liked ? ' on' : '')} aria-pressed=${liked} onClick=${() => upPost(x => ({ ...x, likes: liked ? x.likes.filter(n => n !== '나') : [...(x.likes || []), '나'] }))}>${p.kind === 'tip' || p.kind === 'help' ? '도움돼요' : '공감'}${(p.likes || []).length ? ' ' + p.likes.length : ''}</button>
+      <button className=${'btn sm' + (mySaved ? ' on' : '')} aria-pressed=${mySaved} onClick=${() => { upPost(null, mySaved); say(mySaved ? '저장을 풀었어요' : '저장했어요 · 게시판 \'저장한 글\'에서 다시 봐요'); }}>${mySaved ? '✓ 저장함' : '저장'}</button></div>
+    <h3 className="pv-ch">댓글 ${cs.length}</h3>
+    ${top.map(c => html`<div key=${c.id}><${Cm} c=${c}/>${rep(c.id).map(r => html`<${Cm} key=${r.id} c=${r} reply/>`)}</div>`)}
+    ${!cs.length ? html`<div className="hint">첫 댓글을 남겨 보세요.</div>` : null}
+    <form className="addrow cform pv-in" onSubmit=${send}>${to ? html`<span className="to">${nmOf(st, to.by)}님께 답글 <button type="button" className="linkbtn" onClick=${() => setTo(null)}>취소</button></span>` : null}
+      <input className="input" placeholder=${to ? '답글 쓰기' : '댓글 쓰기'} maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim()}>등록</button></form>
+  </div>`;
+}
+function BoardTab({ g, st, upGroup, say, open, post, setPost, write, setWrite, report }) {
+  const [k, setK] = useState('all'); const [q, setQ] = useState(''); const [sort, setSort] = useState('new'); const [lim, setLim] = useState(30);
+  const hid = new Set(g.myHidden || []); const saved = new Set(g.mySaved || []);
+  const all = (g.posts || []).filter(p => !hid.has(p.id) && !p.hidden);
+  const nq = q.trim();
+  let ps = all.filter(p => (k === 'all' || (k === 'saved' ? saved.has(p.id) : p.kind === k)) && (!nq || p.title.includes(nq) || (p.body || '').includes(nq) || gameName(p).includes(nq) || (p.comments || []).some(c => c.text.includes(nq))));
+  ps = [...ps].sort((a, b) => (k === 'all' && !nq ? (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) : 0) || (sort === 'like' ? (b.likes || []).length - (a.likes || []).length : sort === 'cmt' ? (b.comments || []).length - (a.comments || []).length : 0) || b.at - a.at);
+  const staff = canRun(g);
+  const upPost = id => (fn, wasSaved) => fn ? upGroup(g.id, x => ({ ...x, posts: x.posts.map(p => p.id === id ? fn(p) : p) })) : upGroup(g.id, x => ({ ...x, mySaved: wasSaved ? (x.mySaved || []).filter(y => y !== id) : [...(x.mySaved || []), id] }));
+  const delPost = id => { upGroup(g.id, x => ({ ...x, posts: x.posts.filter(p => p.id !== id) })); setPost(null); say('글을 지웠어요'); };
+  const cur = post && all.find(p => p.id === post);
+  if (cur) return html`<${PostView} key=${cur.id} g=${g} p=${cur} st=${st} upPost=${upPost(cur.id)} close=${() => setPost(null)} say=${say} report=${report} canMod=${staff} delPost=${delPost} open=${open}/>`;
+  const used = new Set(all.map(p => p.kind));
+  return html`
+    <div className="bd-top"><div className="search">${I.games}<input type="search" placeholder="글·댓글에서 찾기 (룰, 공략, 게임 이름)" value=${q} onInput=${e => { setQ(e.target.value); setLim(30); }}/></div>
+      <button className="btn primary" onClick=${() => setWrite('free')}>${I.pen}글쓰기</button></div>
+    <div className="dates fchips">${[['all', '전체'], ...POST_KINDS.filter(([x]) => used.has(x)), ...(saved.size ? [['saved', `저장한 글 ${saved.size}`]] : [])].map(([x, l]) => html`<button key=${x} className="pill sm" aria-pressed=${k === x} onClick=${() => { setK(x); setLim(30); }}>${l}</button>`)}</div>
+    ${all.length > 5 ? html`<div className="bd-sort"><${Seg} value=${sort} options=${[['new', '최신순'], ['like', '공감순'], ['cmt', '댓글순']]} onChange=${setSort} label="정렬"/></div>` : null}
+    ${ps.slice(0, lim).map(p => html`<${PostRow} key=${p.id} p=${p} st=${st} saved=${saved.has(p.id)} onOpen=${() => setPost(p.id)}/>`)}
+    ${ps.length > lim ? html`<${MoreBtn} left=${ps.length - lim} unit="개" onClick=${() => setLim(lim + 30)}/>` : null}
+    ${!all.length ? html`<${Empty} title="아직 글이 없어요" action=${html`<button className="btn primary" onClick=${() => setWrite('ask')}>첫 글 쓰기</button>`}>질문, 게임 추천, 후기, 같이 할 사람 모집처럼 오래 두고 볼 이야기는 여기에 남겨요. 가볍게 주고받는 말은 대화 탭이 편해요.<//>` :
+      !ps.length ? html`<div className="note">${nq ? `'${nq}' 글이 없어요.` : '이 종류 글이 없어요.'}</div>` : null}`;
+}
+// 일정: 가입한 멤버라도 일정마다 참석을 따로 골라요 (참석할게요 / 미정 / 불참). 정원이 차면 대기, 승인형이면 신청 → 확정.
+function EventCard({ e, g, st, upEv, staff, compact, onOpen }) {
   const me = '나';
-  const going = e.going || [], no = e.no || [];
-  const mine = going.includes(me) ? 'go' : no.includes(me) ? 'no' : null;
+  const going = e.going || [], no = e.no || [], maybe = e.maybe || [], wait = e.wait || [], pend = e.pending || [];
+  const mine = going.includes(me) ? 'go' : pend.includes(me) ? 'pend' : wait.includes(me) ? 'wait' : maybe.includes(me) ? 'maybe' : no.includes(me) ? 'no' : null;
   const [showC, setShowC] = useState(false);
-  const setMine = v => upEv(x => ({ ...x, going: v === 'go' ? [...new Set([...(x.going || []), me])] : (x.going || []).filter(n => n !== me), no: v === 'no' ? [...new Set([...(x.no || []), me])] : (x.no || []).filter(n => n !== me) }));
-  const full = e.cap && going.length >= e.cap && mine !== 'go';
+  const full = e.cap && going.length >= e.cap;
+  const strip = (x, keep) => ['going', 'no', 'maybe', 'wait', 'pending'].reduce((o, k) => ({ ...o, [k]: k === keep ? [...new Set([...(x[k] || []), me])] : (x[k] || []).filter(n => n !== me) }), {});
+  const setMine = v => upEv(x => { const wasGo = (x.going || []).includes(me); let y = { ...x, ...strip(x, v === 'go' ? (x.apply === 'ok' && !staff ? 'pending' : x.cap && (x.going || []).filter(n => n !== me).length >= x.cap ? 'wait' : 'going') : v === 'maybe' ? 'maybe' : v === 'no' ? 'no' : null) };
+    // 참석하던 사람이 빠지면 대기 1번이 올라가요
+    if (wasGo && v !== 'go' && (y.wait || []).length && (!y.cap || y.going.length < y.cap)) { const [up, ...rest] = y.wait; y = { ...y, going: [...y.going, up], wait: rest }; }
+    return y; });
   const d = e.date ? parse(e.date) : null;
   const when = d ? `${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}` : '시간 정하는 중';
-  const poll = e.poll; const total = g.members.length + 1;
+  const poll = e.poll; const total = memCount(g);
   const tally = poll ? poll.opts.map((o, i) => Object.values(poll.votes || {}).filter(v => v === i).length) : [];
   const myVote = poll ? (poll.votes || {})[me] : null;
   const cs = e.comments || [];
+  const on = e.kind === 'on';
+  const where = on ? [e.platform || '온라인'] : [e.place];
+  const REP = { weekly: '매주', biweekly: '격주', monthly: '매달' };
   return html`<div className=${'evcard' + (e.date === today() ? ' today' : '')}>
     <div className="ev-h"><div className="ev-d">${d ? html`<b className="num">${d.getDate()}</b><span>${DOW[d.getDay()]}</span>` : html`<b className="ev-tbd">미정</b><span>투표 중</span>`}</div>
       <div style=${{ minWidth: 0, flex: 1 }}><div className="ev-t">${e.title || when}</div>
-        <div className="ev-s">${[e.title ? when : null, e.place, e.cap ? `${going.length}/${e.cap}명` : null].filter(Boolean).join(' · ')}</div></div></div>
+        <div className="ev-s">${[e.title ? when : null, ...where, e.cap ? `${going.length}/${e.cap}명` : null].filter(Boolean).join(' · ')}</div></div></div>
+    <div className="pc-t ev-tags"><span className=${'tg' + (on ? ' on' : '')}>${on ? '온라인' : '오프라인'}</span>${e.repeat ? html`<span className="tg">${REP[e.repeat]} 반복</span>` : null}${e.apply === 'ok' ? html`<span className="tg">운영진 승인</span>` : null}${e.open ? html`<span className="tg">외부 참가 가능</span>` : null}${gameName(e) ? html`<span className="tg">${gameName(e)}</span>` : null}${e.cost ? html`<span className="tg">${e.cost}</span>` : null}</div>
+    ${!compact && (e.how || e.bring || e.desc) ? html`<div className="ev-info">${e.how ? html`<div><span>참여 방법</span>${e.how}</div>` : null}${e.bring ? html`<div><span>준비물</span>${e.bring}</div>` : null}${e.desc ? html`<div><span>설명</span>${e.desc}</div>` : null}</div>` : null}
     ${poll ? html`<div className="poll">${poll.opts.map((o, i) => html`<button key=${i} className="poll-o" aria-pressed=${myVote === i} onClick=${() => upEv(x => { const v = { ...(x.poll.votes || {}) }; if (v[me] === i) delete v[me]; else v[me] = i; return { ...x, poll: { ...x.poll, votes: v } }; })}>
         <i style=${{ width: `${tally[i] / Math.max(1, total) * 100}%` }}></i><span className="po-t">${o}</span><span className="num">${tally[i]}명</span></button>`)}
       <div className="hint">${Object.keys(poll.votes || {}).length}명 투표 · 많이 고른 시간으로 정해요</div></div>` : null}
     ${going.length ? html`<div className="ev-ppl"><span className="avstack">${going.slice(0, 6).map(n => html`<${Avatar} key=${n} name=${nmOf(st, n)} size=${24}/>`)}</span>
-      <span className="pn">${going.slice(0, 3).map(n => nmOf(st, n)).join(', ')}${going.length > 3 ? ` 외 ${going.length - 3}명` : ''} 가요</span></div>` : null}
-    ${e.date && e.date <= today() && mine === 'go' && NAV.play ? html`<button className="btn primary block evrec" onClick=${() => NAV.play()}>오늘 기록 남기기</button>` : null}
-    <div className="ev-act">${poll ? null : html`<button className=${'btn sm' + (mine === 'go' ? ' primary' : '')} aria-pressed=${mine === 'go'} disabled=${full} onClick=${() => setMine(mine === 'go' ? null : 'go')}>${full ? '자리 없음' : mine === 'go' ? '✓ 가요' : '가요'}</button>
-      <button className=${'btn sm' + (mine === 'no' ? ' on' : '')} aria-pressed=${mine === 'no'} onClick=${() => setMine(mine === 'no' ? null : 'no')}>못 가요</button>`}
-      <button className="btn sm ghost" aria-expanded=${showC} onClick=${() => setShowC(!showC)}>${cs.length ? `댓글 ${cs.length}` : '댓글'}</button></div>
-    ${showC ? html`<${Comments} st=${st} list=${cs} onAdd=${t => upEv(x => ({ ...x, comments: [...(x.comments || []), { id: uid(), author: 'me', text: t, date: today() }] }))} ph="이 약속에 한마디"/>` : null}
+      <span className="pn">${going.slice(0, 3).map(n => nmOf(st, n)).join(', ')}${going.length > 3 ? ` 외 ${going.length - 3}명` : ''} 참석</span></div>` : null}
+    <div className="ev-cnt">${[`멤버 ${total.toLocaleString()}명 중 ${going.filter(n => n === me || memSet(g).has(n)).length}명 참석`, (e.guests || []).length ? `외부 ${e.guests.length}명` : null, maybe.length ? `미정 ${maybe.length}` : null, wait.length ? `대기 ${wait.length}` : null, staff && pend.length ? `승인 기다림 ${pend.length}` : null].filter(Boolean).join(' · ')}</div>
+    ${staff && pend.length && !compact ? html`<div className="ev-pend">${pend.map(n => html`<div key=${n} className="mrow static"><${Avatar} name=${nmOf(st, n)} size=${24}/><span className="n">${nmOf(st, n)}</span>
+      <button className="btn sm primary" onClick=${() => upEv(x => ({ ...x, pending: x.pending.filter(y => y !== n), ...(x.cap && x.going.length >= x.cap ? { wait: [...(x.wait || []), n] } : { going: [...x.going, n] }) }))}>받기</button></div>`)}</div>` : null}
+    ${mine === 'wait' ? html`<div className="ev-my">대기 ${wait.indexOf(me) + 1}번째예요. 자리가 나면 자동으로 참석으로 바뀌어요.</div>` : mine === 'pend' ? html`<div className="ev-my">참석 신청했어요. 운영진이 받으면 확정돼요.</div>` : null}
+    ${e.date && e.date <= today() && mine === 'go' && NAV.play ? html`<button className="btn primary block evrec" onClick=${() => NAV.play()}>이 일정 기록 남기기</button>` : null}
+    ${compact ? html`<button className="linkbtn" onClick=${onOpen}>일정 탭에서 보기</button>` : html`<div className="ev-act">${poll ? null : html`
+      <button className=${'btn sm' + (mine === 'go' || mine === 'wait' || mine === 'pend' ? ' primary' : '')} aria-pressed=${!!mine && mine !== 'no' && mine !== 'maybe'} onClick=${() => setMine(mine === 'go' || mine === 'wait' || mine === 'pend' ? null : 'go')}>${mine === 'go' ? '✓ 참석' : mine === 'wait' ? '✓ 대기 중' : mine === 'pend' ? '✓ 신청함' : full ? '대기할게요' : e.apply === 'ok' && !staff ? '참석 신청' : '참석할게요'}</button>
+      <button className=${'btn sm' + (mine === 'maybe' ? ' on' : '')} aria-pressed=${mine === 'maybe'} onClick=${() => setMine(mine === 'maybe' ? null : 'maybe')}>미정</button>
+      <button className=${'btn sm' + (mine === 'no' ? ' on' : '')} aria-pressed=${mine === 'no'} onClick=${() => setMine(mine === 'no' ? null : 'no')}>불참</button>`}
+      <button className="btn sm ghost" aria-expanded=${showC} onClick=${() => setShowC(!showC)}>${cs.length ? `참가자 대화 ${cs.length}` : '참가자 대화'}</button></div>`}
+    ${showC && !compact ? html`<${Comments} st=${st} list=${cs} onAdd=${t => upEv(x => ({ ...x, comments: [...(x.comments || []), { id: uid(), author: 'me', text: t, date: today() }] }))} ph="준비물, 늦는 사람, 방 링크"/>` : null}
   </div>`;
 }
-function NewEvent({ onSave, cancel }) {
-  const [date, setDate] = useState(daysAgo(-3)); const [time, setTime] = useState('19:00'); const [place, setPlace] = useState(''); const [cap, setCap] = useState('');
-  const [vote, setVote] = useState(false); const [opts, setOpts] = useState(['', '', '']); const [title, setTitle] = useState('');
+function NewEvent({ g, onSave, cancel, game0 }) {
+  const x = gx(g);
+  const [kind, setKind] = useState(x.modes.includes('offline') || !x.modes.includes('online') ? 'off' : 'on');
+  const [date, setDate] = useState(daysAgo(-3)); const [time, setTime] = useState('19:00'); const [place, setPlace] = useState(x.area ? `${x.area} ` : ''); const [cap, setCap] = useState('');
+  const [plat, setPlat] = useState(x.platforms[0] || 'Steam'); const [how, setHow] = useState('');
+  const [vote, setVote] = useState(false); const [opts, setOpts] = useState(['', '', '']); const [title, setTitle] = useState(game0 ? `${gameName(game0)} 같이 해요` : '');
+  const [apply, setApply] = useState('first'); const [repeat, setRepeat] = useState(''); const [open, setOpen] = useState(false);
+  const [game, setGame] = useState(game0 || null); const [bring, setBring] = useState(''); const [cost, setCost] = useState(''); const [desc, setDesc] = useState(''); const [more, setMore] = useState(!!game0);
   const ok = vote ? opts.filter(o => o.trim()).length >= 2 : !!date;
+  const base = () => ({ kind, title: title.trim(), place: kind === 'off' ? place.trim() : '', platform: kind === 'on' ? plat : '', how: kind === 'on' ? how.trim() : '', cap: +cap || null, apply, open: x.join !== 'invite' && open, gameId: game && game.gameId || null, gname: game && game.gname || '', bring: bring.trim(), cost: cost.trim(), desc: desc.trim() });
   return html`<div className="evnew">
-    <div className="seg" role="group" aria-label="약속 방식" style=${{ marginBottom: 10 }}><button aria-pressed=${!vote} onClick=${() => setVote(false)}>날짜 정해서</button><button aria-pressed=${vote} onClick=${() => setVote(true)}>시간 투표로</button></div>
-    ${vote ? html`<input className="input" placeholder="제목 (예: 주말 번개)" value=${title} onInput=${e => setTitle(e.target.value)}/>
-      ${opts.map((o, i) => html`<input key=${i} className="input" style=${{ marginTop: 6 }} placeholder=${`후보 ${i + 1} (예: 토 오후 2시)`} value=${o} onInput=${e => setOpts(opts.map((x, j) => j === i ? e.target.value : x))}/>`)}` :
-      html`<div className="sirow"><label>날짜<input className="input" type="date" min=${today()} value=${date} onChange=${e => setDate(e.target.value)}/></label><label>시간<input className="input" type="time" value=${time} onChange=${e => setTime(e.target.value)}/></label></div>`}
-    <div className="sirow" style=${{ marginTop: 6 }}><label>장소<input className="input" placeholder="어디서?" value=${place} onInput=${e => setPlace(e.target.value)}/></label><label>정원<input className="input num" inputMode="numeric" placeholder="없음" value=${cap} onInput=${e => setCap(e.target.value.replace(/\D/g, ''))}/></label></div>
-    <div className="r" style=${{ display: 'flex', gap: 8, marginTop: 10 }}><button className="btn primary" disabled=${!ok} onClick=${() => onSave(vote ? { title: title.trim() || '시간 정하기', date: null, time: null, place: place.trim(), cap: +cap || null, poll: { opts: opts.map(o => o.trim()).filter(Boolean), votes: {} } } : { date, time, place: place.trim(), cap: +cap || null, going: ['나'] })}>약속 올리기</button><button className="btn ghost" onClick=${cancel}>취소</button></div></div>`;
+    <div className="seg" role="group" aria-label="어디서" style=${{ marginBottom: 8 }}><button aria-pressed=${kind === 'off'} onClick=${() => setKind('off')}>오프라인</button><button aria-pressed=${kind === 'on'} onClick=${() => setKind('on')}>온라인</button></div>
+    <div className="seg" role="group" aria-label="시간 정하기" style=${{ marginBottom: 10 }}><button aria-pressed=${!vote} onClick=${() => setVote(false)}>날짜 정해서</button><button aria-pressed=${vote} onClick=${() => setVote(true)}>시간 투표로</button></div>
+    <input className="input" placeholder=${kind === 'on' ? '제목 (예: 금요일 밤 Steam 윙스팬)' : '제목 (예: 이번 주 정모)'} maxLength="40" value=${title} onInput=${e => setTitle(e.target.value)}/>
+    ${vote ? opts.map((o, i) => html`<input key=${i} className="input" style=${{ marginTop: 6 }} placeholder=${`후보 ${i + 1} (예: 토 오후 2시)`} value=${o} onInput=${e => setOpts(opts.map((x, j) => j === i ? e.target.value : x))}/>`) :
+      html`<div className="sirow" style=${{ marginTop: 6 }}><label>날짜<input className="input" type="date" min=${today()} value=${date} onChange=${e => setDate(e.target.value)}/></label><label>시간<input className="input" type="time" value=${time} onChange=${e => setTime(e.target.value)}/></label></div>`}
+    ${kind === 'off' ? html`<div className="sirow" style=${{ marginTop: 6 }}><label>장소<input className="input" placeholder="카페 이름, 모이는 곳" value=${place} onInput=${e => setPlace(e.target.value)}/></label><label>정원<input className="input num" inputMode="numeric" placeholder="없음" value=${cap} onInput=${e => setCap(e.target.value.replace(/\D/g, ''))}/></label></div>` :
+      html`<div className="sirow" style=${{ marginTop: 6 }}><label>플랫폼<select className="input" value=${plat} onChange=${e => setPlat(e.target.value)}>${G_PLAT.map(p => html`<option key=${p}>${p}</option>`)}</select></label><label>정원<input className="input num" inputMode="numeric" placeholder="없음" value=${cap} onInput=${e => setCap(e.target.value.replace(/\D/g, ''))}/></label></div>
+      <input className="input" style=${{ marginTop: 6 }} placeholder="참여 방법 (예: 시작 10분 전 대화에 방 링크)" maxLength="80" value=${how} onInput=${e => setHow(e.target.value)}/>`}
+    ${vote ? null : html`<div className="ev-opt"><span className="lb2">반복</span><div className="dates">${[['', '한 번만'], ['weekly', '매주'], ['biweekly', '격주'], ['monthly', '매달']].map(([k, l]) => html`<button key=${l} className="pill sm" aria-pressed=${repeat === k} onClick=${() => setRepeat(k)}>${l}</button>`)}</div></div>`}
+    <div className="ev-opt"><span className="lb2">참석 받기</span><div className="dates"><button className="pill sm" aria-pressed=${apply === 'first'} onClick=${() => setApply('first')}>누르면 바로 참석</button><button className="pill sm" aria-pressed=${apply === 'ok'} onClick=${() => setApply('ok')}>운영진이 받아요</button>
+      ${x.join !== 'invite' ? html`<button className="pill sm" aria-pressed=${open} onClick=${() => setOpen(!open)}>가입 안 한 사람도</button>` : null}</div></div>
+    ${more ? html`<div className="field"><span className="lb">게임</span><${GamePick} value=${game} onPick=${setGame} allowFree/></div>
+      <input className="input" style=${{ marginTop: 6 }} placeholder="준비물 (예: 각자 음료)" maxLength="60" value=${bring} onInput=${e => setBring(e.target.value)}/>
+      <input className="input" style=${{ marginTop: 6 }} placeholder="비용 (예: 카페 이용료 6천 원)" maxLength="40" value=${cost} onInput=${e => setCost(e.target.value)}/>
+      <textarea className="input" style=${{ marginTop: 6 }} rows="2" maxLength="300" placeholder="설명 (초보 가능 여부, 취소 규칙 등)" value=${desc} onInput=${e => setDesc(e.target.value)}></textarea>` :
+      html`<button className="linkbtn" style=${{ marginTop: 8 }} onClick=${() => setMore(true)}>게임·준비물·비용도 적기</button>`}
+    <div className="r" style=${{ display: 'flex', gap: 8, marginTop: 12 }}><button className="btn primary" disabled=${!ok} onClick=${() => onSave(vote ? { ...base(), title: title.trim() || '시간 정하기', date: null, time: null, poll: { opts: opts.map(o => o.trim()).filter(Boolean), votes: {} } } : { ...base(), date, time, repeat, going: ['나'] })}>일정 올리기</button><button className="btn ghost" onClick=${cancel}>취소</button></div></div>`;
 }
-function PlanTab({ g, st, upGroup, say }) {
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const addMonth = (s, n) => { const d = parse(s); d.setMonth(d.getMonth() + n); return ymd(d); };
+function PlanTab({ g, st, upGroup, say, mk, setMk }) {
   const evs = g.events || [];
-  const up = evs.filter(e => !e.date || e.date >= today()).sort((a, b) => (a.date || '9') .localeCompare(b.date || '9'));
+  const up = evs.filter(e => !e.date || e.date >= today()).sort((a, b) => (a.date || '9').localeCompare(b.date || '9'));
   const past = evs.filter(e => e.date && e.date < today()).sort((a, b) => b.date.localeCompare(a.date));
-  const [making, setMaking] = useState(false); const [showPast, setShowPast] = useState(false);
-  const [nEdit, setNEdit] = useState(false); const [nt, setNt] = useState(g.notice || '');
+  const [showPast, setShowPast] = useState(false); const [lim, setLim] = useState(10);
+  const staff = canRun(g);
   const upEv = id => fn => upGroup(g.id, x => ({ ...x, events: x.events.map(y => y.id === id ? fn(y) : y) }));
+  const save = e => { const sid = 'es' + uid();
+    // 반복 일정은 앞으로 4번을 미리 만들어 둬요. 회차마다 참석은 따로 받아요.
+    const dates = e.repeat ? [0, 1, 2, 3].map(i => e.repeat === 'monthly' ? addMonth(e.date, i) : addDays(e.date, i * (e.repeat === 'weekly' ? 7 : 14))) : [e.date];
+    const made = dates.map((d, i) => ({ id: 'e' + uid(), no: [], maybe: [], wait: [], pending: [], comments: [], ...e, date: d, going: i === 0 ? (e.going || []) : [], series: e.repeat ? sid : null }));
+    upGroup(g.id, x => ({ ...x, events: [...(x.events || []), ...made], wants: (x.wants || []).map(w => e.gameId && w.gameId === e.gameId && w.status !== 'played' ? { ...w, status: 'planned' } : w),
+      chat: [...(x.chat || []), { id: uid(), sys: true, ev: made[0].id, text: `${st.me}님이 ${e.date ? evDay(e.date) + ' 일정을' : (e.title || '일정') + ' 시간 투표를'} 만들었어요`, at: Date.now() }] }));
+    setMk(null); say(e.repeat ? `일정을 ${dates.length}번 올렸어요 · 참석은 회차마다 따로 받아요` : '일정을 올렸어요'); };
   return html`
-    ${g.notice && !nEdit ? html`<div className="gnotice"><span className="lb">공지</span><span className="tx">${g.notice}</span>${g.owner ? html`<button className="linkbtn" onClick=${() => { setNt(g.notice); setNEdit(true); }}>고치기</button>` : null}</div>` : null}
-    ${nEdit ? html`<div className="gnotice edit"><textarea className="input" rows="3" maxLength="200" value=${nt} onInput=${e => setNt(e.target.value)}></textarea>
-      <div style=${{ display: 'flex', gap: 8, marginTop: 6 }}><button className="btn primary sm" onClick=${() => { upGroup(g.id, x => ({ ...x, notice: nt.trim() })); setNEdit(false); say(nt.trim() ? '공지를 올렸어요' : '공지를 내렸어요'); }}>올리기</button><button className="btn ghost sm" onClick=${() => setNEdit(false)}>취소</button></div></div>` : null}
-    ${up.map(e => html`<${EventCard} key=${e.id} e=${e} g=${g} st=${st} upEv=${upEv(e.id)}/>`)}
-    ${!up.length && !making ? html`<${Empty} title="잡힌 약속이 없어요">날짜를 정하거나, 시간 투표로 다 같이 정할 수 있어요.<//>` : null}
-    ${making ? html`<${NewEvent} cancel=${() => setMaking(false)} onSave=${e => { const eid = 'e' + uid(); upGroup(g.id, x => ({ ...x, events: [...(x.events || []), { id: eid, going: [], no: [], comments: [], ...e }], chat: [...(x.chat || []), { id: uid(), sys: true, ev: eid, text: `${st.me}님이 ${e.date ? evDay(e.date) + ' 약속을' : (e.title || '약속') + ' 시간 투표를'} 만들었어요`, at: Date.now() }] })); setMaking(false); say('약속을 올렸어요 · 멤버에게 알림이 가요'); }}/>` :
-      html`<div className="planbar"><button className="btn block" onClick=${() => setMaking(true)}>${I.plus}약속 잡기</button>${g.owner && !g.notice && !nEdit ? html`<button className="btn ghost" onClick=${() => { setNt(''); setNEdit(true); }}>공지 쓰기</button>` : null}</div>`}
-    ${past.length ? html`<button className="linkbtn" style=${{ marginTop: 12 }} onClick=${() => setShowPast(!showPast)}>${showPast ? '지난 약속 접기' : `지난 약속 ${past.length}개`}</button>
-      ${showPast ? past.slice(0, 20).map(e => html`<div key=${e.id} className="evpast"><span>${dLabel(e.date)}</span><span>${e.place || ''}</span><span className="muted">${(e.going || []).length}명 왔어요</span></div>`) : null}` : null}`;
+    ${mk ? html`<${NewEvent} g=${g} game0=${mk.game} cancel=${() => setMk(null)} onSave=${save}/>` :
+      html`<div className="planbar"><button className="btn block" onClick=${() => setMk({})}>${I.plus}일정 만들기</button></div>`}
+    ${up.slice(0, lim).map(e => html`<${EventCard} key=${e.id} e=${e} g=${g} st=${st} upEv=${upEv(e.id)} staff=${staff}/>`)}
+    ${up.length > lim ? html`<${MoreBtn} left=${up.length - lim} unit="개" onClick=${() => setLim(lim + 20)}/>` : null}
+    ${!up.length && !mk ? html`<${Empty} title="잡힌 일정이 없어요">일정은 필요할 때만 만들면 돼요. 대화만 하는 모임이라면 없어도 괜찮아요. 오늘 밤 같이 할 사람만 빠르게 찾을 땐 게시판의 '같이 할 사람' 글이 편해요.<//>` : null}
+    ${past.length ? html`<button className="linkbtn" style=${{ marginTop: 12 }} onClick=${() => setShowPast(!showPast)}>${showPast ? '지난 일정 접기' : `지난 일정 ${past.length}개`}</button>
+      ${showPast ? past.slice(0, 20).map(e => html`<div key=${e.id} className="evpast"><span>${dLabel(e.date)}</span><span>${e.kind === 'on' ? e.platform : e.place || ''}</span><span className="muted">${(e.going || []).length}명 참석</span></div>`) : null}` : null}`;
 }
 function ChatTab({ g, st, upGroup, toPlan }) {
   const all = g.chat || []; const [lim, setLim] = useState(30); const [t, setT] = useState('');
@@ -3596,35 +4210,132 @@ function ChatTab({ g, st, upGroup, toPlan }) {
     <form className="chatin" onSubmit=${send}><input className="input" placeholder="메시지 보내기" maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn primary" type="submit" disabled=${!t.trim()}>보내기</button></form>
   </div>`;
 }
-function GroupIntro({ g, st, back, open, counts, joined, say }) {
-  const it = g.intro || {};
-  const color = COVER_COLORS[hash(g.id) % COVER_COLORS.length];
+// 같이 해보고 싶은 게임: 멤버 제안 + 관심 표시. 실제로 한 게임(기록)과는 따로 셉니다.
+function WantSheet({ g, close, onSave }) {
+  const x = gx(g); const [game, setGame] = useState(null); const [plat, setPlat] = useState(x.modes.includes('online') && !x.modes.includes('offline') ? (x.platforms[0] || 'Steam') : '실물'); const [note, setNote] = useState('');
+  return html`<${Sheet} title="게임 제안하기" close=${close}>
+    <div className="hint" style=${{ margin: '4px 0 10px' }}>멤버들이 관심을 누르면, 그걸 보고 누구든 일정을 열 수 있어요. 제안만으로 일정이 생기지는 않아요.</div>
+    <div className="field"><span className="lb">게임</span><${GamePick} value=${game} onPick=${setGame} allowFree/></div>
+    <div className="field"><span className="lb">어떻게 해요?</span><div className="dates">${['실물', ...G_PLAT].map(p => html`<button key=${p} className="pill sm" aria-pressed=${plat === p} onClick=${() => setPlat(p)}>${p === '실물' ? '실물판' : p}</button>`)}</div></div>
+    <input className="input" maxLength="80" placeholder="한마디 (예: 확장 넣고 해봐요)" value=${note} onInput=${e => setNote(e.target.value)}/>
+    <div className="sheet-foot"><button className="btn primary" disabled=${!game} onClick=${() => onSave({ id: 'w' + uid(), ...game, platform: plat === '실물' ? '' : plat, note: note.trim(), by: '나', likes: ['나'], status: 'want', at: Date.now() })}>제안하기</button></div>
+  <//>`;
+}
+function WantList({ g, st, upGroup, open, say, lim, toEvent, propose }) {
+  const ws = [...(g.wants || [])].filter(w => w.status !== 'played').sort((a, b) => (b.likes || []).length - (a.likes || []).length || b.at - a.at);
+  const staff = canRun(g); const [menu, setMenu] = useState(null);
+  const upW = (id, fn) => upGroup(g.id, x => ({ ...x, wants: x.wants.map(w => w.id === id ? fn(w) : w) }));
+  return html`${ws.slice(0, lim || 99).map(w => { const liked = (w.likes || []).includes('나');
+      return html`<div key=${w.id} className="wrow">${w.gameId && GAME[w.gameId] ? html`<button className="wr-c" onClick=${() => open(w.gameId)} aria-label=${GAME[w.gameId].ko}><${Cover} g=${GAME[w.gameId]}/></button>` : html`<span className="wr-c none">${(w.gname || '?').slice(0, 1)}</span>`}
+        <span className="wr-b"><b>${gameName(w)}</b><span className="wr-m">${[WS[w.status], w.platform ? w.platform : null, `${nmOf(st, w.by)} 제안`].filter(Boolean).join(' · ')}</span>${w.note ? html`<span className="wr-n">${w.note}</span>` : null}</span>
+        <button className=${'btn sm wr-like' + (liked ? ' on' : '')} aria-pressed=${liked} onClick=${() => upW(w.id, y => ({ ...y, likes: liked ? y.likes.filter(n => n !== '나') : [...(y.likes || []), '나'] }))}>${liked ? '✓ ' : ''}관심 ${(w.likes || []).length}</button>
+        <button className="dots" aria-label="게임 메뉴" onClick=${() => setMenu(menu === w.id ? null : w.id)}>⋯</button>
+        ${menu === w.id ? html`<div className="cm-menu wm"><button className="dm-b" onClick=${() => { setMenu(null); toEvent(w); }}>이 게임으로 일정 만들기</button>
+          ${(staff || w.by === '나') ? html`${WANT_ST.filter(([k]) => k !== w.status).map(([k, l]) => html`<button key=${k} className="dm-b" onClick=${() => { setMenu(null); upW(w.id, y => ({ ...y, status: k })); say(`'${l}'${hasJong(l) ? '으로' : '로'} 바꿨어요`); }}>${l}${hasJong(l) ? '으로' : '로'} 바꾸기</button>`)}
+          <button className="dm-b danger" onClick=${() => { setMenu(null); upGroup(g.id, x => ({ ...x, wants: x.wants.filter(y => y.id !== w.id) })); say('목록에서 뺐어요'); }}>목록에서 빼기</button>` : null}</div>` : null}</div>`; })}
+    ${!ws.length ? html`<div className="hint">아직 제안한 게임이 없어요. 다음에 같이 해보고 싶은 게임을 올려 보세요.</div>` : null}
+    <button className="btn block" style=${{ marginTop: 8 }} onClick=${propose}>${I.plus}게임 제안하기</button>`;
+}
+function GroupHome({ g, st, upGroup, say, open, setTab, setPost, setWrite, setMk, counts, ps, editInfo, invite, setWantSheet }) {
+  const x = gx(g); const it = g.intro || {}; const staff = canRun(g);
+  const hid = new Set(g.myHidden || []);
+  const posts = (g.posts || []).filter(p => !hid.has(p.id) && !p.hidden);
+  const pins = posts.filter(p => p.pinned).slice(0, 2);
+  const recent = posts.filter(p => !p.pinned && p.kind !== 'recruit').sort((a, b) => b.at - a.at).slice(0, 3);
+  const recs = posts.filter(p => p.kind === 'recruit' && p.rc && p.rc.date >= today()).sort((a, b) => (a.rc.date + a.rc.time).localeCompare(b.rc.date + b.rc.time)).slice(0, 2);
+  const evs = (g.events || []).filter(e => !e.date || e.date >= today()).sort((a, b) => (a.date || '9').localeCompare(b.date || '9')).slice(0, 2);
+  const chat = (g.chat || []).filter(m => !m.sys).slice(-2);
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(x => +x[0]).filter(id => GAME[id]).slice(0, 8);
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  const mem = ['나', ...g.members];
-  return html`<div className="screen gintro">
-    <div className="gi-hero" style=${{ '--gc': color }}>${g.photo ? html`<img src=${g.photo} alt=""/>` : null}
-      <button className="gi-back" onClick=${back} aria-label="뒤로">${I.back}</button><span className="gi-badge"><${GroupBadge} g=${g} size=${64}/></span></div>
-    <h1 className="gi-n">${g.name}</h1>
-    ${it.line ? html`<p className="gi-l">${it.line}</p>` : null}
-    <div className="gi-m">${[it.area, it.when, `멤버 ${mem.length}명`].filter(Boolean).join(' · ')}</div>
-    <div className="gi-ppl"><span className="avstack">${mem.slice(0, 8).map(n => html`<${Avatar} key=${n} name=${nmOf(st, n)} size=${28}/>`)}</span>${mem.length > 8 ? html`<span>외 ${mem.length - 8}명</span>` : null}</div>
-    ${top.length ? html`<h2 className="sec">자주 하는 게임</h2><div className="mini-shelf">${top.map(id => html`<button key=${id} className="ms-b" onClick=${() => open(id)} aria-label=${GAME[id].ko}><span className="ms-art" style=${{ aspectRatio: `1 / ${boxRatio(id)}` }}><${Cover} g=${GAME[id]}/></span></button>`)}</div><div className="ms-cap">이 모임 ${total}판</div>` : null}
-    ${(it.rules || []).length ? html`<h2 className="sec">규칙·회비</h2>${it.rules.map(([t, b]) => html`<details key=${t} className="gi-rule"><summary>${t}</summary><p>${b}</p></details>`)}` : null}
-    ${joined ? null : html`<div className="gi-foot">${html`<button className="btn primary block" onClick=${() => say && say('미리보기라 가입은 정식 버전에서 돼요')}>${it.join === 'ask' ? '가입 신청' : '가입하기'} · 준비 중</button>`}</div>`}
+  const joinedAt = (g.joinedAt || {})['나'];
+  const fresh = !g.owner && joinedAt && joinedAt >= daysAgo(14) && !g.welcomeSeen;
+  const [nEdit, setNEdit] = useState(false); const [nt, setNt] = useState(g.notice || '');
+  const steps = g.owner ? [['소개 쓰기', !!it.body, editInfo], ['첫 글 올리기', posts.length > 0, () => setWrite('notice')], ['같이 하고 싶은 게임 올리기', (g.wants || []).length > 0, () => setWantSheet(true)], [x.hidden ? '사람 초대하기' : '모임 찾기에 보이게 해 두기', x.hidden ? g.members.length > 0 : true, x.hidden ? invite : editInfo]] : [];
+  const left = steps.filter(s => !s[1]);
+  return html`<div className="ghome">
+    ${fresh ? html`<div className="gwel"><b>${g.name}에 오신 걸 환영해요</b><span>${it.welcome || '공지부터 읽어 보고, 궁금한 건 게시판에 편하게 물어보세요.'}</span><span className="gw-s">일정은 가입과 따로예요. 가고 싶은 일정만 '참석할게요'를 누르면 돼요.</span>
+      <button className="linkbtn" onClick=${() => upGroup(g.id, y => ({ ...y, welcomeSeen: true }))}>닫기</button></div>` : null}
+    ${left.length && steps.length ? html`<div className="gstart"><b>모임을 꾸려 볼까요?</b>${steps.map(([t, done, fn]) => html`<button key=${t} className=${'gs-r' + (done ? ' done' : '')} disabled=${done} onClick=${fn}><span className="ck">${done ? '✓' : ''}</span>${t}</button>`)}</div>` : null}
+    ${g.notice && !nEdit ? html`<div className="gnotice"><span className="lb">공지</span><span className="tx">${g.notice}</span>${staff ? html`<button className="linkbtn" onClick=${() => { setNt(g.notice); setNEdit(true); }}>고치기</button>` : null}</div>` : null}
+    ${nEdit ? html`<div className="gnotice edit"><textarea className="input" rows="3" maxLength="200" value=${nt} onInput=${e => setNt(e.target.value)}></textarea>
+      <div style=${{ display: 'flex', gap: 8, marginTop: 6 }}><button className="btn primary sm" onClick=${() => { upGroup(g.id, y => ({ ...y, notice: nt.trim() })); setNEdit(false); say(nt.trim() ? '공지를 올렸어요' : '공지를 내렸어요'); }}>올리기</button><button className="btn ghost sm" onClick=${() => setNEdit(false)}>취소</button></div></div>` : null}
+    ${pins.map(p => html`<button key=${p.id} className="gnotice gpin" onClick=${() => { setTab('board'); setPost(p.id); }}><span className="lb">${PK[p.kind] === '공지' ? '공지' : '고정'}</span><span className="tx">${p.title}</span><span className="chev">›</span></button>`)}
+    ${staff && !g.notice && !nEdit ? html`<button className="linkbtn" style=${{ marginBottom: 8 }} onClick=${() => { setNt(''); setNEdit(true); }}>한 줄 공지 쓰기</button>` : null}
+
+    ${evs.length ? html`<div className="hsec"><div className="hs-h"><h2 className="sec">다가오는 일정</h2><button className="linkbtn" onClick=${() => setTab('plan')}>전체</button></div>
+      ${evs.map(e => html`<${EventCard} key=${e.id} e=${e} g=${g} st=${st} upEv=${() => {}} compact onOpen=${() => setTab('plan')}/>`)}</div>` : null}
+
+    ${recs.length || x.modes.includes('online') ? html`<div className="hsec"><div className="hs-h"><h2 className="sec">같이 할 사람 찾는 중</h2><button className="linkbtn" onClick=${() => setWrite('recruit')}>+ 모집하기</button></div>
+      ${recs.map(p => html`<${PostRow} key=${p.id} p=${p} st=${st} onOpen=${() => { setTab('board'); setPost(p.id); }}/>`)}
+      ${!recs.length ? html`<div className="hint">'오늘 밤 9시 Steam에서 같이 할 사람'처럼 짧게 모아 보세요. 정식 일정이 아니어도 돼요.</div>` : null}</div>` : null}
+
+    <div className="hsec"><div className="hs-h"><h2 className="sec">최근 글</h2><button className="linkbtn" onClick=${() => setTab('board')}>게시판</button></div>
+      ${recent.map(p => html`<${PostRow} key=${p.id} p=${p} st=${st} onOpen=${() => { setTab('board'); setPost(p.id); }}/>`)}
+      ${!recent.length ? html`<div className="hint">아직 글이 없어요. <button className="linkbtn" onClick=${() => setWrite('ask')}>첫 질문 올리기</button></div>` : null}</div>
+
+    <div className="hsec"><div className="hs-h"><h2 className="sec">같이 해보고 싶은 게임</h2></div>
+      <${WantList} g=${g} st=${st} upGroup=${upGroup} open=${open} say=${say} lim=${4} toEvent=${w => { setTab('plan'); setMk({ game: { gameId: w.gameId, gname: w.gname } }); }} propose=${() => setWantSheet(true)}/></div>
+
+    ${top.length ? html`<div className="hsec"><div className="hs-h"><h2 className="sec">자주 한 게임</h2><button className="linkbtn" onClick=${() => setTab('log')}>모임 기록</button></div>
+      <div className="mini-shelf">${top.map(id => html`<button key=${id} className="ms-b" onClick=${() => open(id)} aria-label=${GAME[id].ko}><span className="ms-art" style=${{ aspectRatio: `1 / ${boxRatio(id)}` }}><${Cover} g=${GAME[id]}/></span></button>`)}</div><div className="ms-cap">이 모임으로 남긴 기록 ${ps.length}판 기준</div></div>` : null}
+
+    ${chat.length ? html`<div className="hsec"><div className="hs-h"><h2 className="sec">최근 대화</h2><button className="linkbtn" onClick=${() => setTab('chat')}>대화</button></div>
+      ${chat.map(m => html`<button key=${m.id} className="hchat" onClick=${() => setTab('chat')}><${Avatar} name=${nmOf(st, m.author)} size=${22}/><b>${nmOf(st, m.author)}</b><span>${m.text}</span></button>`)}</div>` : null}
   </div>`;
 }
-function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, leaveGroup, inviteToGroup, shareDay, pinGroup, muteGroup, hideGroupHome, upGroup, say }) {
+function MemTab({ g, st, upGroup, say, openPerson, inviteToGroup, inviting, setInviting, manage, setManage, transfer }) {
+  const [mq, setMq] = useState(''); const [msort, setMsort] = useState('join'); const [mlim, setMlim] = useState(60); const [menu, setMenu] = useState(null); const [ask, setAsk] = useState(null);
+  const staff = canRun(g); const nm = n => nmOf(st, n);
+  const names = ['나', ...g.members];
+  const ja = g.joinedAt || {};
+  const rank = n => ({ owner: 0, staff: 1, member: 2 })[roleOf(g, n)];
+  const list = names.filter(n => !mq.trim() || nm(n).includes(mq.trim())).sort((a, b) => rank(a) - rank(b) || (msort === 'name' ? nm(a).localeCompare(nm(b), 'ko') : (ja[b] || '').localeCompare(ja[a] || '')));
+  const cands = Object.keys(st.friends).filter(n => !g.members.includes(n) && !(g.blocked || []).includes(n));
+  const reps = (g.reports || []).filter(r => r.state === 'review');
+  const act = (n, k) => { setMenu(null);
+    if (k === 'staff') { upGroup(g.id, x => ({ ...x, staff: (x.staff || []).includes(n) ? x.staff.filter(y => y !== n) : [...(x.staff || []), n] })); say((g.staff || []).includes(n) ? `${n}님을 운영진에서 뺐어요` : `${n}님을 운영진으로 정했어요 · 가입 신청·글 관리·일정을 같이 맡아요`); }
+    if (k === 'kick') { upGroup(g.id, x => ({ ...x, members: x.members.filter(y => y !== n), staff: (x.staff || []).filter(y => y !== n) })); say(`${n}님을 내보냈어요. 기록은 그대로 남아요`); }
+    if (k === 'block') { upGroup(g.id, x => ({ ...x, members: x.members.filter(y => y !== n), staff: (x.staff || []).filter(y => y !== n), blocked: [...new Set([...(x.blocked || []), n])] })); say(`${n}님을 이 모임에서 차단했어요. 다시 가입할 수 없어요`); }
+    if (k === 'owner') setAsk(n); };
+  return html`
+    ${inviting ? html`<div className="invitebox">
+      ${cands.length ? html`<${PickList} cands=${cands} sel=${[]} onTog=${n => inviteToGroup(g.id, n)} label=${n => '+ ' + n}/>` : null}
+      <div className="invite pv"><span>초대 링크는 정식 버전에서 생겨요</span><button className="btn" disabled>링크 복사</button></div>
+      <div className="note">${gx(g).hidden ? '모임 찾기에 안 보이는 모임이라 초대로만 들어와요.' : '모임 찾기에도 보이는 모임이라 처음 보는 사람도 소개를 보고 들어올 수 있어요.'} 위에서 고른 사람은 이 기기의 모임에만 들어가요.</div>
+      <button className="linkbtn" onClick=${() => setInviting(false)}>닫기</button></div>` : html`<button className="btn block" style=${{ marginBottom: 10 }} onClick=${() => setInviting(true)}>${I.plus}초대하기</button>`}
+    ${staff && (g.requests || []).length ? html`<div className="reqbox"><div className="rq-h">가입 신청 ${g.requests.length}</div>${g.requests.map(r => { const n = typeof r === 'string' ? r : r.n; const ans = typeof r === 'string' ? [] : r.ans || [];
+      return html`<div key=${n} className="rq"><div className="mrow static"><${Avatar} name=${n} size=${28}/><span className="n">${n}</span>
+        <button className="btn sm primary" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => (y.n || y) !== n), members: [...x.members, n], joinedAt: { ...(x.joinedAt || {}), [n]: today() } })); say(`${n}님을 받았어요`); }}>받기</button><button className="btn sm ghost" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => (y.n || y) !== n) })); say('신청을 거절했어요'); }}>거절</button></div>
+        ${ans.length ? html`<div className="rq-a">${((g.intro || {}).questions || []).map((q, i) => ans[i] ? html`<div key=${i}><span>${q}</span>${ans[i]}</div>` : null)}</div>` : null}</div>`; })}</div>` : null}
+    ${staff && reps.length ? html`<div className="reqbox"><div className="rq-h">신고 검토 ${reps.length}</div><div className="hint">신고만으로 확정하지 않아요. 내용을 보고 숨길지 정해 주세요.</div>${reps.map(r => html`<div key=${r.id} className="rp"><div className="rp-t"><span className="tg">${r.what === 'post' ? '글' : '댓글'}</span>${r.text}</div><div className="rp-m">${r.who}님 ${r.what === 'post' ? '글' : '댓글'} · 사유: ${r.reason} · ${nm(r.by)}님 신고</div>
+      <div className="r"><button className="btn sm" onClick=${() => { upGroup(g.id, x => ({ ...x, reports: x.reports.map(y => y.id === r.id ? { ...y, state: 'hidden' } : y), posts: (x.posts || []).map(p => p.id === r.ref ? { ...p, hidden: true } : { ...p, comments: (p.comments || []).map(c => c.id === r.ref ? { ...c, hidden: true } : c) }) })); say('숨겼어요. 쓴 사람에게 안내가 가요'); }}>숨기기</button>
+        <button className="btn sm ghost" onClick=${() => { upGroup(g.id, x => ({ ...x, reports: x.reports.map(y => y.id === r.id ? { ...y, state: 'kept' } : y) })); say('그대로 두기로 했어요'); }}>그대로 두기</button></div></div>`)}</div>` : null}
+    <div className="memtools">${names.length >= 20 ? html`<input className="input" type="search" placeholder=${`${names.length.toLocaleString()}명 중에 찾기`} value=${mq} onInput=${e => { setMq(e.target.value); setMlim(60); }}/>` : null}
+      <${Seg} value=${msort} options=${[['join', '최근 가입순'], ['name', '이름순']]} onChange=${setMsort} label="정렬"/>${memCount(g) > names.length ? html`<div className="hint">예시라 ${memCount(g).toLocaleString()}명 중 ${names.length}명만 불러왔어요</div>` : null}</div>
+    ${staff ? html`<div className="ownbar"><span className="muted">${g.owner ? `${ME.name}님이 모임장이에요` : `${ME.name}님은 운영진이에요`}</span><button className="linkbtn" onClick=${() => setManage(!manage)}>${manage ? '관리 끝' : '멤버 관리'}</button></div>` : null}
+    ${ask ? html`<div className="confirm"><span>${ask}님에게 모임장을 넘길까요? ${ME.name}님은 운영진으로 남아요.</span><div className="r"><button className="btn primary" onClick=${() => { transfer(ask); setAsk(null); }}>넘기기</button><button className="btn" onClick=${() => setAsk(null)}>취소</button></div></div>` : null}
+    ${list.slice(0, mlim).map(n => { const r = roleOf(g, n);
+      return html`<div key=${n} className="mrow-w"><button className="mrow" onClick=${() => n !== '나' && openPerson(n)}><${Avatar} name=${nm(n)} size=${28}/>
+        <span className="n">${nm(n)}${r !== 'member' ? html` <span className=${'chip' + (r === 'owner' ? ' own' : '')}>${ROLE[r]}</span>` : null}</span><span className="v">${ja[n] ? `${relDay(ja[n])} 가입` : ''}</span></button>
+        ${manage && n !== '나' && r !== 'owner' ? html`<button className="dots" aria-label=${n + ' 관리'} onClick=${() => setMenu(menu === n ? null : n)}>⋯</button>` : null}
+        ${menu === n ? html`<div className="cm-menu mm">${g.owner ? html`<button className="dm-b" onClick=${() => act(n, 'staff')}>${r === 'staff' ? '운영진에서 빼기' : '운영진으로 정하기'}</button><button className="dm-b" onClick=${() => act(n, 'owner')}>모임장 넘기기</button>` : null}
+          <button className="dm-b danger" onClick=${() => act(n, 'kick')}>내보내기</button><button className="dm-b danger" onClick=${() => act(n, 'block')}>차단하기</button></div>` : null}</div>`; })}
+    ${list.length > mlim ? html`<${MoreBtn} left=${list.length - mlim} unit="명" onClick=${() => setMlim(mlim + 60)}/>` : null}
+    ${manage && (g.blocked || []).length ? html`<h3 className="sec">차단한 사람</h3>${g.blocked.map(n => html`<div key=${n} className="mrow static"><${Avatar} name=${n} size=${24}/><span className="n">${n}</span><button className="btn sm ghost" onClick=${() => { upGroup(g.id, x => ({ ...x, blocked: x.blocked.filter(y => y !== n) })); say('차단을 풀었어요'); }}>풀기</button></div>`)}` : null}`;
+}
+const REPORT_WHY = ['욕설·모욕', '혐오·괴롭힘', '개인정보 노출', '광고·도배', '불법 활동', '기타'];
+function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, leaveGroup, inviteToGroup, shareDay, pinGroup, muteGroup, hideGroupHome, upGroup, say, editGroup }) {
   const g = (st.groups || []).find(x => x.id === gid);
-  const [tab, setTab] = useState('plan');
+  const [tab, setTabS] = useState(() => { try { return sessionStorage.getItem('bg-gtab-' + gid) || 'home'; } catch (e) { return 'home'; } });
+  const setTab = k => { setTabS(k); try { sessionStorage.setItem('bg-gtab-' + gid, k); } catch (e) {} if (k !== 'board') setPost(null); };
+  const [post, setPost] = useState(null);
+  const [write, setWrite] = useState(null);
+  const [wantSheet, setWantSheet] = useState(false);
+  const [mk, setMk] = useState(null);
+  const [rep, setRep] = useState(null);
   const [game, setGame] = useState(null);
   const [allRank, setAllRank] = useState(false);
   const [showRank, setShowRank] = useState(false);
-  const [mq, setMq] = useState('');
-  const [msort, setMsort] = useState('plays');
-  const [mlim, setMlim] = useState(60);
   const [inviting, setInviting] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [askLeave, setAskLeave] = useState(false);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(false);
@@ -3633,44 +4344,49 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
   if (!g) return html`<div className="screen"><button className="backbtn" onClick=${back}>${I.back}뒤로</button><${Empty} title="모임이 없어요">나간 모임이에요.<//></div>`;
   const names = ['나', ...g.members];
   const nm = n => nmOf(st, n);
-  const last = ps.map(p => p.date).sort().pop();
+  const x = gx(g); const staff = canRun(g);
   const big = g.members.length > 10;
   const minN = big ? 5 : 1;
   const counts = {}; ps.forEach(p => counts[p.gameId] = (counts[p.gameId] || 0) + 1);
   const gids = Object.keys(counts);
   const rankPs = game ? ps.filter(p => p.gameId === game) : ps;
   const board = showRank ? groupBoard(rankPs, names).filter(r => r.vs >= (game ? 1 : minN)) : [];
-  const mstat = tab === 'mem' ? groupBoard(ps, names) : [];
-  const mlist = mstat.filter(r => !mq.trim() || nm(r.n).includes(mq.trim())).sort((a, b) => msort === 'name' ? nm(a.n).localeCompare(nm(b.n), 'ko') : b.played - a.played);
-  const cands = Object.keys(st.friends).filter(n => !g.members.includes(n));
   const isDec = new Date().getMonth() === 11;
   const nextEv = (g.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => a.date.localeCompare(b.date))[0];
+  const report = (what, ref, text, who) => setRep({ what, ref, text, who });
+  const transfer = n => { upGroup(g.id, y => ({ ...y, owner: false, ownerName: n, staff: [...new Set([...(y.staff || []).filter(s => s !== n), '나'])] })); say(`${n}님이 이제 모임장이에요`); };
   if (intro) return html`<${GroupIntro} g=${g} st=${st} back=${() => setIntro(false)} open=${open} counts=${counts} joined/>`;
-  const TABS2 = [['plan', '약속'], ['chat', '대화'], ['log', '기록'], ['mem', '멤버']];
+  const TABS2 = [['home', '홈'], ['board', '게시판'], ['plan', '일정'], ['chat', '대화'], ...(ps.length ? [['log', '기록']] : []), ['mem', '멤버']];
+  const cur = TABS2.some(t => t[0] === tab) ? tab : 'home';
+  const newPosts = (g.posts || []).filter(p => p.at > Date.now() - DAY && p.by !== '나').length;
   return html`<div className="screen">
     <div className="topbar tbrel"><button className="backbtn" onClick=${back}>${I.back}뒤로</button>
       <button className="dots tb-dots" aria-label="모임 메뉴" aria-expanded=${menu} onClick=${() => setMenu(!menu)}>⋯</button>
       ${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div><div className="daymenu tbmenu">
         <button className="dm-b" onClick=${() => { setMenu(false); setIntro(true); }}>모임 소개 보기</button>
+        ${staff ? html`<button className="dm-b" onClick=${() => { setMenu(false); editGroup(g); }}>모임 정보 고치기</button>` : null}
         <button className="dm-b" onClick=${() => { setMenu(false); setTab('mem'); setInviting(true); }}>초대하기</button>
         <button className="dm-b" onClick=${() => { setMenu(false); muteGroup(g.id); }}>${g.mute ? '알림 켜기' : '알림 끄기'}</button>
         <button className="dm-b" onClick=${() => { setMenu(false); hideGroupHome(g.id); }}>${g.hideHome ? '홈에 다시 보이기' : '홈에서 숨기기'}</button>
         <button className="dm-b" onClick=${() => { setMenu(false); pinGroup(g.id); }}>${g.pinned ? '고정 풀기' : '모임 목록 맨 앞에 고정'}</button>
         <button className="dm-b danger" onClick=${() => { setMenu(false); setAskLeave(true); }}>모임 나가기</button></div>` : null}</div>
     <button className="ghead" onClick=${() => setIntro(true)}><${GroupBadge} g=${g} size=${48}/><span className="gh-t"><b>${g.name}</b>
-      <span className="sub">${g.members.length + 1}명${last ? ` · 마지막 모임 ${relDay(last)}` : ''}${g.mute ? ' · 알림 꺼짐' : ''}${g.hideHome ? ' · 홈에서 숨김' : ''}</span></span><span className="chev">소개 ›</span></button>
-    ${askLeave ? html`<div className="confirm"><span>모임에서 나갈까요? 지금까지 기록은 ${ME.name} 기록장에 그대로 남아요.</span>
-      <div className="r"><button className="btn danger" onClick=${() => leaveGroup(g.id)}>나가기</button><button className="btn" onClick=${() => setAskLeave(false)}>취소</button></div></div>` : null}
+      <span className="sub">${[modeText(x.modes), placeText(x), `${memCount(g).toLocaleString()}명`, g.mute ? '알림 꺼짐' : null, g.hideHome ? '홈에서 숨김' : null].filter(Boolean).join(' · ')}</span></span><span className="chev">소개 ›</span></button>
+    ${askLeave ? html`<div className="confirm">${g.owner && g.members.length ? html`<span>모임장은 바로 나갈 수 없어요. 멤버 중 한 명에게 모임장을 넘긴 뒤 나갈 수 있어요.</span>
+      <div className="r"><button className="btn primary" onClick=${() => { setAskLeave(false); setTab('mem'); setManage(true); }}>모임장 넘기러 가기</button><button className="btn" onClick=${() => setAskLeave(false)}>취소</button></div>` :
+      html`<span>모임에서 나갈까요? 쓴 글은 남고, 지금까지 기록은 ${ME.name} 기록장에 그대로 있어요.</span>
+      <div className="r"><button className="btn danger" onClick=${() => leaveGroup(g.id)}>나가기</button><button className="btn" onClick=${() => setAskLeave(false)}>취소</button></div>`}</div>` : null}
     ${isDec && ps.some(p => p.date.startsWith(String(new Date().getFullYear()))) ? html`<div className="gyear">올해 ${g.name} 결산이 나왔어요 · 기록 탭 순위에서 보기</div>` : null}
-    <div className="seg tabs gtabs" role="tablist">${TABS2.map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}${k === 'plan' && nextEv && nextEv.date === today() ? html`<span className="tdot" aria-label="오늘 약속"></span>` : null}</button>`)}</div>
+    <div className="seg tabs gtabs" role="tablist">${TABS2.map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${cur === k} onClick=${() => setTab(k)}>${l}${k === 'plan' && nextEv && nextEv.date === today() ? html`<span className="tdot" aria-label="오늘 일정"></span>` : k === 'board' && newPosts ? html`<span className="tdot" aria-label="새 글"></span>` : null}</button>`)}</div>
 
-    ${tab === 'plan' || tab === 'chat' ? html`<div className="pvline">미리보기예요. 약속·참석·대화는 지금 이 기기에만 저장되고, 다른 멤버에게는 정식 버전부터 보여요.</div>` : null}
-    ${tab === 'plan' ? html`<${PlanTab} g=${g} st=${st} upGroup=${upGroup} say=${say}/>` : null}
-    ${tab === 'chat' ? html`<${ChatTab} g=${g} st=${st} upGroup=${upGroup} toPlan=${() => setTab('plan')}/>` : null}
+    ${cur === 'board' || cur === 'plan' || cur === 'chat' ? html`<div className="pvline">미리보기예요. 글·참석·대화는 지금 이 기기에만 저장되고, 다른 멤버에게는 정식 버전부터 보여요.</div>` : null}
+    ${cur === 'home' ? html`<${GroupHome} g=${g} st=${st} upGroup=${upGroup} say=${say} open=${open} setTab=${setTab} setPost=${setPost} setWrite=${setWrite} setMk=${setMk} counts=${counts} ps=${ps} editInfo=${() => editGroup(g)} invite=${() => { setTab('mem'); setInviting(true); }} setWantSheet=${setWantSheet}/>` : null}
+    ${cur === 'board' ? html`<${BoardTab} g=${g} st=${st} upGroup=${upGroup} say=${say} open=${open} post=${post} setPost=${setPost} write=${write} setWrite=${setWrite} report=${report}/>` : null}
+    ${cur === 'plan' ? html`<${PlanTab} g=${g} st=${st} upGroup=${upGroup} say=${say} mk=${mk} setMk=${setMk}/>` : null}
+    ${cur === 'chat' ? html`<${ChatTab} g=${g} st=${st} upGroup=${upGroup} toPlan=${() => setTab('plan')}/>` : null}
 
-    ${tab === 'log' ? html`${ps.length ? html`<div className="seg tabs lrseg" role="tablist">${[[false, '날짜별'], [true, '순위']].map(([k, l]) => html`<button key=${l} role="tab" aria-pressed=${showRank === k} onClick=${() => setShowRank(k)}>${l}</button>`)}</div>` : null}${gids.length > 1 ? html`<${GameFilter} counts=${counts} game=${game} setGame=${setGame}/>` : null}
-      <div className="logbar"><span className="lb-sum">${game ? `${GAME[game].ko}만 보고 있어요` : ''}</span>
-</div>
+    ${cur === 'log' ? html`${ps.length ? html`<div className="seg tabs lrseg" role="tablist">${[[false, '날짜별'], [true, '순위']].map(([k, l]) => html`<button key=${l} role="tab" aria-pressed=${showRank === k} onClick=${() => setShowRank(k)}>${l}</button>`)}</div>` : null}${gids.length > 1 ? html`<${GameFilter} counts=${counts} game=${game} setGame=${setGame}/>` : null}
+      <div className="logbar"><span className="lb-sum">${game ? `${GAME[game].ko}만 보고 있어요` : '기록할 때 이 모임을 고른 판만 모여요'}</span></div>
       ${showRank ? html`<div className="rankbox">${game && COOP.has(game) ? html`<div className="note">협력 게임이라 순위가 없어요. 우리가 ${rankPs.filter(p => p.coop === 'win').length}승 ${rankPs.filter(p => p.coop === 'lose').length}패예요.</div>` :
         board.length ? html`<div className="rankhd">이긴 비율 순${!game && minN > 1 ? ` · ${minN}판 이상` : ''}</div>${(allRank ? board : board.slice(0, 10)).map((r, i) => html`<button key=${r.n} className="rank" onClick=${() => r.n !== '나' && openPerson(r.n)}><span className="i">${board.findIndex(x => Math.round(x.w / x.vs * 1000) === Math.round(r.w / r.vs * 1000)) + 1}</span><${Avatar} name=${nm(r.n)} size=${28}/>
             <span className="n">${nm(r.n)}</span><span className="v"><b>${r.vs ? (Math.round(r.w / r.vs * 1000) / 10) + '%' : '–'}</b></span></button>`)}
@@ -3679,22 +4395,16 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
 ` :
         html`<div className="note">아직 순위를 낼 만큼 판이 없어요.</div>`}</div>` : null}
       ${showRank ? null : html`<${DayList} inGroupView key=${game || 'all'} plays=${rankPs} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}
-        empty=${html`<${Empty} title="아직 모임 기록이 없어요">기록할 때 모임 사람을 한 명이라도 넣으면 여기에 모여요.<//>`}/>`}` : null}
+        empty=${html`<${Empty} title="이 모임으로 남긴 기록이 없어요">기록할 때 '어느 모임 기록이에요?'에서 이 모임을 고르면 여기에 모여요.<//>`}/>`}` : null}
 
-    ${tab === 'mem' ? html`
-      ${inviting ? html`<div className="invitebox">
-        ${cands.length ? html`<${PickList} cands=${cands} sel=${[]} onTog=${n => inviteToGroup(g.id, n)} label=${n => '+ ' + n}/>` : null}
-        <div className="invite pv"><span>초대 링크는 정식 버전에서 생겨요</span><button className="btn" disabled>링크 복사</button></div>
-        <div className="note">링크로 들어온 사람은 모임 소개를 먼저 보고 가입해요. 위에서 고른 사람은 이 기기의 모임에만 들어가요.</div></div>` : html`<button className="btn block" style=${{ marginBottom: 10 }} onClick=${() => setInviting(true)}>${I.plus}초대하기</button>`}
-      ${g.owner && (g.requests || []).length ? html`<div className="reqbox"><div className="rq-h">가입 신청 ${g.requests.length}</div>${g.requests.map(n => html`<div key=${n} className="mrow static"><${Avatar} name=${n} size=${28}/><span className="n">${n}</span>
-        <button className="btn sm primary" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => y !== n), members: [...x.members, n] })); say(`${n}님을 받았어요`); }}>받기</button><button className="btn sm ghost" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => y !== n) })); say('신청을 거절했어요'); }}>거절</button></div>`)}</div>` : null}
-      <div className="memtools">${g.members.length >= 20 ? html`<input className="input" type="search" placeholder="멤버 찾기" value=${mq} onInput=${e => setMq(e.target.value)}/>` : null}
-        <${Seg} value=${msort} options=${[['plays', '많이 온 순'], ['name', '이름순']]} onChange=${setMsort} label="정렬"/></div>
-      ${g.owner ? html`<div className="ownbar"><span className="muted">${ME.name}님이 모임장이에요</span><button className="linkbtn" onClick=${() => setManage(!manage)}>${manage ? '관리 끝' : '멤버 관리'}</button></div>` : null}
-      ${mlist.slice(0, mlim).map(r => html`<div key=${r.n} className="mrow-w"><button className="mrow" onClick=${() => r.n !== '나' && openPerson(r.n)}><${Avatar} name=${nm(r.n)} size=${28}/>
-        <span className="n">${nm(r.n)}${r.n === '나' && g.owner ? html` <span className="chip">모임장</span>` : null}</span><span className="v">${r.played ? `같이 ${r.played}판` : '아직 같이 안 함'}</span></button>
-        ${manage && r.n !== '나' ? html`<button className="btn sm ghost danger" onClick=${() => { upGroup(g.id, x => ({ ...x, members: x.members.filter(y => y !== r.n) })); say(`${r.n}님을 내보냈어요. 기록은 그대로 남아요`); }}>내보내기</button>` : null}</div>`)}
-      ${mlist.length > mlim ? html`<${MoreBtn} left=${mlist.length - mlim} unit="명" onClick=${() => setMlim(mlim + 60)}/>` : null}` : null}
+    ${cur === 'mem' ? html`<${MemTab} g=${g} st=${st} upGroup=${upGroup} say=${say} openPerson=${openPerson} inviteToGroup=${inviteToGroup} inviting=${inviting} setInviting=${setInviting} manage=${manage} setManage=${setManage} transfer=${transfer}/>` : null}
+
+    ${write ? html`<${PostSheet} g=${g} kind0=${write} staff=${staff} close=${() => setWrite(null)} onSave=${p => { upGroup(g.id, y => ({ ...y, posts: [p, ...(y.posts || [])] })); setWrite(null); setTab('board'); setPost(p.id); say(p.kind === 'recruit' ? '모집 글을 올렸어요' : '글을 올렸어요'); }}/>` : null}
+    ${wantSheet ? html`<${WantSheet} g=${g} close=${() => setWantSheet(false)} onSave=${w => { upGroup(g.id, y => ({ ...y, wants: [w, ...(y.wants || [])] })); setWantSheet(false); say('게임을 제안했어요 · 멤버들이 관심을 누를 수 있어요'); }}/>` : null}
+    ${rep ? html`<${Sheet} title="신고하기" close=${() => setRep(null)}>
+      <div className="hint" style=${{ margin: '4px 0 10px' }}>운영진이 보고 처리해요. 신고한 ${rep.what === 'post' ? '글' : '댓글'}은 ${ME.name}님에게 바로 안 보여요.</div>
+      <div className="rp-pick">${REPORT_WHY.map(w => html`<button key=${w} className="prow" onClick=${() => { upGroup(g.id, y => ({ ...y, myHidden: [...(y.myHidden || []), rep.ref], reports: [...(y.reports || []), { id: 'r' + uid(), ...rep, reason: w, by: '나', at: Date.now(), state: 'review' }] })); setRep(null); say('신고했어요 · 운영진이 확인해요'); }}>${w}</button>`)}</div>
+    <//>` : null}
   </div>`;
 }
 
@@ -3901,7 +4611,9 @@ function GroupPicker({ st, people, toggle, freq }) {
     ${g ? html`<${GroupRow} g=${g} people=${people} toggle=${toggle} freq=${freq}/>` : null}
   </div>`;
 }
-function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editCouple, openPerson }) {
+function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editCouple, openPerson, openPub, toggleSaveGroup, setMyArea }) {
+  const [gsec, setGsec] = useState(() => { try { return localStorage.getItem('bg-gsec') || 'mine'; } catch (e) { return 'mine'; } });
+  const pickG = k => { setGsec(k); try { localStorage.setItem('bg-gsec', k); } catch (e) {} };
   const [sec, setSec] = useState(() => { try { return localStorage.getItem('bg-hub') || 'grp'; } catch (e) { return 'grp'; } });
   const pickSec = k => { setSec(k); try { localStorage.setItem('bg-hub', k); } catch (e) {} };
   const [q, setQ] = useState('');
@@ -3921,17 +4633,19 @@ function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editC
     ${sec === 'cpl' ? html`${(st.couples || []).length ? html`<div className="cpllist">${st.couples.map(c => html`<${CoupleCard} key=${c.id} c=${c} st=${st} onOpen=${() => openCouple(c.id)}/>`)}</div>` :
         html`<${Empty} title="커플 공간이 아직 없어요" action=${html`<button className="btn primary" onClick=${() => editCouple(null)}>커플 만들기</button>`}>둘이 한 게임, 맞대결, 처음 만난 날을 따로 모아 봐요. 모임과는 따로 있어요.<//>`}` : null}
     ${sec === 'fr' ? html`<${PeopleList} st=${st} openPerson=${openPerson}/>` : null}
-    ${sec !== 'grp' ? null : html`
+    ${sec === 'grp' ? html`<div className="seg tabs gsub" role="tablist">${[['mine', `내 모임${(st.groups || []).length ? ' ' + st.groups.length : ''}`], ['find', '모임 찾기']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${gsec === k} onClick=${() => pickG(k)}>${l}</button>`)}</div>` : null}
+    ${sec === 'grp' && gsec === 'find' ? html`<${FindGroups} st=${st} openPub=${openPub} newGroup=${newGroup} toggleSaveGroup=${toggleSaveGroup} setMyArea=${setMyArea}/>` : null}
+    ${sec !== 'grp' || gsec === 'find' ? null : html`
     <div className="stickybar"><div className="search">${I.games}<input type="search" placeholder="모임 이름으로 찾기" value=${q} onInput=${e => { setQ(e.target.value); setGlim(50); }}/></div>
-      <${Seg} value=${sort} options=${[['soon', '약속 가까운 순'], ['recent', '최근 모인 순'], ['name', '이름순']]} onChange=${setSort} label="정렬"/></div>
+      <${Seg} value=${sort} options=${[['soon', '일정 가까운 순'], ['recent', '최근 기록 순'], ['name', '이름순']]} onChange=${setSort} label="정렬"/></div>
     ${gs.slice(0, glim).map(g => html`<div key=${g.id} className="glrow"><button className="gl-main" onClick=${() => openGroup(g.id)}>
         <${GroupBadge} g=${g} size=${40}/>
-        <span className="n">${g.name}${g.pinned ? html` <span className="pinic" aria-label="고정함">${I.pin}</span>` : null}${g.mute ? html` <span className="muted-ic" aria-label="알림 꺼짐">🔕</span>` : null}${(() => { const e = nextEv[g.id]; if (!e) return html`<span className="d">약속 없음${last[g.id] ? ` · 마지막 모임 ${relDay(last[g.id])}` : ''}</span>`;
+        <span className="n">${g.name}${g.pinned ? html` <span className="pinic" aria-label="고정함">${I.pin}</span>` : null}${g.mute ? html` <span className="muted-ic">알림 끔</span>` : null}${canRun(g) && (g.requests || []).length ? html` <span className="gl-req">신청 ${g.requests.length}</span>` : null}${(() => { const e = nextEv[g.id]; if (!e) { const lp = (g.posts || []).reduce((m, p) => Math.max(m, p.at), 0); return html`<span className="d">${[modeText(gx(g).modes), lp ? `새 글 ${agoT(lp)}` : last[g.id] ? `마지막 기록 ${relDay(last[g.id])}` : null].filter(Boolean).join(' · ')}</span>`; }
           const me = (e.going || []).includes('나') ? 'go' : (e.no || []).includes('나') ? 'no' : (e.poll && (e.poll.votes || {})['나'] != null) ? 'vote' : null;
           const when = e.date ? `${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}` : '시간 투표 중';
           return html`<span className="d gl-ev"><span className=${'gl-when' + (e.date === today() ? ' td' : '')}>${when}</span>${e.place ? ` · ${e.place}` : ''}<span className=${'gl-me ' + (me || 'none')}>${me === 'go' ? '가요' : me === 'no' ? '못 가요' : me === 'vote' ? '투표함' : '답 안 함'}</span></span>`; })()}</span></button></div>`)}
     ${gs.length > glim ? html`<${MoreBtn} left=${gs.length - glim} unit="개" onClick=${() => setGlim(glim + 50)}/>` : null}
-    ${!gs.length ? html`<div className="note">${q ? `'${q}' 모임이 없어요.` : '아직 모임이 없어요. 동호회나 회사 모임처럼 꾸준히 모이는 곳을 만들어요. 친구 몇 명과 한 번 한 게임은 모임 없이 기록하면 돼요.'}</div>` : null}`}
+    ${!gs.length ? html`<div className="note">${q ? `'${q}' 모임이 없어요.` : '아직 들어간 모임이 없어요. 모임 찾기에서 관심 있는 모임을 찾거나, 직접 만들어 보세요. 만나지 않고 대화만 하는 모임도 괜찮아요.'}</div>` : null}`}
   </div>`;
 }
 // 친구: 사람 한 명씩. 같이 한 판 수, 맞대결, 누르면 친구별 기록
@@ -4094,9 +4808,20 @@ function App() {
   const openGroup = id => { setStack(s => ({ ...s, [tab]: 'g:' + id })); window.scrollTo(0, 0); };
   const newGroup = () => setSheet({ kind: 'newgroup' });
   const createGroup = g => { update(s => ({ ...s, groups: [...(s.groups || []), g] })); setSheet(null); openGroup(g.id);
-    const app = g.members.filter(n => st.friends[n]); say('모임을 만들었어요. 모임장은 ' + ME.name + '님이에요'); };
+    const app = g.members.filter(n => st.friends[n]); say(g.hidden ? '모임을 만들었어요. 초대한 사람만 들어올 수 있어요' : '모임을 만들었어요. 모임 찾기에도 보여요'); };
   const leaveGroup = id => { update(s => ({ ...s, groups: (s.groups || []).filter(g => g.id !== id) })); back(); say('모임에서 나왔어요. 기록은 그대로 있어요'); };
   const inviteToGroup = (id, n) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, members: [...g.members, n] } : g) })); say(`${n}님을 넣었어요 · 미리보기라 알림은 아직 안 가요`); };
+  const openPub = id => { setStack(s => ({ ...s, [tab]: 'gp:' + id })); window.scrollTo(0, 0); };
+  const toggleSaveGroup = id => { const had = (st.savedGroups || []).includes(id); update(s => ({ ...s, savedGroups: had ? s.savedGroups.filter(x => x !== id) : [id, ...(s.savedGroups || [])] })); say(had ? '찜을 풀었어요' : '찜했어요 · 모임 찾기의 \'찜\'에서 다시 봐요'); };
+  const setMyArea = a => update(s => ({ ...s, myArea: a }));
+  const joinPub = p => { const d = pubDetail(p); const members = pubMembers(p);
+    update(s => ({ ...s, groups: [...(s.groups || []), { ...p, ...d, members, at: daysAgo(p.made || 0), owner: false, joinedAt: { '나': today() }, chat: [] }], joinReq: Object.fromEntries(Object.entries(s.joinReq || {}).filter(([k]) => k !== p.id)) }));
+    setStack(s => ({ ...s, [tab]: 'g:' + p.id })); window.scrollTo(0, 0); say('가입했어요. 일정 참석은 일정마다 따로 골라요'); };
+  const askPub = (p, ans) => { update(s => ({ ...s, joinReq: { ...(s.joinReq || {}), [p.id]: { at: today(), ans } } })); say('가입 신청을 보냈어요'); };
+  const cancelAsk = id => { update(s => { const j = { ...(s.joinReq || {}) }; delete j[id]; return { ...s, joinReq: j }; }); say('가입 신청을 취소했어요'); };
+  const visitEv = e => { const had = (st.visitEv || {})[e.id]; update(s => { const v = { ...(s.visitEv || {}) }; if (had) delete v[e.id]; else v[e.id] = true; return { ...s, visitEv: v }; }); say(had ? '신청을 취소했어요' : '이 일정만 신청했어요 · 모임 가입은 안 돼요'); };
+  const editGroup = g => setSheet({ kind: 'newgroup', edit: g });
+  const saveGroupInfo = (id, info) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, ...info } : g) })); setSheet(null); say('모임 정보를 고쳤어요'); };
   const openCouple = id => { setStack(s => ({ ...s, [tab]: 'c:' + id })); window.scrollTo(0, 0); };
   const editCouple = c => setSheet({ kind: 'couple', c });
   const upCouple = (id, fn, msg) => { update(s => ({ ...s, couples: s.couples.map(x => x.id === id ? fn(x) : x) })); if (msg) say(msg); };
@@ -4146,11 +4871,14 @@ function App() {
   const toggleWish = id => { const had = (st.wish || []).includes(id); update(s => ({ ...s, wish: had ? s.wish.filter(x => x !== id) : [id, ...(s.wish || [])] })); say(had ? '사고 싶은 목록에서 뺐어요' : '사고 싶은 목록에 담았어요'); };
   const openShelfImg = () => setSheet({ kind: 'shelfimg' });
   const qa = (gid, fn) => update(s => ({ ...s, qna: { ...(s.qna || {}), [gid]: fn(qnaOf(s, gid)) } }));
-  const props = { upCouple, qa, st, allReviews, open, startPlay, startReview, go, dismiss, removeFromMine, editDay, openPerson, removeFromId, hideReview, setShelfInfo, openSettings, shareDay, openGroup, newGroup, pickWhat, openYear, openBarcode, leaveGroup, inviteToGroup, say, openCouple, editCouple, openChar, cm, openGroups, pinGroup, muteGroup, hideGroupHome, upGroup, toggleWish, openShelfImg, updCouple };
+  const props = { upCouple, qa, st, allReviews, open, startPlay, startReview, go, dismiss, removeFromMine, editDay, openPerson, removeFromId, hideReview, setShelfInfo, openSettings, shareDay, openGroup, newGroup, pickWhat, openYear, openBarcode, leaveGroup, inviteToGroup, say, openCouple, editCouple, openChar, cm, openGroups, pinGroup, muteGroup, hideGroupHome, upGroup, editGroup, openPub, toggleSaveGroup, setMyArea, toggleWish, openShelfImg, updCouple };
 
   let screen;
   if (detail === 'gl') screen = html`<${GroupsList} ...${props} back=${back}/>`;
   else if (typeof detail === 'string' && detail.startsWith('c:')) screen = html`<${CoupleScreen} key=${detail} cid=${detail.slice(2)} ...${props} back=${back}/>`;
+  else if (typeof detail === 'string' && detail.startsWith('gp:')) { const pid = detail.slice(3); const mineG = (st.groups || []).find(g => g.id === pid); const p = mineG || pubGroups(st).find(g => g.id === pid);
+    screen = mineG ? html`<${GroupScreen} key=${'g:' + pid} gid=${pid} ...${props} back=${back}/>` : p ? html`<${GroupIntro} key=${detail} g=${p} st=${st} back=${back} open=${open} say=${say} saved=${(st.savedGroups || []).includes(pid)} toggleSave=${() => toggleSaveGroup(pid)}
+      req=${(st.joinReq || {})[pid]} onJoin=${() => joinPub(p)} onAsk=${ans => askPub(p, ans)} onCancelAsk=${() => cancelAsk(pid)} visit=${st.visitEv || {}} onVisit=${visitEv}/>` : html`<div className="screen"><button className="backbtn" onClick=${back}>${I.back}뒤로</button><${Empty} title="모임이 없어요">없어진 모임이에요.<//></div>`; }
   else if (typeof detail === 'string' && detail.startsWith('g:')) screen = html`<${GroupScreen} key=${detail} gid=${detail.slice(2)} ...${props} back=${back}/>`;
   else if (detail) screen = html`<${Detail} key=${detail} id=${detail} ...${props} back=${back} toggleOwn=${toggleOwn} toggleFav=${toggleFav} toggleExp=${toggleExp}/>`;
   else if (tab === 'home') screen = html`<${Home} ...${props} hq=${hq} setHq=${setHq}/>`;
@@ -4168,7 +4896,7 @@ function App() {
     ${sheet && sheet.kind === 'settings' ? html`<${SettingsSheet} st=${st} close=${() => setSheet(null)} setSettings=${setSettings} say=${say} resetTo=${resetTo}/>` : null}
     ${sheet && sheet.kind === 'char' ? html`<${CharSheet} st=${st} close=${() => setSheet(null)} onSave=${saveChar}/>` : null}
     ${sheet && sheet.kind === 'couple' ? html`<${CoupleSheet} st=${st} c=${sheet.c} close=${() => setSheet(null)} onSave=${saveCouple} onDelete=${delCouple}/>` : null}
-    ${sheet && sheet.kind === 'newgroup' ? html`<${NewGroupSheet} st=${st} close=${() => setSheet(null)} onCreate=${createGroup}/>` : null}
+    ${sheet && sheet.kind === 'newgroup' ? html`<${NewGroupSheet} st=${st} edit=${sheet.edit} close=${() => setSheet(null)} onCreate=${sheet.edit ? info => saveGroupInfo(sheet.edit.id, info) : createGroup}/>` : null}
     ${sheet && sheet.kind === 'what' ? html`<${WhatSheet} st=${st} allReviews=${allReviews} gid=${sheet.gid} who0=${sheet.who} close=${() => setSheet(null)} startPlay=${startPlay} update=${update} say=${say}/>` : null}
     ${qnaG && GAME[qnaG] ? html`<div className="qlayer" role="dialog" aria-modal="true" aria-label=${GAME[qnaG].ko + ' 규칙 질문'}><div className="ql-h"><b>${GAME[qnaG].ko} 규칙 질문</b><button className="btn" onClick=${() => setQnaG(null)}>기록으로 돌아가기</button></div><${GameQnA} id=${qnaG} st=${st} qa=${qa} say=${say} inLayer/></div>` : null}
     ${sheet && sheet.kind === 'saved' ? html`<${SavedSheet} st=${st} date=${sheet.date} plays=${sheet.plays} synced=${sheet.synced} editDay=${editDay} close=${() => setSheet(null)} share=${() => setSheet({ kind: 'share', date: sheet.date })} openCouple=${openCouple}/>` : null}
