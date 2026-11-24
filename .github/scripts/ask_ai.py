@@ -62,10 +62,10 @@ def ask_gemini(meta, prompt, texts, images):
     parts = [{"text": prompt}] + [{"text": t} for t in texts]
     for p, mime, b64 in images:
         parts += [{"text": f"그림: {p}"}, {"inline_data": {"mime_type": mime, "data": b64}}]
-    models = [meta["model"]] if meta["model"] else ["gemini-flash-latest", "gemini-3.8-flash", "gemini-flash-lite-latest", "gemini-pro-latest"]
+    models = [meta["model"]] if meta["model"] else ["gemini-flash-lite-latest", "gemini-flash-latest"]
     errors = []
     for m in models:
-      for attempt in range(4):
+      for attempt in range(5):
         try:
             r = post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
                      {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]},
@@ -74,8 +74,8 @@ def ask_gemini(meta, prompt, texts, images):
             return m, out
         except urllib.error.HTTPError as e:
             errors.append(f"{m}: {e.code} {e.read().decode(errors='replace')[:900]}")
-            if e.code in (500, 503) and attempt < 3:
-                time.sleep(20 * (attempt + 1)); continue
+            if e.code in (500, 503) and attempt < 4:
+                time.sleep(30 * (attempt + 1)); continue
             break
         except Exception as e:
             errors.append(f"{m}: {e}"); break
