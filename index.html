@@ -1973,19 +1973,32 @@ async function readMedia(files, room) {
   }
   return out;
 }
+// 댓글·대화·답변에 붙이는 사진·영상: 입력칸 옆 카메라 버튼 + 보낼 것 미리보기
+const CAM = html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg>`;
+function AttachBtn({ list, set, max }) {
+  const room = (max || 4) - (list || []).length;
+  return html`<label className=${'attbtn' + (room <= 0 ? ' off' : '')} aria-label="사진·영상 붙이기">${CAM}${(list || []).length ? html`<span className="attn">${list.length}</span>` : null}<input type="file" accept="image/*,video/*" multiple disabled=${room <= 0} onChange=${async e => { const f = e.target.files; e.target.value = ''; try { set([...(list || []), ...(await readMedia(f, room))]); } catch (er) {} }}/></label>`;
+}
+function AttachStrip({ list, set }) {
+  if (!list || !list.length) return null;
+  return html`<div className="photos edit attstrip">${list.map((m, i) => html`<span key=${i} className="ph"><${Thumb} m=${m} alt=${`붙인 사진 ${i + 1}`}/><button type="button" aria-label="빼기" onClick=${() => set(list.filter((_, j) => j !== i))}>×</button></span>`)}</div>`;
+}
+const dropTmp = x => Array.isArray(x) ? x.filter(m => !(m && m.tmp)).map(dropTmp) : x && typeof x === 'object' && !(x instanceof Date) ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, dropTmp(v)])) : x;
 function stripTmp(st) {
   const ok = m => !(m && m.tmp);
   const fix = a => (a || []).filter(ok);
   const photos = {}; Object.entries(st.photos || {}).forEach(([d, a]) => { const x = fix(a); if (x.length) photos[d] = x; });
-  return { ...st, photos, plays: st.plays.map(p => p.media ? { ...p, media: fix(p.media) } : p), reviews: st.reviews.map(r => r.media ? { ...r, media: fix(r.media) } : r) };
+  return { ...st, photos, plays: st.plays.map(p => p.media ? { ...p, media: fix(p.media) } : p), reviews: st.reviews.map(r => r.media ? { ...r, media: fix(r.media) } : r), groups: dropTmp(st.groups || []), qna: dropTmp(st.qna || {}), comments: dropTmp(st.comments || {}) };
 }
 function Thumb({ m, alt }) {
   return isVid(m) ? html`<span className="vthumb"><video src=${m.v} muted playsInline preload="metadata"></video><span className="play">▶</span></span>` : html`<img src=${m} alt=${alt}/>`;
 }
-function MediaView({ items, small, label, grid }) {
+function MediaView({ items, small, label, grid, post }) {
   const [at, setAt] = useState(null);
   if (!items || !items.length) return null;
-  return html`<div className=${'photos' + (small ? ' sm' : '') + (grid ? ' mgrid' : '')}>${items.map((m, i) => html`<button key=${i} className="mthumb" onClick=${() => setAt(i)} aria-label=${`${label || '사진'} ${i + 1} 크게 보기`}><${Thumb} m=${m} alt=${`${label || '사진'} ${i + 1}`}/></button>`)}
+  // post: 카페·모임 글처럼 1장은 크게, 2장은 반반, 3장은 큰 것 하나+둘, 4장 넘으면 2×2에 +N
+  const shown = post ? items.slice(0, 4) : items;
+  return html`<div className=${'photos' + (small ? ' sm' : '') + (grid ? ' mgrid' : '') + (post ? ` mpost n${Math.min(4, items.length)}` : '')}>${shown.map((m, i) => html`<button key=${i} className="mthumb" onClick=${() => setAt(i)} aria-label=${`${label || '사진'} ${i + 1} 크게 보기`}><${Thumb} m=${m} alt=${`${label || '사진'} ${i + 1}`}/>${post && i === 3 && items.length > 4 ? html`<span className="mmore">+${items.length - 4}</span>` : null}</button>`)}
     ${at != null ? ReactDOM.createPortal(html`<div className="lightbox" role="dialog" aria-label="크게 보기" onClick=${() => setAt(null)}>
       <div className="lb-in" onClick=${e => e.stopPropagation()}>${isVid(items[at]) ? html`<video src=${items[at].v} controls autoPlay playsInline></video>` : html`<img src=${items[at]} alt=""/>`}</div>
       ${items.length > 1 ? html`<div className="lb-nav" onClick=${e => e.stopPropagation()}><button onClick=${() => setAt((at - 1 + items.length) % items.length)} aria-label="이전">${I.left}</button><span className="num">${at + 1} / ${nf(items.length)}</span><button onClick=${() => setAt((at + 1) % items.length)} aria-label="다음">${I.right}</button></div>` : null}
@@ -2315,7 +2328,7 @@ function ReviewItem({ r, st, open, showGame, hideReview, cm }) {
   const [menu, setMenu] = useState(false);
   const n = mine ? st.plays.filter(p => p.gameId === r.gameId).length : r.plays;
   const [showC, setShowC] = useState(false);
-  const [ct, setCt] = useState('');
+  const [ct, setCt] = useState(''); const [catt, setCatt] = useState([]);
   const [cmenu, setCmenu] = useState(null);
   const [clim, setClim] = useState(5);
   const hid = st.hiddenComments || {};
@@ -2336,11 +2349,12 @@ function ReviewItem({ r, st, open, showGame, hideReview, cm }) {
       ${cs.length > clim ? html`<button className="linkbtn cmore" onClick=${() => setClim(clim + 20)}>이전 댓글 ${nf(Math.min(20, cs.length - clim))}개 더 보기 <span className="muted">· 모두 ${nf(cs.length)}개</span></button>` : null}
       ${cs.slice(-clim).map(c => { const me = c.author === 'me'; const nm = me ? st.me : c.author;
         return html`<div key=${c.id} className="cmt"><${Avatar} name=${nm} size=${22}/><div className="cb"><div className="ch"><b>${nm}</b><span className="dt">${relDay(c.date)}</span>
-          <button className="dots" aria-label="댓글 메뉴" onClick=${() => setCmenu(cmenu === c.id ? null : c.id)}>⋯</button></div><div className="ct">${c.text}</div>
+          <button className="dots" aria-label="댓글 메뉴" onClick=${() => setCmenu(cmenu === c.id ? null : c.id)}>⋯</button></div><div className="ct">${c.text}</div><${MediaView} small items=${c.media} label="댓글 사진"/>
           ${cmenu === c.id ? html`<div className="rmenu">${me ? html`<button className="btn danger" onClick=${() => cm.del(r.id, c.id)}>지우기</button>` :
             html`<button className="btn" onClick=${() => cm.hide(c, false)}>숨기기</button><button className="btn danger" onClick=${() => cm.hide(c, true)}>신고하기</button><button className="btn ghost danger" onClick=${() => cm.block(c.author)}>${c.author}님 차단</button>`}</div>` : null}</div></div>`; })}
-      <form className="addrow cform" onSubmit=${e => { e.preventDefault(); if (ct.trim()) { cm.add(r.id, ct.trim()); setCt(''); } }}>
-        <input className="input" placeholder=${mine ? '댓글 남기기' : `${name}님 평가에 댓글`} maxLength="300" value=${ct} onInput=${e => setCt(e.target.value)}/><button className="btn" type="submit" disabled=${!ct.trim()}>등록</button></form>
+      <${AttachStrip} list=${catt} set=${setCatt}/>
+      <form className="addrow cform" onSubmit=${e => { e.preventDefault(); if (ct.trim() || catt.length) { cm.add(r.id, ct.trim(), catt); setCt(''); setCatt([]); } }}>
+        <${AttachBtn} list=${catt} set=${setCatt}/><input className="input" placeholder=${mine ? '댓글 남기기' : `${name}님 평가에 댓글`} maxLength="300" value=${ct} onInput=${e => setCt(e.target.value)}/><button className="btn" type="submit" disabled=${!ct.trim() && !catt.length}>등록</button></form>
     </div>` : null}
   </div>`;
 }
@@ -2478,7 +2492,7 @@ function GameQnA({ id, st, qa, say, inLayer }) {
   const [sort, setSort] = useState('help');
   const [openQ, setOpenQ] = useState(null);
   const [lim, setLim] = useState(10);
-  const [ans, setAns] = useState('');
+  const [ans, setAns] = useState(''); const [qatt, setQatt] = useState([]); const [aatt, setAatt] = useState([]);
   const [awake, setAwake] = useState(false); const lock = useRef(null);
   useEffect(() => () => { try { lock.current && lock.current.release(); } catch (e) {} }, []);
   const toggleAwake = async () => { try { if (awake) { lock.current && await lock.current.release(); lock.current = null; setAwake(false); return; } lock.current = await navigator.wakeLock.request('screen'); setAwake(true); say('게임하는 동안 화면이 안 꺼져요'); } catch (e) { say('이 브라우저에서는 화면 켜 두기가 안 돼요'); } };
@@ -2488,9 +2502,10 @@ function GameQnA({ id, st, qa, say, inLayer }) {
   const helpN = q => q.answers.reduce((m, a) => Math.max(m, (a.up || []).length), 0);
   const list = qs.filter(q => (exp === 'all' || (exp === 'base' ? !q.exp : q.exp === exp)) && hit(q))
     .sort((a, b) => sort === 'new' ? b.date.localeCompare(a.date) : sort === 'open' ? (!!a.pick - !!b.pick) || (a.answers.length - b.answers.length) || b.date.localeCompare(a.date) : helpN(b) - helpN(a) || b.date.localeCompare(a.date));
-  const post = () => { const text = t.trim(); if (text.length < 5) return; const q = { id: 'q' + uid(), author: '나', date: today(), text, exp: exp !== 'all' && exp !== 'base' ? exp : null, answers: [], pick: null, follow: true };
-    qa(id, l => [q, ...l]); setT(''); setOpenQ(q.id); say('질문을 올렸어요. 답이 달리면 알려드릴게요'); };
-  const answer = q => { const text = ans.trim(); if (!text) return; qa(id, l => l.map(x => x.id === q.id ? { ...x, answers: [...x.answers, { id: 'a' + uid(), author: '나', date: today(), text, up: [] }] } : x)); setAns(''); };
+  const post = () => { const text = t.trim(); if (text.length < 5) return; const q = { id: 'q' + uid(), author: '나', date: today(), text, media: qatt, exp: exp !== 'all' && exp !== 'base' ? exp : null, answers: [], pick: null, follow: true };
+    qa(id, l => [q, ...l]); setT(''); setQatt([]); setOpenQ(q.id); say('질문을 올렸어요. 답이 달리면 알려드릴게요'); };
+  const answer = q => { const text = ans.trim(); if (!text && !aatt.length) return; qa(id, l => l.map(x => x.id === q.id ? { ...x, answers: [...x.answers, { id: 'a' + uid(), author: '나', date: today(), text, media: aatt, up: [] }] } : x)); setAns(''); setAatt([]); };
+  
   const up = (q, a) => qa(id, l => l.map(x => x.id === q.id ? { ...x, answers: x.answers.map(y => y.id === a.id ? { ...y, up: (y.up || []).includes('나') ? y.up.filter(n => n !== '나') : [...(y.up || []), '나'] } : y) } : x));
   const pick = (q, a) => qa(id, l => l.map(x => x.id === q.id ? { ...x, pick: x.pick === a.id ? null : a.id } : x));
   const ordA = q => [...q.answers].sort((a, b) => (b.id === q.pick) - (a.id === q.pick) || (b.up || []).length - (a.up || []).length);
@@ -2499,6 +2514,7 @@ function GameQnA({ id, st, qa, say, inLayer }) {
     
     ${asking ? html`<div className="qa-ask">
       <textarea id="qa-text" className="input" rows="2" maxLength="300" placeholder="막힌 규칙을 적어 보세요. 비슷한 질문이 먼저 떠요" value=${t} onInput=${e => setT(e.target.value)} autoFocus=${!inLayer}></textarea>
+      <div className="qa-media"><${MediaEdit} items=${qatt} onChange=${setQatt} max=${4} label="사진·영상 (보드 상황)"/></div>
       <div className="qa-askrow">${inLayer ? html`<button className=${'pill sm' + (awake ? ' on' : '')} aria-pressed=${awake} onClick=${toggleAwake}>${awake ? '화면 켜 두는 중' : '화면 켜 두기'}</button>` : html`<button className="linkbtn muted" onClick=${() => { setAsking(false); setT(''); }}>닫기</button>`}
         <button className="btn primary" disabled=${t.trim().length < 5} onClick=${post}>질문 올리기</button></div>
       ${words.length ? html`<div className="qa-hint">${list.length ? `비슷한 질문 ${nf(list.length)}개를 찾았어요. 먼저 확인해 보세요.` : '비슷한 질문이 없어요. 바로 올려 보세요.'}</div>` : null}
@@ -2509,17 +2525,18 @@ function GameQnA({ id, st, qa, say, inLayer }) {
     ${list.slice(0, lim).map(q => { const isO = openQ === q.id; const best = q.pick ? q.answers.find(a => a.id === q.pick) : ordA(q)[0]; const mine = q.author === '나';
       return html`<div key=${q.id} className=${'qa-q' + (isO ? ' open' : '')}>
         <button className="qa-qh" onClick=${() => setOpenQ(isO ? null : q.id)} aria-expanded=${isO}>
-          <span className="qa-qt">${q.text}</span>
+          <span className="qa-qt">${q.text}</span>${(q.media || []).length && !isO ? html`<span className="qa-pn">사진 ${nf(q.media.length)}</span>` : null}
           <span className="qa-m">${q.exp ? html`<span className="chip">${xname(q.exp)}</span>` : null}<span>${dn(q.author)} · ${relDay(q.date)}</span>${q.answers.length ? html`<span className="qa-n" aria-label=${`답 ${nf(q.answers.length)}개`}>${I.chat} ${nf(q.answers.length)}</span>` : html`<span className="qa-wait qa-n">아직 답이 없어요</span>`}</span>
           ${!isO && best ? html`<span className="qa-best">${q.pick ? html`<span className="qa-ok">고른 답</span>` : null}${best.text}</span>` : null}</button>
-        ${isO ? html`<div className="qa-as">${ordA(q).map(a => html`<div key=${a.id} className=${'qa-a' + (a.id === q.pick ? ' chosen' : '')}>
+        ${isO ? html`<div className="qa-as"><${MediaView} small items=${q.media} label="질문 사진"/>${ordA(q).map(a => html`<div key=${a.id} className=${'qa-a' + (a.id === q.pick ? ' chosen' : '')}>
             ${a.id === q.pick ? html`<div className="qa-ok">고른 답</div>` : null}
-            <div className="qa-at">${a.text}</div>
+            <div className="qa-at">${a.text}</div><${MediaView} small items=${a.media} label="답 사진"/>
             <div className="qa-am"><span>${dn(a.author)} · ${relDay(a.date)}</span>
               <button className=${'qa-up' + ((a.up || []).includes('나') ? ' on' : '')} aria-pressed=${(a.up || []).includes('나')} onClick=${() => up(q, a)}>도움돼요${(a.up || []).length ? ` ${(a.up || []).length}` : ''}</button>
               ${mine && a.author !== '나' ? html`<button className="linkbtn" onClick=${() => pick(q, a)}>${a.id === q.pick ? '고른 답 취소' : '이 답으로 정하기'}</button>` : null}</div></div>`)}
           ${!q.answers.length ? html`<div className="note" style=${{ margin: '4px 0 8px' }}>${mine ? '이 게임을 해봤거나 가진 사람들에게 먼저 보여요. 답이 달리면 알려드릴게요.' : '아직 답이 없어요. 알고 있다면 알려 주세요.'}</div>` : null}
-          <form className="addrow" onSubmit=${e => { e.preventDefault(); answer(q); }}><input className="input" placeholder=${mine ? '덧붙일 말' : '답 남기기'} maxLength="500" value=${ans} onInput=${e => setAns(e.target.value)}/><button className="btn" type="submit" disabled=${!ans.trim()}>등록</button></form>
+          <${AttachStrip} list=${aatt} set=${setAatt}/>
+          <form className="addrow" onSubmit=${e => { e.preventDefault(); answer(q); }}><${AttachBtn} list=${aatt} set=${setAatt}/><input className="input" placeholder=${mine ? '덧붙일 말' : '답 남기기'} maxLength="500" value=${ans} onInput=${e => setAns(e.target.value)}/><button className="btn" type="submit" disabled=${!ans.trim() && !aatt.length}>등록</button></form>
         </div>` : null}</div>`; })}
     ${list.length > lim ? html`<${MoreBtn} left=${list.length - lim} unit="개" onClick=${() => setLim(lim + 20)}/>` : null}
     ${!qs.length ? html`<${Empty} title="아직 질문이 없어요">게임하다 막히면 여기 물어보세요. 이 게임을 해본 사람들이 답해 줘요.<//>` : !list.length && !words.length ? html`<div className="note">이 구분에는 질문이 없어요.</div>` : null}
@@ -3965,12 +3982,13 @@ function GroupBadge({ g, size }) {
   return html`<span className="gbadge" style=${{ width: size, height: size, background: c }} aria-hidden="true"><${Meeple} ch=${{ ...defaultChar(g.name), color: '#ffffff' }} size=${size * 0.72}/></span>`;
 }
 function Comments({ st, list, onAdd, ph }) {
-  const [lim, setLim] = useState(5); const [t, setT] = useState('');
+  const [lim, setLim] = useState(5); const [t, setT] = useState(''); const [att, setAtt] = useState([]);
   return html`<div className="cmts">
     ${list.length > lim ? html`<button className="linkbtn cmore" onClick=${() => setLim(lim + 20)}>이전 댓글 ${nf(Math.min(20, list.length - lim))}개 더 보기</button>` : null}
-    ${list.slice(-lim).map(c => html`<div key=${c.id} className="cmt"><${Avatar} name=${nmOf(st, c.author === 'me' ? '나' : c.author)} size=${22}/><div className="cb"><div className="ch"><b>${nmOf(st, c.author === 'me' ? '나' : c.author)}</b><span className="dt">${relDay(c.date)}</span></div><div className="ct">${c.text}</div></div></div>`)}
-    <form className="addrow cform" onSubmit=${e => { e.preventDefault(); if (t.trim()) { onAdd(t.trim()); setT(''); } }}>
-      <input className="input" placeholder=${ph || '댓글 남기기'} maxLength="300" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim()}>등록</button></form></div>`;
+    ${list.slice(-lim).map(c => html`<div key=${c.id} className="cmt"><${Avatar} name=${nmOf(st, c.author === 'me' ? '나' : c.author)} size=${22}/><div className="cb"><div className="ch"><b>${nmOf(st, c.author === 'me' ? '나' : c.author)}</b><span className="dt">${relDay(c.date)}</span></div><div className="ct">${c.text}</div><${MediaView} small items=${c.media} label="사진"/></div></div>`)}
+    <${AttachStrip} list=${att} set=${setAtt}/>
+    <form className="addrow cform" onSubmit=${e => { e.preventDefault(); if (t.trim() || att.length) { onAdd(t.trim(), att); setT(''); setAtt([]); } }}>
+      <${AttachBtn} list=${att} set=${setAtt}/><input className="input" placeholder=${ph || '댓글 남기기'} maxLength="300" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim() && !att.length}>등록</button></form></div>`;
 }
 function PubCard({ p, saved, onOpen, onSave }) {
   const x = gx(p); const pl = placeText(x);
@@ -4112,7 +4130,7 @@ function GamePick({ value, onPick, allowFree }) {
 function PostSheet({ g, close, onSave, kind0, staff }) {
   const x = gx(g);
   const kinds = POST_KINDS.filter(([k]) => k !== 'notice' || staff);
-  const [kind, setKind] = useState(kind0 || 'free'); const [title, setTitle] = useState(''); const [body, setBody] = useState(''); const [game, setGame] = useState(null);
+  const [kind, setKind] = useState(kind0 || 'free'); const [title, setTitle] = useState(''); const [body, setBody] = useState(''); const [game, setGame] = useState(null); const [media, setMedia] = useState([]); const [err, setErr] = useState('');
   const [rc, setRc] = useState({ date: today(), time: '21:00', platform: x.platforms[0] || (x.modes.includes('online') ? 'Steam' : ''), cap: '4', voice: false, own: false, beginner: true });
   const r = (k, v) => setRc({ ...rc, [k]: v });
   const ok = title.trim() && (kind !== 'recruit' || rc.date);
@@ -4120,13 +4138,14 @@ function PostSheet({ g, close, onSave, kind0, staff }) {
     <div className="dates kpick">${kinds.map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${kind === k} onClick=${() => setKind(k)}>${l}</button>`)}</div>
     <input className="input" style=${{ marginTop: 10 }} maxLength="60" placeholder=${kind === 'recruit' ? '예: 오늘 밤 10시 BGA 아줄 하실 분' : kind === 'ask' ? '예: 2명이서 할 만한 게임 추천해 주세요' : '제목'} value=${title} onInput=${e => setTitle(e.target.value)} autoFocus/>
     <textarea className="input" style=${{ marginTop: 6 }} rows="4" maxLength="2000" placeholder="내용 (안 써도 돼요)" value=${body} onInput=${e => setBody(e.target.value)}></textarea>
+    <${MediaEdit} items=${media} onChange=${setMedia} max=${10} onErr=${setErr}/>${err ? html`<div className="hint">${err}</div>` : null}
     ${kind === 'recruit' ? html`<div className="rcform">
       <div className="sirow"><label>날짜<input className="input" type="date" min=${today()} value=${rc.date} onChange=${e => r('date', e.target.value)}/></label><label>시간<input className="input" type="time" value=${rc.time} onChange=${e => r('time', e.target.value)}/></label></div>
       <div className="sirow" style=${{ marginTop: 6 }}><label>어디서<input className="input" list="plat-list" placeholder="Steam, BGA, 카페 이름" value=${rc.platform} onInput=${e => r('platform', e.target.value)}/></label><label>몇 명<input className="input num" inputMode="numeric" value=${rc.cap} onInput=${e => r('cap', e.target.value.replace(/\D/g, '').slice(0, 3))}/></label></div>
       <datalist id="plat-list">${G_PLAT.map(p => html`<option key=${p} value=${p}/>`)}</datalist>
       <div className="dates" style=${{ marginTop: 8 }}>${[['voice', '음성 채팅 써요'], ['own', '게임 갖고 있어야 해요'], ['beginner', '처음이어도 돼요']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${!!rc[k]} onClick=${() => r(k, !rc[k])}>${l}</button>`)}</div></div>` : null}
     <div className="field"><span className="lb">게임 연결<span className="hint">안 해도 돼요</span></span><${GamePick} value=${game} onPick=${setGame} allowFree/></div>
-    <div className="sheet-foot"><button className="btn primary" disabled=${!ok} onClick=${() => onSave({ id: 'po' + uid(), kind, title: title.trim(), body: body.trim(), by: '나', at: Date.now(), ...(game || {}), likes: [], comments: [], pinned: kind === 'notice',
+    <div className="sheet-foot"><button className="btn primary" disabled=${!ok} onClick=${() => onSave({ id: 'po' + uid(), kind, title: title.trim(), body: body.trim(), media, by: '나', at: Date.now(), ...(game || {}), likes: [], comments: [], pinned: kind === 'notice',
       ...(kind === 'recruit' ? { rc: { ...rc, cap: +rc.cap || null, gameId: game && game.gameId || null, joined: ['나'] } } : {}) })}>올리기</button></div>
   <//>`;
 }
@@ -4144,22 +4163,24 @@ function RcBox({ p, st, onJoin }) {
   </div>`;
 }
 function PostRow({ p, st, onOpen, saved }) {
-  return html`<button className=${'prow2' + (p.pinned ? ' pin' : '')} onClick=${onOpen}>
+  const m0 = (p.media || [])[0];
+  return html`<button className=${'prow2' + (p.pinned ? ' pin' : '') + (m0 ? ' hasm' : '')} onClick=${onOpen}>
+    ${m0 ? html`<span className="pr-th"><${Thumb} m=${m0} alt=""/>${p.media.length > 1 ? html`<span className="pr-tn">${p.media.length}</span>` : null}</span>` : null}
     <span className="pr-k"><span className=${'tg' + (p.kind === 'notice' ? ' nt' : p.kind === 'recruit' ? ' rc' : '')}>${PK[p.kind]}</span>${p.pinned ? html`<span className="pinic" aria-label="고정">${I.pin}</span>` : null}${gameName(p) ? html`<span className="pr-g">${gameName(p)}</span>` : null}</span>
     <span className="pr-t">${p.title}</span>
     ${p.kind === 'recruit' && p.rc ? html`<span className="pr-rc">${evDay(p.rc.date)} ${fmtTime(p.rc.time)}${p.rc.platform ? ' · ' + p.rc.platform : ''} · ${(p.rc.joined || []).length}${nf(p.rc.cap ? '/' + p.rc.cap : '')}명</span>` : p.body ? html`<span className="pr-b">${p.body}</span>` : null}
     <span className="pr-m">${nmOf(st, p.by)} · ${agoT(p.at)}${(p.likes || []).length ? ` · 공감 ${p.likes.length}` : ''}${(p.comments || []).length ? ` · 댓글 ${p.comments.length}` : ''}${saved ? ' · 저장함' : ''}</span></button>`;
 }
 function PostView({ g, p, st, upPost, close, say, report, canMod, delPost, open }) {
-  const [t, setT] = useState(''); const [to, setTo] = useState(null); const [menu, setMenu] = useState(null);
+  const [t, setT] = useState(''); const [to, setTo] = useState(null); const [menu, setMenu] = useState(null); const [att, setAtt] = useState([]);
   const mySaved = (g.mySaved || []).includes(p.id);
   const liked = (p.likes || []).includes('나');
   const hid = new Set(g.myHidden || []);
   const cs = (p.comments || []).filter(c => !hid.has(c.id) && !c.hidden);
   const top = cs.filter(c => !c.replyTo); const rep = id => cs.filter(c => c.replyTo === id);
-  const send = e => { e.preventDefault(); if (!t.trim()) return; upPost(x => ({ ...x, comments: [...(x.comments || []), { id: 'pc' + uid(), by: '나', text: t.trim(), at: Date.now(), replyTo: to ? to.id : null }] })); setT(''); setTo(null); };
+  const send = e => { e.preventDefault(); if (!t.trim() && !att.length) return; upPost(x => ({ ...x, comments: [...(x.comments || []), { id: 'pc' + uid(), by: '나', text: t.trim(), media: att, at: Date.now(), replyTo: to ? to.id : null }] })); setT(''); setTo(null); setAtt([]); };
   const Cm = ({ c, reply }) => html`<div className=${'pcm' + (reply ? ' rp' : '')}><${Avatar} name=${nmOf(st, c.by)} size=${reply ? 22 : 26}/><div className="cb"><div className="ch"><b>${nmOf(st, c.by)}</b>${roleOf(g, c.by) !== 'member' ? html`<span className="chip">${ROLE[roleOf(g, c.by)]}</span>` : null}<span className="dt">${agoT(c.at)}</span>
-      <button className="dots sm" aria-label="댓글 메뉴" onClick=${() => setMenu(menu === c.id ? null : c.id)}>⋯</button></div><div className="ct">${c.text}</div>
+      <button className="dots sm" aria-label="댓글 메뉴" onClick=${() => setMenu(menu === c.id ? null : c.id)}>⋯</button></div><div className="ct">${c.text}</div><${MediaView} small items=${c.media} label="댓글 사진"/>
       ${reply ? null : html`<button className="linkbtn rpl" onClick=${() => setTo(c)}>답글</button>`}
       ${menu === c.id ? html`<div className="cm-menu">${c.by === '나' || canMod ? html`<button className="dm-b danger" onClick=${() => { setMenu(null); upPost(x => ({ ...x, comments: x.comments.filter(y => y.id !== c.id && y.replyTo !== c.id) })); say('댓글을 지웠어요'); }}>지우기</button>` : null}
         ${c.by !== '나' ? html`<button className="dm-b" onClick=${() => { setMenu(null); report('comment', c.id, c.text, c.by); }}>신고하기</button>` : null}</div>` : null}</div></div>`;
@@ -4174,6 +4195,7 @@ function PostView({ g, p, st, upPost, close, say, report, canMod, delPost, open 
       ${p.by === '나' || canMod ? html`<button className="dm-b danger" onClick=${() => { setMenu(null); delPost(p.id); }}>글 지우기</button>` : null}
       ${p.by !== '나' ? html`<button className="dm-b" onClick=${() => { setMenu(null); report('post', p.id, p.title, p.by); close(); }}>신고하기</button>` : null}</div>` : null}
     ${p.body ? html`<p className="pv-b">${p.body}</p>` : null}
+    <${MediaView} post items=${p.media} label=${p.title}/>
     ${p.gameId && GAME[p.gameId] ? html`<button className="pv-game" onClick=${() => open(p.gameId)}><span className="pg-c"><${Cover} g=${GAME[p.gameId]}/></span><span>${GAME[p.gameId].ko}<span className="muted"> 게임 정보 ›</span></span></button>` : p.gname ? html`<div className="pv-game st"><span>${p.gname}</span></div>` : null}
     ${p.kind === 'recruit' && p.rc ? html`<${RcBox} p=${p} st=${st} onJoin=${() => upPost(x => { const j = x.rc.joined || []; return { ...x, rc: { ...x.rc, joined: j.includes('나') ? j.filter(n => n !== '나') : [...j, '나'] } }; })}/>` : null}
     <div className="pv-act"><button className=${'btn sm' + (liked ? ' on' : '')} aria-pressed=${liked} onClick=${() => upPost(x => ({ ...x, likes: liked ? x.likes.filter(n => n !== '나') : [...(x.likes || []), '나'] }))}>${p.kind === 'tip' || p.kind === 'help' ? '도움돼요' : '공감'}${(p.likes || []).length ? ' ' + p.likes.length : ''}</button>
@@ -4181,8 +4203,8 @@ function PostView({ g, p, st, upPost, close, say, report, canMod, delPost, open 
     <h3 className="pv-ch">댓글 ${cs.length}</h3>
     ${top.map(c => html`<div key=${c.id}><${Cm} c=${c}/>${rep(c.id).map(r => html`<${Cm} key=${r.id} c=${r} reply/>`)}</div>`)}
     ${!cs.length ? html`<div className="hint">첫 댓글을 남겨 보세요.</div>` : null}
-    <form className="addrow cform pv-in" onSubmit=${send}>${to ? html`<span className="to">${nmOf(st, to.by)}님께 답글 <button type="button" className="linkbtn" onClick=${() => setTo(null)}>취소</button></span>` : null}
-      <input className="input" placeholder=${to ? '답글 쓰기' : '댓글 쓰기'} maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim()}>등록</button></form>
+    <form className="addrow cform pv-in" onSubmit=${send}>${to ? html`<span className="to">${nmOf(st, to.by)}님께 답글 <button type="button" className="linkbtn" onClick=${() => setTo(null)}>취소</button></span>` : null}<${AttachStrip} list=${att} set=${setAtt}/>
+      <${AttachBtn} list=${att} set=${setAtt}/><input className="input" placeholder=${to ? '답글 쓰기' : '댓글 쓰기'} maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn" type="submit" disabled=${!t.trim() && !att.length}>등록</button></form>
   </div>`;
 }
 function BoardTab({ g, st, upGroup, say, open, post, setPost, write, setWrite, report }) {
@@ -4225,7 +4247,8 @@ function EventCard({ e, g, st, upEv, staff, compact, onOpen }) {
   const poll = e.poll; const total = memCount(g);
   const tally = poll ? poll.opts.map((o, i) => Object.values(poll.votes || {}).filter(v => v === i).length) : [];
   const myVote = poll ? (poll.votes || {})[me] : null;
-  const cs = e.comments || [];
+  const nMsg = (e.comments || []).length + (e.chat || []).length;
+  const inRoom = ['go', 'maybe', 'wait', 'pend'].includes(mine);
   const on = e.kind === 'on';
   const where = on ? [e.platform || '온라인'] : [e.place];
   const REP = { weekly: '매주', biweekly: '격주', monthly: '매달' };
@@ -4249,8 +4272,9 @@ function EventCard({ e, g, st, upEv, staff, compact, onOpen }) {
       <button className=${'btn sm' + (mine === 'go' || mine === 'wait' || mine === 'pend' ? ' primary' : '')} aria-pressed=${!!mine && mine !== 'no' && mine !== 'maybe'} onClick=${() => setMine(mine === 'go' || mine === 'wait' || mine === 'pend' ? null : 'go')}>${mine === 'go' ? '✓ 참석' : mine === 'wait' ? '✓ 대기 중' : mine === 'pend' ? '✓ 신청함' : full ? '대기할게요' : e.apply === 'ok' && !staff ? '참석 신청' : '참석할게요'}</button>
       <button className=${'btn sm' + (mine === 'maybe' ? ' on' : '')} aria-pressed=${mine === 'maybe'} onClick=${() => setMine(mine === 'maybe' ? null : 'maybe')}>미정</button>
       <button className=${'btn sm' + (mine === 'no' ? ' on' : '')} aria-pressed=${mine === 'no'} onClick=${() => setMine(mine === 'no' ? null : 'no')}>불참</button>`}
-      <button className="btn sm ghost" aria-expanded=${showC} onClick=${() => setShowC(!showC)}>${cs.length ? `참가자 대화 ${cs.length}` : '참가자 대화'}</button></div>`}
-    ${showC && !compact ? html`<${Comments} st=${st} list=${cs} onAdd=${t => upEv(x => ({ ...x, comments: [...(x.comments || []), { id: uid(), author: 'me', text: t, date: today() }] }))} ph="준비물, 늦는 사람, 방 링크"/>` : null}
+</div>
+      ${inRoom || staff ? html`<button className="btn block evroom" onClick=${() => setShowC(true)}>${I.chat}<span>참가자 채팅방 들어가기</span>${nMsg ? html`<span className="muted">${nMsg}</span>` : null}</button>` : html`<div className="hint evroom-h">참석하면 참가자 채팅방에 들어갈 수 있어요</div>`}`}
+    ${showC && !compact ? html`<${EventRoom} e=${e} g=${g} st=${st} upEv=${upEv} close=${() => setShowC(false)}/>` : null}
   </div>`;
 }
 function NewEvent({ g, onSave, cancel, game0 }) {
@@ -4307,18 +4331,43 @@ function PlanTab({ g, st, upGroup, say, mk, setMk }) {
     ${past.length ? html`<button className="linkbtn" style=${{ marginTop: 12 }} onClick=${() => setShowPast(!showPast)}>${showPast ? '지난 일정 접기' : `지난 일정 ${nf(past.length)}개`}</button>
       ${showPast ? past.slice(0, 20).map(e => html`<div key=${e.id} className="evpast"><span>${dLabel(e.date)}</span><span>${e.kind === 'on' ? e.platform : e.place || ''}</span><span className="muted">${nf((e.going || []).length)}명 참석</span></div>`) : null}` : null}`;
 }
-function ChatTab({ g, st, upGroup, toPlan }) {
-  const all = g.chat || []; const [lim, setLim] = useState(30); const [t, setT] = useState('');
-  const send = e => { e.preventDefault(); if (!t.trim()) return; upGroup(g.id, x => ({ ...x, chat: [...(x.chat || []), { id: uid(), author: '나', text: t.trim(), at: Date.now() }] })); setT(''); };
-  const tm = at => { const d = new Date(at); const h = d.getHours(); return `${h < 12 ? '오전' : '오후'} ${h % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`; };
-  return html`<div className="chat">
-    ${all.length > lim ? html`<button className="linkbtn cmore" onClick=${() => setLim(lim + 50)}>이전 대화 더 보기</button>` : null}
-    ${!all.length ? html`<div className="note">아직 대화가 없어요. 약속마다 달리는 댓글은 약속 탭에 있어요.</div>` : null}
-    ${all.slice(-lim).map((m, i, arr) => { if (m.sys) return html`<div key=${m.id} className="msys"><span>${m.text}</span><button className="linkbtn" onClick=${toPlan}>보기</button></div>`; const mine = m.author === '나'; const same = i && !arr[i - 1].sys && arr[i - 1].author === m.author;
-      return html`<div key=${m.id} className=${'msg' + (mine ? ' mine' : '') + (same ? ' cont' : '')}>${!mine && !same ? html`<${Avatar} name=${m.author} size=${28}/>` : html`<span className="av-sp"></span>`}
-        <div className="mb">${!mine && !same ? html`<div className="ma">${m.author}</div>` : null}<div className="row"><span className="bub">${m.text}</span><span className="mt">${tm(m.at)}</span></div></div></div>`; })}
-    <form className="chatin" onSubmit=${send}><input className="input" placeholder="메시지 보내기" maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn primary" type="submit" disabled=${!t.trim()}>보내기</button></form>
+// 채팅(말풍선) 공통: 모임 전체 대화와 일정 참가자 채팅방이 같이 써요
+const tmOf = at => { const d = new Date(at); const h = d.getHours(); return `${h < 12 ? '오전' : '오후'} ${h % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`; };
+const dayOf = at => { const d = new Date(at); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${DOW[d.getDay()]}요일`; };
+function ChatBody({ st, msgs, onSend, toPlan, empty, room, ph }) {
+  const [lim, setLim] = useState(40); const [t, setT] = useState(''); const [att, setAtt] = useState([]);
+  const end = useRef(null);
+  useEffect(() => { if (room && end.current) end.current.scrollIntoView({ block: 'end' }); }, [msgs.length]);
+  const send = e => { e.preventDefault(); if (!t.trim() && !att.length) return; onSend({ id: uid(), author: '나', text: t.trim(), media: att, at: Date.now() }); setT(''); setAtt([]); };
+  const list = msgs.slice(-lim);
+  return html`<div className=${'chat' + (room ? ' inroom' : '')}>
+    ${msgs.length > lim ? html`<button className="linkbtn cmore" onClick=${() => setLim(lim + 50)}>이전 대화 더 보기</button>` : null}
+    ${!msgs.length ? html`<div className="note">${empty}</div>` : null}
+    ${list.map((m, i, arr) => { const newDay = !i || dayOf(arr[i - 1].at) !== dayOf(m.at); const dl = newDay ? html`<div className="mday"><span>${dayOf(m.at)}</span></div>` : null;
+      if (m.sys) return html`<${React.Fragment} key=${m.id}>${dl}<div className="msys"><span>${m.text}</span>${toPlan ? html`<button className="linkbtn" onClick=${toPlan}>보기</button>` : null}</div><//>`;
+      const mine = m.author === '나'; const same = i && !newDay && !arr[i - 1].sys && arr[i - 1].author === m.author;
+      return html`<${React.Fragment} key=${m.id}>${dl}<div className=${'msg' + (mine ? ' mine' : '') + (same ? ' cont' : '')}>${!mine && !same ? html`<${Avatar} name=${nmOf(st, m.author)} size=${28}/>` : html`<span className="av-sp"></span>`}
+        <div className="mb">${!mine && !same ? html`<div className="ma">${nmOf(st, m.author)}</div>` : null}<div className="row">${(m.media || []).length ? html`<span className="bubm"><${MediaView} items=${m.media} label="대화 사진"/>${m.text ? html`<span className="bub">${m.text}</span>` : null}</span>` : html`<span className="bub">${m.text}</span>`}<span className="mt">${tmOf(m.at)}</span></div></div></div><//>`; })}
+    <div ref=${end}></div>
+    <form className="chatin" onSubmit=${send}><${AttachStrip} list=${att} set=${setAtt}/><${AttachBtn} list=${att} set=${setAtt} max=${10}/><input className="input" placeholder=${ph || '메시지 보내기'} maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn primary" type="submit" disabled=${!t.trim() && !att.length}>보내기</button></form>
   </div>`;
+}
+function ChatTab({ g, st, upGroup, toPlan }) {
+  return html`<${ChatBody} st=${st} msgs=${g.chat || []} toPlan=${toPlan} empty="아직 대화가 없어요. 모임 사람들과 편하게 이야기해요. 일정마다 참가자끼리 쓰는 채팅방은 일정 탭에 따로 있어요."
+    onSend=${m => upGroup(g.id, x => ({ ...x, chat: [...(x.chat || []), m] }))}/>`;
+}
+// 일정 참가자 채팅방: 전체 대화와 따로, 참석하는 사람끼리
+const evMsgs = e => [...(e.comments || []).map(c => ({ id: c.id, author: c.author === 'me' ? '나' : c.author, text: c.text, media: c.media, at: c.at || (parse(c.date).getTime() + 12 * H) })), ...(e.chat || [])].sort((a, b) => a.at - b.at);
+function EventRoom({ e, g, st, upEv, close }) {
+  useEffect(() => { const k = ev => ev.key === 'Escape' && close(); document.addEventListener('keydown', k); const prev = document.body.style.overflow; document.body.style.overflow = 'hidden'; return () => { document.removeEventListener('keydown', k); document.body.style.overflow = prev; }; }, []);
+  const ppl = [...new Set([...(e.going || []), ...(e.maybe || []), ...(e.wait || [])])];
+  const when = e.date ? `${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}` : '시간 정하는 중';
+  return ReactDOM.createPortal(html`<div className="chatroom" role="dialog" aria-modal="true" aria-label="참가자 채팅방">
+    <div className="cr-h"><button className="backbtn" onClick=${close} aria-label="일정으로 돌아가기">${I.back}</button><div className="cr-t"><b>${e.title || when}</b><span>${[e.title ? when : null, e.kind === 'on' ? e.platform : e.place, `참가자 ${ppl.length}명`].filter(Boolean).join(' · ')}</span></div>
+      <span className="avstack">${ppl.slice(0, 4).map(n => html`<${Avatar} key=${n} name=${nmOf(st, n)} size=${24}/>`)}</span></div>
+    <div className="cr-b"><div className="pvline">${g.name} 전체 대화와 따로, 이 일정 참가자끼리만 보는 방이에요. 미리보기라 이 기기에만 저장돼요.</div>
+      <${ChatBody} room st=${st} msgs=${evMsgs(e)} empty="준비물, 늦는 사람, 방 링크처럼 이 일정 이야기를 나눠요." ph="참가자에게 메시지" onSend=${m => upEv(x => ({ ...x, chat: [...(x.chat || []), m] }))}/></div>
+  </div>`, document.body);
 }
 // 같이 해보고 싶은 게임: 멤버 제안 + 관심 표시. 실제로 한 게임(기록)과는 따로 셉니다.
 function WantSheet({ g, close, onSave }) {
@@ -4970,7 +5019,7 @@ function App() {
   const openChar = () => setSheet({ kind: 'char' });
   const saveChar = ch => { update(s => ({ ...s, myChar: ch })); setSheet(null); say('캐릭터를 바꿨어요'); };
   const cm = {
-    add: (rid, text) => update(s => ({ ...s, comments: { ...(s.comments || {}), [rid]: [...((s.comments || {})[rid] || []), { id: uid(), author: 'me', text, date: today() }] } })),
+    add: (rid, text, media) => update(s => ({ ...s, comments: { ...(s.comments || {}), [rid]: [...((s.comments || {})[rid] || []), { id: uid(), author: 'me', text, media: media || [], date: today() }] } })),
     del: (rid, cid) => { update(s => ({ ...s, comments: { ...s.comments, [rid]: s.comments[rid].filter(c => c.id !== cid) } })); say('댓글을 지웠어요'); },
     hide: (c, report) => { update(s => ({ ...s, hiddenComments: { ...(s.hiddenComments || {}), [c.id]: report ? 'report' : 'hide' } })); say(report ? '신고했어요. 이 댓글은 이제 안 보여요' : '댓글을 숨겼어요'); },
     block: n => { update(s => { const f = { ...s.friends }; delete f[n]; return { ...s, friends: f, blocked: { ...(s.blocked || {}), [n]: true } }; }); say(`${n}님을 차단했어요. 이 사람 댓글과 평가가 안 보여요`); },
