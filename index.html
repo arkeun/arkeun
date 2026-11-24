@@ -1319,6 +1319,15 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 :root[data-theme="dark"] .switch[aria-checked="true"], :root[data-theme="dark"] .bellbtn .bd { background: var(--accent-fill); color: var(--accent-fill-ink); }
 :root[data-theme="dark"] .login-apple { background: #fff; border-color: #fff; color: #000; }
 :root[data-theme="dark"] .login-google { background: #131314; border-color: #8e918f; color: #e3e3e3; }
+/* 커플 분홍은 커플 화면 안에서만. 밖에선 일반 글씨 + 작은 하트 하나 (11/24 에릭) */
+.cpname, .dh-t .cpname, .dh-t b.cpname, .mecpl { color: var(--ink-2); }
+.hrt { color: var(--cc, #d9667a); }
+.hc-d.cpl { background: var(--accent-soft); }
+.savedcard.cpl { background: var(--surface); }
+.savedcard.cpl .sc-big { color: inherit; }
+.pill.cpl { border-color: var(--line); }
+.pill.cpl[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.couple .cpname { color: var(--cc); }
 </style>
 
 <div id="app"></div>
@@ -1856,9 +1865,9 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const winLine = (plays, solo) => {
     if (plays.length === 1) return joinBits(roundSummary({ ...plays[0], scores: {}, memo: '', minutes: '' }, solo));
     const t = winTally(plays);
-    // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 9승'
+    // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 각 9승'
     const best = t.list.length ? t.list[0][1] : 0; const tier = t.list.filter(([, c]) => c === best);
-    const top = !t.list.length ? [] : tier.length > 1 ? [`${tier.slice(0, 2).map(([n]) => dn(n)).join('·')} ${best}승${tier.length > 2 ? ` 외 ${tier.length - 2}명` : ''}`]
+    const top = !t.list.length ? [] : tier.length > 1 ? [`${tier.slice(0, 2).map(([n]) => dn(n)).join('·')}${tier.length > 2 ? ` 등 ${tier.length}명` : ''} 각 ${best}승`]
       : t.list.length === 2 ? t.list.map(([n, c]) => `${dn(n)} ${c}승`) : [`${dn(t.list[0][0])} ${best}승`];
     const bits = [...(t.coopN ? [`우리가 ${t.coopW}승 ${t.coopN - t.coopW}패`] : []), ...top];
     return bits.length ? html`<span className="crown">${bits.join(' · ')}</span>` : null;
@@ -1878,7 +1887,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   return html`<div className=${'play card dense' + (variant === 'couple' ? ' couplev' : cpl ? ' cplday' : '')} style=${cpl ? { '--cc': coupleColor(cpl) } : null}>
     <button className="when" onClick=${() => !full && NAV.day && NAV.day(day.date)} aria-label=${`${d.getMonth() + 1}월 ${d.getDate()}일 결과 전체 보기`}><span className="d">${d.getDate()}</span><span className=${'m' + (d.getDay() === 0 || d.getDay() === 6 ? ' we' : '')}>${DOW[d.getDay()]}요일</span></button>
     <div style=${{ minWidth: 0 }}>
-      <div className="dh">${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div>` : null}<span className="dh-t">${cpl ? html`<button className="cpname linkbtn inl" onClick=${() => NAV.couple && NAV.couple(cpl.id)}>${cpl.name || `${ME.name} ♥ ${cpl.partner}`} ›</button>` : gn.length && !inGroupView ? html`<b>${gn.length > 2 ? gn.slice(0, 2).join(' · ') + ' 외' : gn.join(' · ')}</b>` : null}</span>
+      <div className="dh">${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div>` : null}<span className="dh-t">${cpl ? html`<button className="cpname linkbtn inl" onClick=${() => NAV.couple && NAV.couple(cpl.id)}>${cpl.name || html`${ME.name} <span className="hrt">♥</span> ${cpl.partner}`} ›</button>` : gn.length && !inGroupView ? html`<b>${gn.length > 2 ? gn.slice(0, 2).join(' · ') + ' 외' : gn.join(' · ')}</b>` : null}</span>
         <button className="dots dh-more" aria-label="이 날 메뉴" aria-expanded=${menu} onClick=${() => setMenu(!menu)}>⋯</button>${menu ? html`<div className="daymenu">
         ${share ? html`<button className="dm-b" onClick=${() => { setMenu(false); share(day.date); }}>하루 요약 공유</button>` : null}
         ${edit && own ? html`<button className="dm-b" onClick=${() => { setMenu(false); edit(day.date); }}>고치기</button>` : null}
@@ -2381,7 +2390,7 @@ function Me({ st, open, update, openPerson, openSettings, openYear, openChar, cm
         ${editing ? html`<form className="addrow" style=${{ marginTop: 0 }} onSubmit=${e => { e.preventDefault(); const v = nick.trim(); if (v) update(s => ({ ...s, me: v })); setEditing(false); }}>
             <input id="nick" className="input" value=${nick} maxLength="16" onInput=${e => setNick(e.target.value)} autoFocus/><button className="btn primary">저장</button></form>` :
           html`<div className="nm">${st.me} <button className="btn ghost" style=${{ padding: '2px 6px', fontSize: 13 }} onClick=${() => { setNick(st.me); setEditing(true); }}>이름 바꾸기</button></div>
-            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>${(st.couples || []).map(c => html`<button key=${c.id} className="linkbtn inl mecpl" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple(c.id)}>♥ ${c.partner} · D+${dPlus(c.since)} ›</button>`)}
+            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>${(st.couples || []).map(c => html`<button key=${c.id} className="linkbtn inl mecpl" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple(c.id)}><span className="hrt">♥</span> ${c.partner} · D+${dPlus(c.since)} ›</button>`)}
             ${st.mePhoto ? html`<button className="linkbtn muted" onClick=${() => update(s => ({ ...s, mePhoto: null }))}>사진 빼고 캐릭터로</button>` : html`<label className="linkbtn pfadd">프로필 사진 넣기<input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { const ph = await shrinkImage(f); update(s => ({ ...s, mePhoto: ph })); } catch (er) {} } }}/></label>`}`}
       </div></div>
     <div className="seg tabs" role="tablist" style=${{ margin: '16px 0 10px' }}>${[['stats', '통계'], ['people', '사람'], ['reviews', '평가·질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}</button>`)}</div>
