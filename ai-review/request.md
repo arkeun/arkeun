@@ -1,5 +1,5 @@
-id: q-20261124-131105-31232
-to: gemini
+id: q-20261124-131307-3220
+to: openai
 file: index.html
 file: ai-review/shots/cmp-1-home.png
 file: ai-review/shots/cmp-5-record.png
