@@ -1,58 +1,50 @@
-id: q-20261124-134713-10880
-status: error
-model: gemini
+id: q-20261124-175339-31641
+status: ok
+model: gemini-3-flash-preview
 ---
-오류: 모든 모델 실패
-gemini-flash-lite-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
+독립 검토자로서 의견 드립니다.
 
-gemini-flash-lite-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
+### [1부: Claude의 답에 대한 의견]
 
-gemini-flash-lite-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
+1. **동의 (보류)**: `sticky`와 `bottom: 0`은 표준이지만, 아이폰 사파리에서는 주소창이나 하단 바 동작에 따라 `sticky` 요소가 키보드에 가려지는 고질적인 이슈가 있습니다. `viewport-fit=cover`가 설정되어 있으니 실제 기기 테스트 결과에 따르는 것이 맞습니다.
+2. **동의**: 이미 토글로 작동한다면 별도 버튼을 만드는 것보다 지금이 더 간결합니다.
+3. **동의**: 보관함이 커질수록 필터/정렬 컨트롤은 상단에 고정되어야 편리합니다.
+4. **동의**: '기록장에는 숫자 통계를 두지 않는다'는 기준이 확고하다면 개수 표시를 뺀 현재 방식이 일관성 있습니다.
+5. **동의**: 탭 전환 시 시각적 맥락을 유지하는 데 필수적입니다.
+6. **동의**: `RoundRow`의 `prefill` 함수에서 `manual` 변수가 `!r.autoPick`을 체크하므로, 사용자가 한 번이라도 수동으로 승자를 누르면(`autoPick: false`) 점수를 고쳐도 승자가 바뀌지 않게 잘 설계되어 있습니다. 충돌 우려는 없습니다.
+7. **동의**: 수백 개 모임 목록에서 모든 약속이 다 보이면 피로합니다. 7일 이내 같은 임박한 일정에만 표시하는 것이 훨씬 실용적입니다.
 
-gemini-flash-lite-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
+---
 
-gemini-flash-lite-latest: 503 {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
+### [2부: 커플 공간 수정본 검토]
+커플이 수년간 사용하며 찜 목록이 수백 개로 늘어난 상황을 가정했을 때의 개선점입니다.
 
-gemini-flash-latest: 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_
-gemma-3-27b-it: 404 {
-  "error": {
-    "code": 404,
-    "message": "models/gemma-3-27b-it is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.",
-    "status": "NOT_FOUND"
-  }
-}
+**1. 커플 찜 목록 내 '검색' 기능 부재**
+*   **화면**: `CoupleScreen` > `wish` 탭
+*   **문제**: 찜이 수백 개가 되면 스크롤만으로 원하는 게임을 찾기 불가능합니다. 메인 보관함에는 검색창이 있지만, 커플 공간의 '같이 할 게임' 리스트에는 검색 기능이 없습니다.
+*   **해결**: `wlist` 상단에 작은 검색바를 추가하거나, 보관함처럼 '이름순 정렬 시 초성 인덱스(ㄱ,ㄴ,ㄷ)'를 제공해야 합니다.
 
-쓸 수 있는 모델: models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it, models/gemini-flash-latest, models/gemini-flash-lite-latest, models/gemini-pro-latest, models/gemini-2.5-flash-lite, models/gemini-2.5-flash-image, models/gemini-3-flash-preview, models/gemini-3.1-pro-preview, models/ge
+**2. '새로' 배지 소멸 조건의 성급함**
+*   **화면**: `CoupleScreen` 내 `useEffect` (line 1588)
+*   **문제**: 상대가 찜한 게임이 20개일 때, 찜 탭을 '누르자마자' 모든 `seen`이 `true`가 되어 '새로' 배지가 사라집니다. 사용자가 리스트 하단까지 확인하지 않고 탭을 나갔다면, 무엇이 새로 추가되었는지 영영 놓치게 됩니다.
+*   **해결**: 탭 진입 시 바로 지우지 말고, 리스트 상단에 'N개의 새 찜 확인' 버튼을 두어 누를 때 지우거나, 각 항목이 화면에 노출(Intersection Observer)될 때 개별적으로 `seen` 처리를 하는 것이 좋습니다.
+
+**3. 반반 사진의 시각적 불균형**
+*   **화면**: `CoupleScreen` 상단 `chero2` (line 1618)
+*   **문제**: 두 사진의 수평선 높이나 색감이 다를 경우 가운데가 잘린 느낌이 강해 지저분해 보일 수 있습니다. 특히 찜이 수백 개인 '고수 커플'에게는 이 화면이 앱의 얼굴인데 완성도가 아쉬울 수 있습니다.
+*   **해결**: 두 사진 사이에 경계선을 없애는 대신, 중앙의 하트(`ch-seam`) 부분을 중심으로 양쪽 사진이 자연스럽게 겹치도록(그라데이션 마스크 등) 처리하거나 사진 위에 어두운 오버레이를 조금 더 강하게 주어 텍스트 시인성을 높여야 합니다.
+
+**4. 찜 목록 필터의 세분화**
+*   **화면**: `CoupleScreen` > `wish` 탭 `Seg` (line 1664)
+*   **문제**: '전체/둘 다/에릭/지민' 필터만으로는 부족합니다. 찜 목록 중 이미 우리 보관함에 있는 게임과 아직 사야 할(사고 싶은) 게임이 섞여 있으면 관리가 어렵습니다.
+*   **해결**: 필터에 '보관함에 있는 것만' 혹은 '아직 없는 게임' 옵션을 추가하여, 오늘 바로 집에서 할 게임을 고르는 용도와 다음에 같이 살 게임을 고르는 용도를 분리해 주세요.
+
+**5. 장기 커플을 위한 기념일 배지 확장**
+*   **화면**: `CoupleScreen` 상단 `annpill` (line 1632)
+*   **문제**: `nextAnniv` 함수는 100일 단위와 주년만 계산합니다. 수년간 기록한 커플에게는 '처음 같이 보드게임 한 날로부터 N일' 또는 '함께 1,000판 달성까지 N판' 같은 보드게임 앱 특유의 기념일이 더 의미 있을 수 있습니다.
+*   **해결**: 단순 만남 기념일 외에 `ps.length`를 활용한 '기록 기념일'을 `annpill`에 번갈아 보여주면 앱 사용 동기가 강화됩니다.
+
+**6. '둘 다 찜' 항목의 시각적 강조 부족**
+*   **화면**: `CoupleScreen` > `wish` 탭 리스트 (`wrow`)
+*   **문제**: 찜이 수백 개면 '둘 다 찜'한 게임(가장 중요한 정보)이 리스트 사이사이에 묻힙니다. 텍스트로만 '둘 다 찜'이라고 써있어 한눈에 들어오지 않습니다.
+*   **해결**: `w.me && w.them`인 경우 카드 전체의 배경색을 살짝 다르게(연한 핑크 등) 하거나, 하트 아이콘 자체를 더 크고 화려한 '더블 하트' 아이콘으로 바꿔서 스크롤 중에도 바로 보이게 해야 합니다.
