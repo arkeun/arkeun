@@ -1,0 +1,36 @@
+name: Claude Assistant
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned, labeled]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  claude:
+    if: github.event_name != 'issue_comment' || contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            이 저장소의 개발 파트너로 행동하라.
+            먼저 CLAUDE_TO_CHATGPT.md와 프로젝트 지침 파일을 읽고,
+            거기에 있는 ChatGPT/Codex 리뷰를 반영해 답변하라.
+            사용자가 요청한 경우에만 코드를 수정하고, 수정은 별도 브랜치와 PR로 제안하라.
+            변경 후 가능한 테스트를 실행하고, 실행하지 못한 테스트는 명확히 구분하라.
+            기존 사용자 데이터와 기존 기능을 깨뜨리지 않는 것을 최우선으로 하라.
+          claude_args: |
+            --max-turns 8
