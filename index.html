@@ -1762,6 +1762,13 @@ h2.sec { font-size: 16px; margin: 22px 0 8px; }
 .qa-media { margin-top: 6px; }
 .qa-pn { font-size: 12px; color: var(--ink-3); margin-left: 6px; }
 .frg { margin-top: 8px; }
+.samplebar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(64px + env(safe-area-inset-bottom, 0px)); z-index: 19; display: flex; align-items: center; gap: 10px; max-width: calc(100% - 24px); padding: 6px 6px 6px 14px; border-radius: 999px; background: #3b2f27; color: #fff7ee; font-size: 13px; box-shadow: 0 6px 18px -6px rgba(40,25,10,.45); white-space: nowrap; }
+.samplebar button { border: 0; border-radius: 999px; background: #f0a35e; color: #2a1a0c; font: inherit; font-size: 13px; font-weight: 700; padding: 6px 12px; }
+.input.bad { border-color: var(--danger); }
+.wc-need { margin-top: 6px; font-size: 13px; color: var(--danger); }
+
+body:has(.samplebar) .screen { padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+
 </style>
 
 <div id="app"></div>
@@ -2144,6 +2151,10 @@ function winTally(plays) {
     if (!ws.length && !p.draw) none++; ws.forEach(n => w[n] = (w[n] || 0) + 1); });
   return { list: Object.entries(w).sort((a, b) => b[1] - a[1]), none, coopW, coopN };
 }
+// 그날 승자 하나로 계산 (저장 카드·공유 카드가 같은 답을 내게). 공동 1위, 모두 같은 승수까지
+function dayChamp(plays) { const t = winTally(plays); if (!t.list.length) return null; const best = t.list[0][1]; const tops = t.list.filter(x => x[1] === best).map(x => x[0]);
+  const ppl = new Set(plays.filter(p => modeOf(p) !== 'coop').flatMap(p => ['나', ...p.people])); return { tops, best, list: t.list, all: tops.length > 1 && tops.length === ppl.size }; }
+const champText = c => !c ? '' : c.all ? `다들 ${nf(c.best)}승씩이에요` : c.tops.length > 1 ? `공동 1위 ${c.tops.slice(0, 2).map(dn).join('·')}${c.tops.length > 2 ? ` 등 ${nf(c.tops.length)}명` : ''} · 각 ${nf(c.best)}승` : `오늘의 승자 ${dn(c.tops[0])} · ${nf(c.best)}승`;
 const NAV = {}; // 어디서든 사람 전적 열기 (App에서 채움)
 const CHARS = {}; // 이름 → 캐릭터. 앱 쓰는 친구는 자기가 꾸민 캐릭터, 앱 없는 사람은 기본 말 + 첫 글자
 const defaultChar = name => { const h = hash(name); return { shape: SHAPE_KEYS[(h >> 9) % SHAPE_KEYS.length], color: CH_COLORS[h % 7], face: CH_FACES[(h >> 3) % CH_FACES.length], hat: CH_HATS[(h >> 6) % CH_HATS.length] }; };
@@ -2530,8 +2541,8 @@ function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay
   else if (solo) { const recs = plays.filter(p => (p.scores || {})['나'] != null).map(p => { const prevs = st.plays.filter(x => x.gameId === p.gameId && x.id !== p.id && !x.people.length && (x.scores || {})['나'] != null).map(x => +x.scores['나']); const low = ruleOf(st, p.gameId) === 'low'; const b = prevs.length ? (low ? Math.min(...prevs) : Math.max(...prevs)) : null; return { p, v: +p.scores['나'], b, rec: b == null || (low ? +p.scores['나'] < b : +p.scores['나'] > b) }; });
     const r = recs.find(x => x.rec) || recs[0];
     big = r ? (r.rec && r.b != null ? `최고 기록 ${r.v}점!` : r.b == null ? `${GAME[r.p.gameId].ko} 첫 점수 ${r.v}점` : `${r.v}점`) : [...new Set(plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', '); sub = r && r.b != null ? `${GAME[r.p.gameId].ko} · 지난 최고 ${r.b}점` : ''; }
-  else { const t = winTally(plays); const top = t.list[0]; const ties = top ? t.list.filter(x => x[1] === top[1]) : []; const names = [...new Set(plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', ');
-    big = top && ties.length === 1 ? `오늘의 승자 ${dn(top[0])}` : names; sub = !top ? '' : t.list.length === 1 ? names : ties.length > 1 && ties.length === t.list.length ? `다들 ${nf(top[1])}승씩이에요` : t.list.slice(0, 3).map(x => `${dn(x[0])} ${nf(x[1])}승`).join(' · '); }
+  else { const dayPs = all.filter(p => !p.from).length ? all.filter(p => !p.from) : plays; const c = dayChamp(dayPs); const names = [...new Set(dayPs.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', ');
+    big = c && c.tops.length === 1 ? `오늘의 승자 ${dn(c.tops[0])}` : names; sub = !c ? '' : c.tops.length === 1 ? (c.list.length > 1 ? c.list.slice(0, 3).map(x => `${dn(x[0])} ${nf(x[1])}승`).join(' · ') : names) : champText(c); }
   const empty = plays.filter(p => !decided(p) && p.people.length).length;
   return html`<${Sheet} title="저장했어요" close=${close}>
     <div className=${'savedcard' + (cpl ? ' cpl' : '')} style=${cpl ? { '--cc': coupleColor(cpl) } : null}>
@@ -3149,7 +3160,11 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
   const [items, setItems] = useState(initItems);
   const [grp, setGrp] = useState(editing ? (editPlays.find(p => p.groupId !== undefined) || {}).groupId : dr ? dr.grp : evNow ? evNow[0].id : undefined); // undefined = 자동
   const autoG = bestGroup(st, people);
-  const grpRaw = grp === undefined ? null : grp; // 기본은 모임 없음. 겹치는 모임은 제안만 해요
+  const [grpTouched, setGrpTouched] = useState(false);
+  const ovOf = g => g ? people.filter(n => memSet(g).has(n)).length : 0;
+  // 오늘 일정 모임으로 시작했어도, 사람을 바꿔 다른 모임과 더 많이 겹치면 그 모임으로 따라가요(직접 고르면 그대로)
+  const grpRaw = grp === undefined ? null : !grpTouched && !editing && !dr && evNow && grp === evNow[0].id && autoG && autoG.id !== grp && ovOf(autoG) > ovOf(evNow[0]) ? autoG.id : grp; // 기본은 모임 없음. 겹치는 모임은 제안만 해요
+  const setGrpT = v => { setGrpTouched(true); setGrp(v); };
   const grpObj = grpRaw ? (st.groups || []).find(g => g.id === grpRaw) : null;
   const duo = people.length === 1 && (st.couples || []).some(c => c.partner === people[0]);
   const grpId = grpObj && !duo && people.some(n => memSet(grpObj).has(n)) ? grpRaw : null;
@@ -3245,7 +3260,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
       ${people.length && !duo ? (() => { const ps = new Set(people); const opts = (st.groups || []).map(g => { let k = 0; ps.forEach(n => memSet(g).has(n) && k++); return [g, k]; }).filter(x => x[1] && x[0].id !== grpId).sort((a, b) => b[1] - a[1] || a[0].members.length - b[0].members.length).slice(0, 15).map(x => x[0]);
         const cur = (st.groups || []).find(g => g.id === grpId);
         return html`<div className="grpline"><span className="gl-l">어느 모임 기록이에요?</span><span className="gl-v">${cur ? cur.name : '모임 없음'}</span><span className="chev">▾</span>
-          <select aria-label="이 기록의 모임" value=${grpId || ''} onChange=${e => setGrp(e.target.value || null)}>${cur ? html`<option value=${cur.id}>${cur.name}</option>` : null}${opts.map(g => html`<option key=${g.id} value=${g.id}>${g.name}</option>`)}<option value="">모임 없음</option></select></div>${!cur && grp === undefined && autoG ? html`<button className="grp-sug" onClick=${() => setGrp(autoG.id)}>${autoG.name} 기록인가요? <b>넣기</b></button>` : null}`; })() : null}
+          <select aria-label="이 기록의 모임" value=${grpId || ''} onChange=${e => setGrpT(e.target.value || null)}>${cur ? html`<option value=${cur.id}>${cur.name}</option>` : null}${opts.map(g => html`<option key=${g.id} value=${g.id}>${g.name}</option>`)}<option value="">모임 없음</option></select></div>${!cur && grp === undefined && autoG ? html`<button className="grp-sug" onClick=${() => setGrpT(autoG.id)}>${autoG.name} 기록인가요? <b>넣기</b></button>` : null}`; })() : null}
       ${nameOnly.length ? html`<div className="convbox">
         <div className="d">이름만 적힌 사람${nameOnly.filter(n => !conv.has(n)).length ? '이에요. 눌러서 친구로 바꿀 수 있어요' : ''}</div>
         <div className="dates">${nameOnly.filter(n => !conv.has(n) && people.includes(n)).map(n => html`<button key=${n} className="pill sm" aria-pressed=${convFor === n} onClick=${() => setConvFor(convFor === n ? null : n)}>${n}</button>`)}
@@ -3504,7 +3519,7 @@ function bestGroup(st, people) {
   const gs = st.groups || []; let c = _bestC.get(gs); if (!c) { c = new Map(); _bestC.set(gs, c); }
   const key = people.slice().sort().join('|'); if (c.has(key)) return c.get(key);
   let best = null, bs = 0; // 둘이서 한 판은 모임 기록이 아님: 모임 멤버가 2명 이상 있어야 해요
-  gs.forEach(g => { const m = memSet(g); let sc = 0; people.forEach(n => { if (m.has(n)) sc++; }); if (sc >= Math.min(2, g.members.length) && (sc > bs || (sc === bs && g.members.length < best.members.length))) { best = g; bs = sc; } });
+  gs.forEach(g => { const m = memSet(g); let sc = 0; people.forEach(n => { if (m.has(n)) sc++; }); if (sc > 0 && sc >= Math.min(2, g.members.length) && (sc > bs || (sc === bs && best && g.members.length < best.members.length))) { best = g; bs = sc; } });
   c.set(key, best); return best;
 }
 const _plast = new WeakMap();
@@ -3845,10 +3860,9 @@ function ShareDaySheet({ st, date, close, say }) {
   const d = parse(date);
   const games = []; ps.forEach(p => { let x = games.find(y => y.id === p.gameId); if (!x) { x = { id: p.gameId, n: 0, w: {} }; games.push(x); } x.n++; (modeOf(p) === 'coop' ? (p.coop ? [p.coop === 'win' ? '__cw' : '__cl'] : []) : modeOf(p) === 'rank' ? Object.keys(p.ranks || {}).filter(k => p.ranks[k] === 1) : p.winners || []).forEach(n => x.w[n] = (x.w[n] || 0) + 1); });
   const people = [...new Set(ps.flatMap(p => p.people))];
-  const wins = {}; ps.forEach(p => [...(modeOf(p) === 'rank' ? Object.keys(p.ranks || {}).filter(k => p.ranks[k] === 1) : modeOf(p) === 'win' ? p.winners || [] : [])].forEach(n => wins[n] = (wins[n] || 0) + 1));
-  const mvp = Object.entries(wins).sort((a, b) => b[1] - a[1])[0];
+  const champ = dayChamp(ps.filter(p => !p.from).length ? ps.filter(p => !p.from) : ps);
   const photo = ((st.photos || {})[date] || []).find(m => typeof m === 'string');
-  const text = `${d.getMonth() + 1}월 ${d.getDate()}일 보드게임\n` + games.map(x => `${GAME[x.id].ko}${Object.keys(x.w).length ? ' (' + wtxt(x) + ')' : ''}`).join('\n') + (mvp ? `\n오늘의 승자: ${mvp[0] === '나' ? st.me : mvp[0]} ${nf(mvp[1])}승` : '');
+  const text = `${d.getMonth() + 1}월 ${d.getDate()}일 보드게임\n` + games.map(x => `${GAME[x.id].ko}${Object.keys(x.w).length ? ' (' + wtxt(x) + ')' : ''}`).join('\n') + (champ ? `\n${champText(champ)}` : '');
   function wtxt(x) { const e = Object.entries(x.w); const cw = x.w.__cw || 0, cl = x.w.__cl || 0;
     if (cw || cl) return cw + cl === 1 ? (cw ? '우리가 이김' : '우리가 짐') : `우리가 ${nf(cw)}승 ${nf(cl)}패`;
     return e.sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${k === '나' ? st.me : k} ${nf(v)}승`).join(', ') + (e.length > 3 ? ' 외' : ''); }
@@ -3861,7 +3875,7 @@ function ShareDaySheet({ st, date, close, say }) {
       ${games.sort((a, b) => b.n - a.n).slice(0, 6).map(x => html`<div key=${x.id} className="dc-g"><span>${GAME[x.id].ko}</span><span></span>
         <span className="w">${wtxt(x)}</span></div>`)}
       ${games.length > 6 ? html`<div className="dc-g more"><span>외 ${nf(games.length - 6)}개 게임</span><span></span><span></span></div>` : null}
-      ${mvp ? html`<div className="dc-mvp">오늘의 승자 <b>${mvp[0] === '나' ? st.me : mvp[0]}</b> ${nf(mvp[1])}승</div>` : null}
+      ${champ ? html`<div className="dc-mvp">${champText(champ)}</div>` : null}
       <div className="dc-foot">보드게임 기록장</div>
     </div>
     <div className="sheet-foot"><button className="btn primary" onClick=${share}>공유하기</button></div>
@@ -5021,14 +5035,17 @@ function PeopleList({ st, openPerson }) {
 /* ---------- 처음 열 때 ---------- */
 function Welcome({ start }) {
   const [nick, setNick] = useState('');
+  const [need, setNeed] = useState(false);
   const n = nick.trim();
+  const go = () => { if (!n) { setNeed(true); const el = document.getElementById('wc-nick'); if (el) el.focus(); return; } start('empty', n); };
   return html`<div className="screen welcome">
     <div className="wc-top"><div className="wc-art">${['#2f6f5e', '#b5562f', '#3e4a7a'].map((c, i) => html`<span key=${i} style=${{ background: c }}></span>`)}</div>
       <h1>보드게임 기록장</h1><p>오늘 누구와 무슨 게임을 했고, 누가 이겼는지 남겨 두는 곳이에요.</p></div>
-    <label className="field"><span className="lb">닉네임</span><input className="input" placeholder="예: 에릭" maxLength="12" value=${nick} onInput=${e => setNick(e.target.value)}/></label>
-    <div className="wc-acts"><button className="btn primary block" disabled=${!n} onClick=${() => start('empty', n)}>내 기록장 시작하기</button>
+    <form className="field" onSubmit=${e => { e.preventDefault(); go(); }}><label className="lb" htmlFor="wc-nick">닉네임</label><input id="wc-nick" className=${'input' + (need && !n ? ' bad' : '')} placeholder="예: 에릭" maxLength="12" value=${nick} onInput=${e => { setNick(e.target.value); setNeed(false); }} enterKeyHint="go"/>
+      ${need && !n ? html`<div className="wc-need">기록장에 쓸 닉네임을 적어 주세요</div>` : null}</form>
+    <div className="wc-acts"><button className="btn primary block" onClick=${go}>내 기록장 시작하기</button>
       <button className="btn block" onClick=${() => start('sample', n)}>예시로 먼저 둘러보기</button></div>
-    <div className="note">예시에는 기록·보관함·모임이 많이 들어 있어요. 둘러본 뒤 설정에서 한 번에 지울 수 있어요. 지금은 미리보기라 기록은 이 기기에만 저장돼요.</div>
+    <div className="note">예시는 '에릭'이라는 사람의 기록장이에요. 둘러보다가 화면 아래 '내 기록장 시작'을 누르면 바로 내 기록장으로 바뀌어요. 지금은 미리보기라 기록은 이 기기에만 저장돼요.</div>
   </div>`;
 }
 
@@ -5065,13 +5082,13 @@ function App() {
 
   const [full, setFull] = useState(false);
   useEffect(() => { setFull(!save(st)); }, [st]);
-  useEffect(() => { const f = () => setTab(readHash()); window.addEventListener('hashchange', f); return () => window.removeEventListener('hashchange', f); }, []);
+  useEffect(() => { const f = () => { const n = navRef.current; if (n && n.ignoreHash) { n.ignoreHash = false; try { history.replaceState(history.state, '', '#' + tabRef.current); } catch (e) {} return; } setTab(readHash()); }; window.addEventListener('hashchange', f); return () => window.removeEventListener('hashchange', f); }, []);
 
   const update = fn => setSt(s => fn(s));
   const say = m => { setToast(m); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 2400); };
   const go = t => { if (t === tab) setStack(s => ({ ...s, [t]: null })); setTab(t); try { history.replaceState(null, '', '#' + t); } catch (e) {} window.scrollTo(0, 0); };
-  const open = id => { setStack(s => ({ ...s, [tab]: id })); window.scrollTo(0, 0); };
-  const back = () => { setStack(s => ({ ...s, [tab]: null })); };
+  const open = id => { setStack(s => ({ ...s, [tabRef.current]: id })); window.scrollTo(0, 0); };
+  const back = () => { setStack(s => ({ ...s, [tabRef.current]: null })); };
   // 휴대폰 뒤로 가기: 열린 시트 → 상세 화면 순서로 하나씩 닫기
   tabRef.current = tab;
   const navDepth = (stack[tab] ? 1 : 0) + (sheet ? 1 : 0);
@@ -5079,7 +5096,7 @@ function App() {
   navRef.current.sheet = sheet; navRef.current.detail = !!stack[tab];
   useEffect(() => { const n = navRef.current; try {
     while (n.pushed < navDepth) { history.pushState({ bgDepth: n.pushed + 1 }, '', location.hash); n.pushed++; }
-    if (n.pushed > navDepth) { const k = n.pushed - navDepth; n.pushed = navDepth; n.skip++; history.go(-k); }
+    if (n.pushed > navDepth) { const k = n.pushed - navDepth; n.pushed = navDepth; n.skip++; n.ignoreHash = true; setTimeout(() => { n.ignoreHash = false; }, 400); history.go(-k); }
   } catch (e) {} }, [navDepth]);
   useEffect(() => { const f = () => { const n = navRef.current; if (n.skip) { n.skip--; return; }
     n.pushed = Math.max(0, n.pushed - 1);
@@ -5157,24 +5174,24 @@ function App() {
   };
 
   const startPlay = (id, again) => setSheet({ kind: 'play', id, again: !!again });
-  const openGroup = id => { setStack(s => ({ ...s, [tab]: 'g:' + id })); window.scrollTo(0, 0); };
+  const openGroup = id => { setStack(s => ({ ...s, [tabRef.current]: 'g:' + id })); window.scrollTo(0, 0); };
   const newGroup = () => setSheet({ kind: 'newgroup' });
   const createGroup = g => { update(s => ({ ...s, groups: [...(s.groups || []), g] })); setSheet(null); openGroup(g.id);
     const app = g.members.filter(n => st.friends[n]); say(g.hidden ? '모임을 만들었어요. 초대한 사람만 들어올 수 있어요' : '모임을 만들었어요. 모임 찾기에도 보여요'); };
   const leaveGroup = id => { update(s => ({ ...s, groups: (s.groups || []).filter(g => g.id !== id) })); back(); say('모임에서 나왔어요. 기록은 그대로 있어요'); };
   const inviteToGroup = (id, n) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, members: [...g.members, n] } : g) })); say(`${n}님을 넣었어요 · 미리보기라 알림은 아직 안 가요`); };
-  const openPub = id => { setStack(s => ({ ...s, [tab]: 'gp:' + id })); window.scrollTo(0, 0); };
+  const openPub = id => { setStack(s => ({ ...s, [tabRef.current]: 'gp:' + id })); window.scrollTo(0, 0); };
   const toggleSaveGroup = id => { const had = (st.savedGroups || []).includes(id); update(s => ({ ...s, savedGroups: had ? s.savedGroups.filter(x => x !== id) : [id, ...(s.savedGroups || [])] })); say(had ? '찜을 풀었어요' : '찜했어요 · 모임 찾기의 \'찜\'에서 다시 봐요'); };
   const setMyArea = a => update(s => ({ ...s, myArea: a }));
   const joinPub = p => { const d = pubDetail(p); const members = pubMembers(p);
     update(s => ({ ...s, groups: [...(s.groups || []), { ...p, ...d, members, at: daysAgo(p.made || 0), owner: false, joinedAt: { '나': today() }, chat: [] }], joinReq: Object.fromEntries(Object.entries(s.joinReq || {}).filter(([k]) => k !== p.id)) }));
-    setStack(s => ({ ...s, [tab]: 'g:' + p.id })); window.scrollTo(0, 0); say('가입했어요. 일정 참석은 일정마다 따로 골라요'); };
+    setStack(s => ({ ...s, [tabRef.current]: 'g:' + p.id })); window.scrollTo(0, 0); say('가입했어요. 일정 참석은 일정마다 따로 골라요'); };
   const askPub = (p, ans) => { update(s => ({ ...s, joinReq: { ...(s.joinReq || {}), [p.id]: { at: today(), ans } } })); say('가입 신청을 보냈어요'); };
   const cancelAsk = id => { update(s => { const j = { ...(s.joinReq || {}) }; delete j[id]; return { ...s, joinReq: j }; }); say('가입 신청을 취소했어요'); };
   const visitEv = e => { const had = (st.visitEv || {})[e.id]; update(s => { const v = { ...(s.visitEv || {}) }; if (had) delete v[e.id]; else v[e.id] = true; return { ...s, visitEv: v }; }); say(had ? '신청을 취소했어요' : '이 일정만 신청했어요 · 모임 가입은 안 돼요'); };
   const editGroup = g => setSheet({ kind: 'newgroup', edit: g });
   const saveGroupInfo = (id, info) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, ...info } : g) })); setSheet(null); say('모임 정보를 고쳤어요'); };
-  const openCouple = id => { setStack(s => ({ ...s, [tab]: 'c:' + id })); window.scrollTo(0, 0); };
+  const openCouple = id => { setStack(s => ({ ...s, [tabRef.current]: 'c:' + id })); window.scrollTo(0, 0); };
   const editCouple = c => setSheet({ kind: 'couple', c });
   const upCouple = (id, fn, msg) => { update(s => ({ ...s, couples: s.couples.map(x => x.id === id ? fn(x) : x) })); if (msg) say(msg); };
   const updCouple = (id, patch) => { update(s => ({ ...s, couples: s.couples.map(x => x.id === id ? { ...x, ...patch } : x) })); say('사진을 넣었어요'); };
@@ -5205,7 +5222,7 @@ function App() {
   NAV.qna = id => setQnaG(id);
   ME.name = st.me || '나';
   const setRule = (id, k) => update(s => ({ ...s, scoreRule: { ...(s.scoreRule || {}), [id]: k } }));
-  const openGroups = () => { setStack(s => ({ ...s, [tab]: 'gl' })); window.scrollTo(0, 0); };
+  const openGroups = () => { setStack(s => ({ ...s, [tabRef.current]: 'gl' })); window.scrollTo(0, 0); };
   const pinGroup = id => { const g = st.groups.find(x => x.id === id); update(s => ({ ...s, groups: s.groups.map(x => x.id === id ? { ...x, pinned: !x.pinned } : x) })); say(g.pinned ? '고정을 풀었어요' : '맨 앞에 고정했어요'); };
   const hideGroupHome = id => { const g = st.groups.find(x => x.id === id); update(s => ({ ...s, groups: s.groups.map(x => x.id === id ? { ...x, hideHome: !x.hideHome } : x) })); say(g.hideHome ? '홈에 다시 보여요' : '홈 소식에서 숨겼어요. 모임 화면에선 그대로 보여요'); };
   const muteGroup = id => { const g = st.groups.find(x => x.id === id); update(s => ({ ...s, groups: s.groups.map(x => x.id === id ? { ...x, mute: !x.mute } : x) })); say(g.mute ? '이 모임 알림을 켰어요' : '이 모임 알림을 껐어요. 기록은 그대로 모여요'); };
@@ -5238,9 +5255,10 @@ function App() {
   else if (tab === 'groups') screen = html`<${GroupsList} ...${props} back=${null}/>`;
   else screen = html`<${Me} ...${props} update=${update} resetTo=${resetTo}/>`;
 
-  if (st.firstRun) return html`<${Welcome} start=${(kind, nick) => { if (kind === 'sample') { const s0 = seedState(); setSt(prepState(nick ? { ...s0, me: nick } : s0)); } else setSt(prepState({ ...empty(), me: nick })); }}/>`;
+  if (st.firstRun) return html`<${Welcome} start=${(kind, nick) => { if (kind === 'sample') { const s0 = seedState(); setSt(prepState({ ...s0, pendingNick: nick || '' })); } else setSt(prepState({ ...empty(), me: nick })); }}/>`;
   return html`<${React.Fragment}>
     ${screen}
+    ${st.hasSample && !sheet ? html`<div className="samplebar" role="note"><span>예시 기록장을 보고 있어요</span><button onClick=${() => { if (st.pendingNick) { setStack({}); setTab('home'); setSt(prepState({ ...empty(), me: st.pendingNick })); } else setSt({ ...empty(), firstRun: true }); }}>내 기록장 시작 ›</button></div>` : null}
     <nav className="tabbar" aria-label="메뉴">${TABS.map(([k, l, ic]) => k === 'rec' ? html`<button key=${k} className="rectab" onClick=${() => startPlay(null)} aria-label="오늘 한 게임 기록하기"><span className="rc">${ic}</span><span>기록</span></button>` :
       html`<button key=${k} aria-current=${tab === k ? 'page' : undefined} onClick=${() => go(k)}>${ic}<span className=${k === 'me' ? 'tnk' : null}>${k === 'me' ? ME.name : l}</span></button>`)}</nav>
     ${sheet && sheet.kind === 'play' ? html`<${PlaySheet} key=${sheet.edit || 'new'} again=${sheet.again} st=${st} gameId=${sheet.id} editDate=${sheet.edit} close=${() => setSheet(null)} onSave=${savePlay} onDeleteDay=${deleteDay} saveDraft=${saveDraft} discardDraft=${discardDraft} addCustom=${addCustom} setRule=${setRule}/>` : null}
