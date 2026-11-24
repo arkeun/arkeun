@@ -34,6 +34,11 @@ jobs:
         with:
           path: .
 
+      # GitHub's artifact metadata can briefly lag behind a successful upload.
+      # Wait before deploy-pages queries the workflow run's artifacts.
+      - name: Wait for Pages artifact metadata
+        run: sleep 15
+
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
