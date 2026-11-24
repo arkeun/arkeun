@@ -1,4 +1,22 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* 홈: 기록 입력만이 아니라 다음 게임을 고르는 출발점 */
+.home-discover { margin: 20px -16px 14px; padding: 0 16px 2px; }
+.home-discover-head { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+.home-discover .sec { margin: 0 0 4px; }
+.home-discover-head p { margin:0; color:var(--ink-3); font-size:12px; line-height:1.45; }
+.home-pick-strip { display:grid; grid-auto-flow:column; grid-auto-columns:104px; gap:12px; overflow-x:auto; padding:12px 1px 7px; scrollbar-width:none; scroll-snap-type:x proximity; }
+.home-pick-strip::-webkit-scrollbar { display:none; }
+.home-pick { min-width:0; padding:0; border:0; background:none; text-align:left; color:var(--ink); scroll-snap-align:start; }
+.home-pick .cover { width:100%; aspect-ratio:1/1; border-radius:10px; box-shadow:0 2px 7px rgba(0,0,0,.09); }
+.home-pick-name { display:block; margin-top:7px; font-size:13px; line-height:1.3; font-weight:650; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.home-pick-meta { display:block; margin-top:3px; color:var(--ink-3); font-size:11px; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.home-month-note { display:flex; align-items:center; gap:5px; margin:13px 0 8px; padding:11px 12px; border-radius:12px; background:var(--sunk); color:var(--ink-3); font-size:12px; }
+.home-month-note b { color:var(--ink); font-size:13px; }
+.home-month-note span:first-child { margin-right:auto; }
+.home-month-note i { font-style:normal; opacity:.55; }
+@media (prefers-reduced-motion: reduce) { .home-pick-strip { scroll-behavior:auto; } }
+
+</style></head><body>
 <title>보드게임 기록장</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1666,6 +1684,26 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const plays = useMemo(() => { const t = normName(hq.trim()); const gm = t ? (st.groups || []).filter(g => normName(g.name).includes(t)) : [];
     return st.plays.filter(p => (!mon || p.date.slice(0, 7) <= mon) && (!t || (GAME[p.gameId] && (normName(GAME[p.gameId].ko).includes(t) || normName(GAME[p.gameId].en || '').includes(t))) || p.people.some(n => normName(n).includes(t)) || (p.from && normName(p.from).includes(t)) || gm.some(g => inGroup(p, g)))); }, [st.plays, hq, mon, st.groups]);
   const lastDay = useMemo(() => byDay(st.plays.filter(p => !p.from))[0], [st.plays]);
+  // 홈에서 보유 게임 중 아직 안 해본 게임을 먼저 보여주고, 모두 해봤다면 가장 오래 쉬었던 게임을 제안
+  const homePlayMeta = useMemo(() => {
+    const counts = {}, last = {};
+    st.plays.filter(p => !p.from).forEach(p => {
+      counts[p.gameId] = (counts[p.gameId] || 0) + 1;
+      if (!last[p.gameId] || last[p.gameId] < p.date) last[p.gameId] = p.date;
+    });
+    return { counts, last };
+  }, [st.plays]);
+  const homePickIds = Object.keys(st.collection || {}).map(Number).filter(id => GAME[id] && ((st.collection[id] || {}).status || 'own') !== 'sold')
+    .sort((a, b) => {
+      const ac = homePlayMeta.counts[a] || 0, bc = homePlayMeta.counts[b] || 0;
+      if (!!ac !== !!bc) return ac ? 1 : -1;
+      return (homePlayMeta.last[a] || '').localeCompare(homePlayMeta.last[b] || '');
+    }).slice(0, 6);
+  const homePickTitle = homePickIds.some(id => !homePlayMeta.counts[id]) ? '아직 안 해본 게임' : '오랜만에 다시 할 게임';
+  const homePickCaption = homePickIds.some(id => !homePlayMeta.counts[id]) ? '보관함에서 아직 플레이 기록이 없는 게임부터 골랐어요.' : '마지막으로 한 지 오래된 게임부터 골랐어요.';
+  const thisMonthPlays = st.plays.filter(p => !p.from && p.date.slice(0, 7) === today().slice(0, 7));
+  const thisMonthCount = thisMonthPlays.length;
+  const thisMonthPeople = new Set(thisMonthPlays.flatMap(p => p.people)).size;
   const draftLabel = st.draft && st.draft.items.length ? (() => { const it = st.draft.items[st.draft.items.length - 1]; const g = GAME[it.gameId]; 
     return `${g ? g.ko : ''} 적던 중 · 아직 저장 안 됐어요`; })() : null;
   return html`<div className="screen">
@@ -1678,7 +1716,16 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
       ${!bellN ? html`<div className="note" style=${{ margin: 0 }}>새 알림이 없어요.</div>` : null}</div><//>` : null}
     <button className="recbig" onClick=${() => !st.draft && playedToday ? editDay(today()) : startPlay(null)}><b>${draftLabel ? '이어 적기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 이어서 적어요' : todayEv ? `${todayEv[0].name}${todayEv[1].title ? ` ${todayEv[1].title}` : ''} · 오늘 ${fmtTime(todayEv[1].time)}${todayEv[1].place ? ` · ${todayEv[1].place}` : ''}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>
     ${!st.draft && lastDay ? html`<button className="againline" onClick=${() => startPlay(null, true)}>지난번처럼: ${[...new Set(lastDay.plays.flatMap(p => p.people))].slice(0, 3).map(dn).join('·')} · ${[...new Set(lastDay.plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')}${new Set(lastDay.plays.map(p => p.gameId)).size > 2 ? ' 외' : ''}</button>` : null}
-    <div className="search hsearch">${I.games}<input id="home-search" type="search" placeholder="게임, 사람, 모임으로 찾기" value=${hq} onInput=${e => setHq(e.target.value)} autoComplete="off"/></div>
+    <div className="search hsearch">${I.games}<input id="home-search" type="search" placeholder="내 기록에서 게임·사람·모임 찾기" value=${hq} onInput=${e => setHq(e.target.value)} autoComplete="off"/></div>
+    ${!hq.trim() && homePickIds.length ? html`<section className="home-discover" aria-label="다음 게임 고르기">
+      <div className="home-discover-head"><div><h2 className="sec">${homePickTitle}</h2><p>${homePickCaption}</p></div></div>
+      <div className="home-pick-strip">${homePickIds.map(id => { const g = GAME[id]; const n = homePlayMeta.counts[id] || 0; const last = homePlayMeta.last[id]; return html`<button className="home-pick" key=${id} onClick=${() => open(id)} aria-label=${g.ko + ' 게임 정보 보기'}>
+        <${Cover} g=${g}/>
+        <span className="home-pick-name">${g.ko}</span>
+        <span className="home-pick-meta">${n ? `${n}판 · ${last ? relDay(last) : ''}` : '아직 안 해봤어요'}</span>
+      </button>`; })}</div>
+    </section>` : null}
+    ${!hq.trim() && st.plays.some(p => !p.from) ? html`<div className="home-month-note"><span>이번 달 내 기록</span><b>${thisMonthCount}판</b><i>·</i><b>${thisMonthPeople}명</b><span>과 함께했어요</span></div>` : null}
     ${hq.trim() ? html`<div className="note" style=${{ marginTop: 0 }}>'${hq.trim()}' 들어간 기록만 보고 있어요 · <button className="linkbtn inl" onClick=${() => setHq('')}>전체 보기</button></div>` : null}
     ${mon ? html`<div className="note" style=${{ marginTop: 0 }}>${mon.slice(0, 4)}년 ${+mon.slice(5)}월부터 보고 있어요 · <button className="linkbtn inl" onClick=${() => setMon('')}>최근으로</button></div>` : null}
     ${monOpen ? html`<div className="monlist" role="dialog" aria-label="달 고르기"><div className="ml-h"><b>어느 달로 갈까요?</b><button className="linkbtn" onClick=${() => setMonOpen(false)}>닫기</button></div>
