@@ -566,7 +566,7 @@ button.person { font: inherit; cursor: pointer; }
 .msg .mb { min-width: 0; max-width: 78%; }
 .msg .ma { font-size: 12px; color: var(--ink-3); margin-bottom: 2px; }
 .msg .row { display: flex; align-items: flex-end; gap: 4px; }
-.msg .bub { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 7px 11px; font-size: 14px; word-break: break-word; }
+.msg .bub { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 7px 11px; font-size: 14px; word-break: keep-all; overflow-wrap: anywhere; }
 .msg .mt { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .msg.mine { justify-content: flex-end; }
 .msg.mine .av-sp { display: none; }
@@ -853,7 +853,7 @@ button.person { font: inherit; cursor: pointer; }
 .cmt .ch { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .cmt .ch .dt { color: var(--ink-3); font-size: 12px; }
 .cmt .ch .dots { margin-left: auto; }
-.cmt .ct { font-size: 14px; margin-top: 1px; word-break: break-word; }
+.cmt .ct { font-size: 14px; margin-top: 1px; word-break: keep-all; overflow-wrap: anywhere; }
 .cform { margin-top: 0; }
 .cmt .rmenu { flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .cmt .rmenu .btn { white-space: nowrap; font-size: 12.5px; padding: 5px 10px; min-height: 0; }
@@ -1307,6 +1307,18 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 
 .actions.one .btn { flex-direction: row; gap: 8px; min-height: 48px; }
 .actions.one .btn svg { width: 20px; height: 20px; }
+/* 디자인 재검토 마무리 (11/24): 초록 정리, 로그인 다크, 누르는 영역 */
+.linkbtn, .more, .dots, .lb-x { position: relative; }
+.linkbtn::after, .more::after, .dots::after, .lb-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ask, :root:not([data-theme="light"]) .ccard1 { background: var(--accent-fill); color: var(--accent-fill-ink); }
+  :root:not([data-theme="light"]) .switch[aria-checked="true"], :root:not([data-theme="light"]) .bellbtn .bd { background: var(--accent-fill); color: var(--accent-fill-ink); }
+  :root:not([data-theme="light"]) .login-apple { background: #fff; border-color: #fff; color: #000; }
+  :root:not([data-theme="light"]) .login-google { background: #131314; border-color: #8e918f; color: #e3e3e3; } }
+:root[data-theme="dark"] .ask, :root[data-theme="dark"] .ccard1 { background: var(--accent-fill); color: var(--accent-fill-ink); }
+:root[data-theme="dark"] .switch[aria-checked="true"], :root[data-theme="dark"] .bellbtn .bd { background: var(--accent-fill); color: var(--accent-fill-ink); }
+:root[data-theme="dark"] .login-apple { background: #fff; border-color: #fff; color: #000; }
+:root[data-theme="dark"] .login-google { background: #131314; border-color: #8e918f; color: #e3e3e3; }
 </style>
 
 <div id="app"></div>
@@ -1844,8 +1856,11 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const winLine = (plays, solo) => {
     if (plays.length === 1) return joinBits(roundSummary({ ...plays[0], scores: {}, memo: '', minutes: '' }, solo));
     const t = winTally(plays);
-    const top = t.list.slice(0, 2).map(([n, c]) => `${dn(n)} ${c}승`);
-    const bits = [...(t.coopN ? [`우리가 ${t.coopW}승 ${t.coopN - t.coopW}패`] : []), ...top, ...(t.list.length > 2 ? [`외 ${t.list.length - 2}명`] : []), ];
+    // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 9승'
+    const best = t.list.length ? t.list[0][1] : 0; const tier = t.list.filter(([, c]) => c === best);
+    const top = !t.list.length ? [] : tier.length > 1 ? [`${tier.slice(0, 2).map(([n]) => dn(n)).join('·')} ${best}승${tier.length > 2 ? ` 외 ${tier.length - 2}명` : ''}`]
+      : t.list.length === 2 ? t.list.map(([n, c]) => `${dn(n)} ${c}승`) : [`${dn(t.list[0][0])} ${best}승`];
+    const bits = [...(t.coopN ? [`우리가 ${t.coopW}승 ${t.coopN - t.coopW}패`] : []), ...top];
     return bits.length ? html`<span className="crown">${bits.join(' · ')}</span>` : null;
   };
   const multiSeg = segs.length > 1;
@@ -3562,7 +3577,8 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
 function ShelfImageSheet({ st, close, say }) {
   const [size, setSize] = useState('feed'); const [dark, setDark] = useState(false); const [url, setUrl] = useState(null);
   const counts = useMemo(() => { const o = {}; st.plays.forEach(p => o[p.gameId] = (o[p.gameId] || 0) + 1); return o; }, [st.plays]);
-  const ids = Object.keys(st.collection).map(Number).filter(id => GAME[id] && (st.collection[id].status || 'own') !== 'sold').sort((a, b) => (counts[b] || 0) - (counts[a] || 0)).slice(0, 9);
+  const ids = Object.keys(st.collection).map(Number).filter(id => GAME[id] && id > -30000 && (st.collection[id].status || 'own') !== 'sold').sort((a, b) => (counts[b] || 0) - (counts[a] || 0)).slice(0, 9);
+  const rows = Math.max(1, Math.ceil(ids.length / 3));
   const all = Object.keys(st.collection).filter(id => GAME[id]).length;
   const firstY = (() => { const ys = Object.values(st.collection).map(v => (v.bought || v.at || '').slice(0, 4)).filter(Boolean).sort(); return ys[0] || (st.since || today()).slice(0, 4); })();
   useEffect(() => {
@@ -3573,9 +3589,9 @@ function ShelfImageSheet({ st, close, say }) {
     const top = size === 'feed' ? 120 : 260;
     x.fillStyle = ink; x.font = `800 84px ${font}`; x.fillText(`${st.me}의 선반`, 90, top + 70);
     x.fillStyle = sub; x.font = `500 38px ${font}`; x.fillText(`${all}개 · ${firstY}년부터`, 90, top + 130);
-    const rowsTop = top + 210, rowsH = (size === 'feed' ? 1180 : 1640) - rowsTop, rowH = rowsH / 3;
+    const rowsTop = top + 210, rowsH = (size === 'feed' ? 1180 : 1640) - rowsTop, rowH = rowsH / Math.max(rows, 2);
     const colW = (W - 180) / 3;
-    for (let r = 0; r < 3; r++) { const base = rowsTop + rowH * (r + 1) - 30;
+    for (let r = 0; r < rows; r++) { const base = rowsTop + rowH * (r + 1) - 30;
       ids.slice(r * 3, r * 3 + 3).forEach((id, k) => { const rt = boxRatio(id); const maxH = rowH - 50; const bw = Math.min(colW - 40, maxH / 1.28) * (rt < 1 ? 1.08 : 1), bh = bw * rt; const bx = 90 + k * colW + (colW - bw) / 2, by = base - bh;
         x.save(); x.shadowColor = 'rgba(0,0,0,.28)'; x.shadowBlur = 24; x.shadowOffsetY = 10; x.fillStyle = COVER_COLORS[hash(id) % COVER_COLORS.length]; x.fillRect(bx, by, bw, bh); x.restore();
         x.fillStyle = '#fff'; x.font = `700 34px ${font}`; x.textAlign = 'center';
@@ -3590,7 +3606,7 @@ function ShelfImageSheet({ st, close, say }) {
     <div className="seg" role="group" aria-label="크기" style=${{ marginBottom: 8 }}><button aria-pressed=${size === 'feed'} onClick=${() => setSize('feed')}>피드 4:5</button><button aria-pressed=${size === 'story'} onClick=${() => setSize('story')}>스토리 9:16</button></div>
     <div className="seg" role="group" aria-label="바탕" style=${{ marginBottom: 12, marginLeft: 8 }}><button aria-pressed=${!dark} onClick=${() => setDark(false)}>종이</button><button aria-pressed=${dark} onClick=${() => setDark(true)}>어두운</button></div>
     <div className="shimg">${url ? html`<img src=${url} alt="선반 이미지 미리보기"/>` : null}</div>
-    <div className="hint" style=${{ marginTop: 6 }}>많이 한 게임 9개가 올라가요.</div>
+    <div className="hint" style=${{ marginTop: 6 }}>많이 한 게임이 9개까지 올라가요.</div>
     <div className="sheet-foot"><button className="btn primary" disabled=${!url} onClick=${async () => { const blob = await (await fetch(url)).blob(); saveFile(`${st.me}-선반.png`, blob, say); }}>저장</button><button className="btn" onClick=${shareIt}>공유</button></div>
   <//>`;
 }
