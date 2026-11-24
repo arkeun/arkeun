@@ -7,7 +7,7 @@ request.md 형식 (맨 위 몇 줄은 설정, 나머지는 질문):
   ---
   질문 내용...
 """
-import base64, json, mimetypes, os, pathlib, sys, urllib.request, urllib.error
+import time, base64, json, mimetypes, os, pathlib, sys, urllib.request, urllib.error
 
 ROOT = pathlib.Path(".")
 REQ = ROOT / "ai-review/request.md"
@@ -57,9 +57,10 @@ def ask_gemini(meta, prompt, texts, images):
     parts = [{"text": prompt}] + [{"text": t} for t in texts]
     for p, mime, b64 in images:
         parts += [{"text": f"그림: {p}"}, {"inline_data": {"mime_type": mime, "data": b64}}]
-    models = [meta["model"]] if meta["model"] else ["gemini-pro-latest", "gemini-2.5-pro", "gemini-flash-latest", "gemini-2.5-flash"]
+    models = [meta["model"]] if meta["model"] else ["gemini-flash-latest", "gemini-3.8-flash", "gemini-flash-lite-latest", "gemini-pro-latest"]
     errors = []
     for m in models:
+      for attempt in range(4):
         try:
             r = post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
                      {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]},
@@ -68,8 +69,11 @@ def ask_gemini(meta, prompt, texts, images):
             return m, out
         except urllib.error.HTTPError as e:
             errors.append(f"{m}: {e.code} {e.read().decode(errors='replace')[:300]}")
+            if e.code in (500, 503) and attempt < 3:
+                time.sleep(20 * (attempt + 1)); continue
+            break
         except Exception as e:
-            errors.append(f"{m}: {e}")
+            errors.append(f"{m}: {e}"); break
     raise RuntimeError("모든 모델 실패\n" + "\n".join(errors))
 
 def ask_openai(meta, prompt, texts, images):
