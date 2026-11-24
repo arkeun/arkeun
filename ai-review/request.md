@@ -1,4 +1,4 @@
-id: q-20261124-132834-30828
+id: q-20261124-134142-18020
 to: gemini
 file: index.html
 file: ai-review/shots/v63/1-알림.png
