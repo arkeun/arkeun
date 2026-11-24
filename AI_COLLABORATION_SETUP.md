@@ -31,3 +31,8 @@ Claude 공식 GitHub App도 이 저장소에 설치되어 있어야 합니다.
 - 두 자동화는 GitHub PR/댓글을 통해 협업하지만, 무한 자동 반복이나 자동 병합은 하지 않습니다.
 - 자동 생성된 코드와 리뷰는 사람이 확인한 뒤 병합해야 합니다.
 - 외부 기여자의 PR은 비밀키 보호를 위해 Codex 자동 리뷰 대상에서 제외합니다.
+
+## 3. 제미나이(또는 OpenAI) 자동 의견 받기
+- Claude 가 `claude/...` 브랜치에 `ai-review/request.md` 를 올리면 `ask-ai.yml` 이 실행되어 답을 `ai-review/response.md` 에 올립니다.
+- 필요한 secret: `GEMINI_API_KEY` (Google AI Studio 무료 키). `to: openai` 를 쓸 때만 `OPENAI_API_KEY`.
+- 자세한 형식은 `ai-review/README.md`.
