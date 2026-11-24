@@ -1,22 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
-/* 홈: 기록 입력만이 아니라 다음 게임을 고르는 출발점 */
-.home-discover { margin: 20px -16px 14px; padding: 0 16px 2px; }
-.home-discover-head { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
-.home-discover .sec { margin: 0 0 4px; }
-.home-discover-head p { margin:0; color:var(--ink-3); font-size:12px; line-height:1.45; }
-.home-pick-strip { display:grid; grid-auto-flow:column; grid-auto-columns:104px; gap:12px; overflow-x:auto; padding:12px 1px 7px; scrollbar-width:none; scroll-snap-type:x proximity; }
-.home-pick-strip::-webkit-scrollbar { display:none; }
-.home-pick { min-width:0; padding:0; border:0; background:none; text-align:left; color:var(--ink); scroll-snap-align:start; }
-.home-pick .cover { width:100%; aspect-ratio:1/1; border-radius:10px; box-shadow:0 2px 7px rgba(0,0,0,.09); }
-.home-pick-name { display:block; margin-top:7px; font-size:13px; line-height:1.3; font-weight:650; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.home-pick-meta { display:block; margin-top:3px; color:var(--ink-3); font-size:11px; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.home-month-note { display:flex; align-items:center; gap:5px; margin:13px 0 8px; padding:11px 12px; border-radius:12px; background:var(--sunk); color:var(--ink-3); font-size:12px; }
-.home-month-note b { color:var(--ink); font-size:13px; }
-.home-month-note span:first-child { margin-right:auto; }
-.home-month-note i { font-style:normal; opacity:.55; }
-@media (prefers-reduced-motion: reduce) { .home-pick-strip { scroll-behavior:auto; } }
-
-</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>보드게임 기록장</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -460,7 +442,7 @@ button.person { font: inherit; cursor: pointer; }
 .sortbtn svg { width: 18px; height: 18px; }
 .sortbtn.on { border-color: var(--accent); color: var(--accent); font-weight: 700; }
 .shseg { flex: 1; min-width: 0; }
-.shseg button { padding: 6px 4px; white-space: nowrap; }
+.shseg { display: grid; grid-template-columns: repeat(3, 1fr); } .shseg button { padding: 6px 4px; white-space: nowrap; }
 .shseg .cnt { color: var(--ink-3); font-size: 12px; font-weight: 400; }
 .topbar h1:has(.h1sub) { min-width: 0; white-space: nowrap; }
 .nowrap { white-space: nowrap; }
@@ -584,7 +566,7 @@ button.person { font: inherit; cursor: pointer; }
 .msg .mb { min-width: 0; max-width: 78%; }
 .msg .ma { font-size: 12px; color: var(--ink-3); margin-bottom: 2px; }
 .msg .row { display: flex; align-items: flex-end; gap: 4px; }
-.msg .bub { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 7px 11px; font-size: 14px; word-break: break-word; }
+.msg .bub { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 7px 11px; font-size: 14px; word-break: keep-all; overflow-wrap: anywhere; }
 .msg .mt { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .msg.mine { justify-content: flex-end; }
 .msg.mine .av-sp { display: none; }
@@ -871,7 +853,7 @@ button.person { font: inherit; cursor: pointer; }
 .cmt .ch { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .cmt .ch .dt { color: var(--ink-3); font-size: 12px; }
 .cmt .ch .dots { margin-left: auto; }
-.cmt .ct { font-size: 14px; margin-top: 1px; word-break: break-word; }
+.cmt .ct { font-size: 14px; margin-top: 1px; word-break: keep-all; overflow-wrap: anywhere; }
 .cform { margin-top: 0; }
 .cmt .rmenu { flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .cmt .rmenu .btn { white-space: nowrap; font-size: 12.5px; padding: 5px 10px; min-height: 0; }
@@ -1185,7 +1167,7 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.55; }
 .qa-rules a { flex: 1; text-align: center; border: 1px solid var(--line); border-radius: 10px; min-height: 44px; display: grid; place-items: center; font-size: 14px; color: var(--ink); text-decoration: none; background: var(--surface); }
 select.qa-sort { border: 0; background: none; font: inherit; font-size: 13px; color: var(--ink-2); min-height: 44px; }
 .mecpl { display: block; color: var(--cc); font-weight: 700; font-size: 13px; margin-top: 2px; padding: 0; min-height: 32px; }
-.bx-cap:empty { display: none; }
+
 .review .on-game.top { margin: 0; color: var(--ink); font-size: 15px; gap: 8px; }
 .round.folded { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: none; font: inherit; color: inherit; min-height: 44px; padding: 6px 2px; }
 .round.folded .rn { font-size: 13px; color: var(--ink-3); flex: none; }
@@ -1219,7 +1201,155 @@ select.qa-sort { border: 0; background: none; font: inherit; font-size: 13px; co
 .ya-share { position: absolute; top: 10px; right: 10px; z-index: 2; min-height: 36px; padding: 0 14px; border: 0; border-radius: 18px; background: rgba(0,0,0,.55); color: #fff; font-weight: 700; font-size: 14px; }
 .sheet:has(.sheet-foot.stick) { padding-bottom: 0; }
 .sheet-foot.stick { margin-bottom: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
-.sheet-foot.stick::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 40px; background: var(--bg); }
+
+
+.cfm-bg { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 80; }
+.confirm.pop { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(320px, calc(100vw - 48px)); z-index: 81; background: var(--bg); padding: 18px; border-radius: 16px; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+.confirm.pop .r { display: flex; gap: 8px; } .confirm.pop .r .btn { flex: 1; min-height: 44px; }
+.t-undo { margin-left: 12px; background: none; border: 0; color: inherit; font-weight: 800; text-decoration: underline; min-height: 36px; }
+.stephd .solochip { margin-left: auto; min-height: 44px; padding: 0 16px; font-size: 14px; }
+.ya-t { pointer-events: none; } .ya-share { pointer-events: auto; }
+.rankhd { font-size: 13px; color: var(--ink-3); margin: 2px 0 6px; }
+
+/* 아이폰 밀도 (11/24): 누르는 영역 44px은 지키고, 글자·여백·장식을 줄여 한 화면에 더 많이 */
+.topbar { padding-block: 8px 4px; }
+.topbar h1 { font-size: 21px; }
+.topbar .vsw button { min-height: 32px; font-size: 12.5px; }
+h2.sec { margin: 20px 0 8px; font-size: 15px; }
+.recbig { min-height: 48px; padding-block: 7px; border-radius: 12px; }
+.recbig b { font-size: 16px; }
+.recbig span { font-size: 12.5px; }
+.againline { min-height: 36px; padding: 4px 2px; font-size: 12.5px; }
+.hsearch { margin: 2px 0 4px; }
+.search input { padding-block: 8px; font-size: 15px; }
+.monthsep { padding-block: 6px; }
+.play.card.dense { padding: 8px 16px; }
+.play.card { border-bottom-width: 6px; }
+.play.card:last-child { border-bottom-width: 6px; }
+.dense .when .d { font-size: 21px; }
+.dh { height: 24px; }
+.dh-t { font-size: 13px; }
+.dense .pplrow { margin: 0 0 2px; font-size: 12.5px; }
+.dense .gr-cv .cover { width: 30px; height: 30px; border-radius: 6px; }
+.gr-line { min-height: 32px; }
+.tabbar { padding-top: 4px; padding-bottom: calc(2px + env(safe-area-inset-bottom, 0px)); }
+.tabbar button { padding: 3px 0; font-size: 11px; gap: 1px; min-height: 44px; }
+.tabbar svg { width: 21px; height: 21px; }
+.tabbar .rectab .rc { width: 36px; height: 24px; border-radius: 8px; }
+.tabbar .rectab .rc svg { width: 18px; height: 18px; }
+.shelf2 { gap: 12px; }
+.srow2 { gap: 9px; }
+.wp, .seg button, .modes button { font-size: 14px; }
+.sheet .pill, .dates .pill { font-size: 14px; padding-inline: 12px; }
+.picked { padding: 5px 8px; }
+.field.step { margin-top: 14px; padding-top: 12px; }
+.field { margin-top: 14px; }
+.gl-main { padding: 8px 0; }
+
+/* 디자인 재검토 (11/24) */
+body { word-break: keep-all; overflow-wrap: anywhere; }
+.bx-art { margin-bottom: 0; }
+.bx-txt { display: block; height: 34px; padding-top: 5px; text-align: center; }
+.bx-name { display: block; font-size: 12px; line-height: 15px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bx-txt .bx-cap { display: block; margin-top: 0; line-height: 14px; font-size: 11.5px; }
+.planks .srow2::after { bottom: 34px; }
+.shelf2 { gap: 16px; }
+.shelf2:not(.planks) .bx-art { aspect-ratio: 1 / 1 !important; }
+.bx-art .tag { top: 4px; right: 4px; transform: rotate(2deg); max-width: calc(100% - 8px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bx.hasx .bx-art::before { inset: -4px -4px 4px 4px; background: color-mix(in srgb, var(--sunk) 70%, var(--ink-3)); outline: 0; }
+.seg { width: 100%; display: flex; } .seg button { flex: 1; }
+.shseg { display: grid; }
+.play .gr-line { text-overflow: ellipsis; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill[aria-pressed="true"] { background: var(--accent-fill); border-color: var(--accent-fill); color: #fff; }
+  :root:not([data-theme="light"]) .seg button[aria-pressed="true"] { background: #333936; }
+  :root:not([data-theme="light"]) .writebtn { background: var(--accent-fill); }
+  :root:not([data-theme="light"]) .bx-art .tag { background: #e6d9a8; }
+  :root:not([data-theme="light"]) .cover { outline: 1px solid rgba(255,255,255,.08); outline-offset: -1px; } }
+:root[data-theme="dark"] .pill[aria-pressed="true"] { background: var(--accent-fill); border-color: var(--accent-fill); color: #fff; }
+:root[data-theme="dark"] .seg button[aria-pressed="true"] { background: #333936; }
+:root[data-theme="dark"] .writebtn { background: var(--accent-fill); }
+:root[data-theme="dark"] .bx-art .tag { background: #e6d9a8; }
+
+.sp-l { width: auto; min-width: 52px; flex: none; }
+.sortpanel .pill { min-height: 40px; font-size: 14px; }
+.sortbtn { height: 50px; width: 50px; border-radius: 12px; }
+.tabbar button { font-size: 12px; }
+.play .when .m { font-size: 12px; }
+.play .when .m.we { color: var(--ink-3); }
+.play.card .when { align-self: start; padding-top: 22px; }
+.gr-line { min-height: 36px; }
+.againline { min-height: 40px; }
+.topbar .vsw button { min-height: 36px; }
+.seg.vsw { width: auto; display: inline-flex; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --shelf-board: #7a6c58; } }
+:root[data-theme="dark"] { --shelf-board: #7a6c58; }
+
+.seg button { white-space: nowrap; min-width: 0; }
+.sheet .seg button { padding-inline: 6px; }
+.sheet { overscroll-behavior: contain; }
+.sheet .tool, .sheet .linkbtn { min-height: 44px; }
+.sheet-foot { box-shadow: 0 -1px 0 var(--line); background: var(--bg); }
+
+.quick .qn { min-height: 30px; }
+
+.detail-hero .cover .t { display: none; }
+.cplday { box-shadow: none; }
+.cplday .when .d { color: inherit; }
+.mrow:last-child, .gl-row:last-child { border-bottom: 0; }
+.evcard.today { border-color: var(--line); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .scrim { background: rgba(0,0,0,.62); }
+  :root:not([data-theme="light"]) .charbtn .edit { background: var(--sunk); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+  :root:not([data-theme="light"]) .note { color: #a8aea9; }
+  :root:not([data-theme="light"]) .mrow { border-bottom-color: rgba(255,255,255,.07); } }
+:root[data-theme="dark"] .scrim { background: rgba(0,0,0,.62); }
+:root[data-theme="dark"] .charbtn .edit { background: var(--sunk); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+:root[data-theme="dark"] .note { color: #a8aea9; }
+
+.actions.one .btn { flex-direction: row; gap: 8px; min-height: 48px; }
+.actions.one .btn svg { width: 20px; height: 20px; }
+/* 디자인 재검토 마무리 (11/24): 초록 정리, 로그인 다크, 누르는 영역 */
+.linkbtn, .more, .dots, .lb-x { position: relative; }
+.linkbtn::after, .more::after, .dots::after, .lb-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ask, :root:not([data-theme="light"]) .ccard1 { background: var(--accent-fill); color: var(--accent-fill-ink); }
+  :root:not([data-theme="light"]) .switch[aria-checked="true"], :root:not([data-theme="light"]) .bellbtn .bd { background: var(--accent-fill); color: var(--accent-fill-ink); }
+  :root:not([data-theme="light"]) .login-apple { background: #fff; border-color: #fff; color: #000; }
+  :root:not([data-theme="light"]) .login-google { background: #131314; border-color: #8e918f; color: #e3e3e3; } }
+:root[data-theme="dark"] .ask, :root[data-theme="dark"] .ccard1 { background: var(--accent-fill); color: var(--accent-fill-ink); }
+:root[data-theme="dark"] .switch[aria-checked="true"], :root[data-theme="dark"] .bellbtn .bd { background: var(--accent-fill); color: var(--accent-fill-ink); }
+:root[data-theme="dark"] .login-apple { background: #fff; border-color: #fff; color: #000; }
+:root[data-theme="dark"] .login-google { background: #131314; border-color: #8e918f; color: #e3e3e3; }
+/* 커플 분홍은 커플 화면 안에서만. 밖에선 일반 글씨 + 작은 하트 하나 (11/24 에릭) */
+.cpname, .dh-t .cpname, .dh-t b.cpname, .mecpl { color: var(--ink-2); }
+.hrt { color: var(--cc, #d9667a); }
+.hc-d.cpl { background: var(--accent-soft); }
+.savedcard.cpl { background: var(--surface); }
+.savedcard.cpl .sc-big { color: inherit; }
+.pill.cpl { border-color: var(--line); }
+.pill.cpl[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.couple .cpname { color: var(--cc); }
+/* 챗GPT 검토 반영 (11/24) */
+.pvline { font-size: 12.5px; color: var(--ink-3); background: var(--sunk); border-radius: 8px; padding: 7px 10px; margin: 0 0 10px; }
+.invite.pv span { color: var(--ink-3); user-select: none; }
+.invite.pv .btn:disabled { opacity: .5; }
+.gl-ev { display: flex !important; align-items: center; gap: 0; min-width: 0; white-space: nowrap; overflow: hidden; }
+.gl-ev .gl-when { color: var(--ink-2); font-weight: 600; }
+.gl-ev .gl-when.td { color: var(--accent); }
+.gl-me { margin-left: 8px; flex: none; font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-3); }
+.gl-me.go { color: var(--accent); border-color: currentColor; }
+.gl-me.none { border-style: dashed; }
+.pickcard .why { color: var(--accent); font-weight: 600; margin-top: 2px; }
+.pickcard .r2 { display: flex; gap: 14px; margin-top: 4px; }
+.welcome { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding-bottom: 40px; }
+.wc-top h1 { font-size: 26px; margin: 18px 0 6px; letter-spacing: -0.02em; }
+.wc-top p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+.wc-art { display: flex; gap: 6px; align-items: flex-end; height: 64px; }
+.wc-art span { width: 40px; border-radius: 4px; box-shadow: 0 4px 10px -4px rgba(0,0,0,.35); }
+.wc-art span:nth-child(1) { height: 52px; } .wc-art span:nth-child(2) { height: 64px; } .wc-art span:nth-child(3) { height: 44px; }
+.wc-acts { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.wc-acts .btn { min-height: 50px; font-size: 15px; }
+.tabbar button { min-width: 0; }
+.tabbar .tnk { display: block; max-width: 100%; padding: 0 4px; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
 
 <div id="app"></div>
@@ -1398,7 +1528,10 @@ const empty = () => ({ me: '나', since: today(), people: [], friends: {}, favs:
 function load() {
   let st = null;
   try { const s = localStorage.getItem('bg-log-v3'); if (s) st = { favs: [], draft: null, expOwned: {}, photos: {}, customGames: [], inbox: [], groups: [], couples: [], ...JSON.parse(s) }; } catch (e) {}
-  if (!st) st = seedState();
+  if (!st) return { ...empty(), firstRun: true }; // 처음 여는 사람: 빈 기록장 / 예시로 둘러보기 중 고름
+  return prepState(st);
+}
+function prepState(st) {
   if (!st.scale10) st = { ...st, scale10: true, reviews: (st.reviews || []).map(r => ({ ...r, rating: Math.round(r.rating * 2) })) }; // 별 5개 → 10점
   registerCustom(st.customGames);
   if (st.hasSample) registerCustom(FILLER);
@@ -1684,26 +1817,6 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const plays = useMemo(() => { const t = normName(hq.trim()); const gm = t ? (st.groups || []).filter(g => normName(g.name).includes(t)) : [];
     return st.plays.filter(p => (!mon || p.date.slice(0, 7) <= mon) && (!t || (GAME[p.gameId] && (normName(GAME[p.gameId].ko).includes(t) || normName(GAME[p.gameId].en || '').includes(t))) || p.people.some(n => normName(n).includes(t)) || (p.from && normName(p.from).includes(t)) || gm.some(g => inGroup(p, g)))); }, [st.plays, hq, mon, st.groups]);
   const lastDay = useMemo(() => byDay(st.plays.filter(p => !p.from))[0], [st.plays]);
-  // 홈에서 보유 게임 중 아직 안 해본 게임을 먼저 보여주고, 모두 해봤다면 가장 오래 쉬었던 게임을 제안
-  const homePlayMeta = useMemo(() => {
-    const counts = {}, last = {};
-    st.plays.filter(p => !p.from).forEach(p => {
-      counts[p.gameId] = (counts[p.gameId] || 0) + 1;
-      if (!last[p.gameId] || last[p.gameId] < p.date) last[p.gameId] = p.date;
-    });
-    return { counts, last };
-  }, [st.plays]);
-  const homePickIds = Object.keys(st.collection || {}).map(Number).filter(id => GAME[id] && ((st.collection[id] || {}).status || 'own') !== 'sold')
-    .sort((a, b) => {
-      const ac = homePlayMeta.counts[a] || 0, bc = homePlayMeta.counts[b] || 0;
-      if (!!ac !== !!bc) return ac ? 1 : -1;
-      return (homePlayMeta.last[a] || '').localeCompare(homePlayMeta.last[b] || '');
-    }).slice(0, 6);
-  const homePickTitle = homePickIds.some(id => !homePlayMeta.counts[id]) ? '아직 안 해본 게임' : '오랜만에 다시 할 게임';
-  const homePickCaption = homePickIds.some(id => !homePlayMeta.counts[id]) ? '보관함에서 아직 플레이 기록이 없는 게임부터 골랐어요.' : '마지막으로 한 지 오래된 게임부터 골랐어요.';
-  const thisMonthPlays = st.plays.filter(p => !p.from && p.date.slice(0, 7) === today().slice(0, 7));
-  const thisMonthCount = thisMonthPlays.length;
-  const thisMonthPeople = new Set(thisMonthPlays.flatMap(p => p.people)).size;
   const draftLabel = st.draft && st.draft.items.length ? (() => { const it = st.draft.items[st.draft.items.length - 1]; const g = GAME[it.gameId]; 
     return `${g ? g.ko : ''} 적던 중 · 아직 저장 안 됐어요`; })() : null;
   return html`<div className="screen">
@@ -1714,18 +1827,9 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
           <button className="linkbtn muted" onClick=${() => mineR.forEach(x => cm.read(x.id))}>확인</button></div>`; })() : null}
       <${Inbox} st=${st} dismiss=${dismiss} removeFromMine=${removeFromMine}/>
       ${!bellN ? html`<div className="note" style=${{ margin: 0 }}>새 알림이 없어요.</div>` : null}</div><//>` : null}
-    <button className="recbig" onClick=${() => !st.draft && playedToday ? editDay(today()) : startPlay(null)}><b>${draftLabel ? '이어 적기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 이어서 적어요' : todayEv ? `${todayEv[0].name}${todayEv[1].title ? ` ${todayEv[1].title}` : ''} · 오늘 ${fmtTime(todayEv[1].time)}${todayEv[1].place ? ` · ${todayEv[1].place}` : ''}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>
+    <button className="recbig" onClick=${() => !st.draft && playedToday ? editDay(today()) : startPlay(null)}><b>${draftLabel ? '이어 적기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 이어서 적어요' : todayEv ? `오늘 ${fmtTime(todayEv[1].time)} · ${todayEv[1].title || todayEv[0].name}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>
     ${!st.draft && lastDay ? html`<button className="againline" onClick=${() => startPlay(null, true)}>지난번처럼: ${[...new Set(lastDay.plays.flatMap(p => p.people))].slice(0, 3).map(dn).join('·')} · ${[...new Set(lastDay.plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')}${new Set(lastDay.plays.map(p => p.gameId)).size > 2 ? ' 외' : ''}</button>` : null}
-    <div className="search hsearch">${I.games}<input id="home-search" type="search" placeholder="내 기록에서 게임·사람·모임 찾기" value=${hq} onInput=${e => setHq(e.target.value)} autoComplete="off"/></div>
-    ${!hq.trim() && homePickIds.length ? html`<section className="home-discover" aria-label="다음 게임 고르기">
-      <div className="home-discover-head"><div><h2 className="sec">${homePickTitle}</h2><p>${homePickCaption}</p></div></div>
-      <div className="home-pick-strip">${homePickIds.map(id => { const g = GAME[id]; const n = homePlayMeta.counts[id] || 0; const last = homePlayMeta.last[id]; return html`<button className="home-pick" key=${id} onClick=${() => open(id)} aria-label=${g.ko + ' 게임 정보 보기'}>
-        <${Cover} g=${g}/>
-        <span className="home-pick-name">${g.ko}</span>
-        <span className="home-pick-meta">${n ? `${n}판 · ${last ? relDay(last) : ''}` : '아직 안 해봤어요'}</span>
-      </button>`; })}</div>
-    </section>` : null}
-    ${!hq.trim() && st.plays.some(p => !p.from) ? html`<div className="home-month-note"><span>이번 달 내 기록</span><b>${thisMonthCount}판</b><i>·</i><b>${thisMonthPeople}명</b><span>과 함께했어요</span></div>` : null}
+    <div className="search hsearch">${I.games}<input id="home-search" type="search" placeholder="게임, 사람, 모임으로 찾기" value=${hq} onInput=${e => setHq(e.target.value)} autoComplete="off"/></div>
     ${hq.trim() ? html`<div className="note" style=${{ marginTop: 0 }}>'${hq.trim()}' 들어간 기록만 보고 있어요 · <button className="linkbtn inl" onClick=${() => setHq('')}>전체 보기</button></div>` : null}
     ${mon ? html`<div className="note" style=${{ marginTop: 0 }}>${mon.slice(0, 4)}년 ${+mon.slice(5)}월부터 보고 있어요 · <button className="linkbtn inl" onClick=${() => setMon('')}>최근으로</button></div>` : null}
     ${monOpen ? html`<div className="monlist" role="dialog" aria-label="달 고르기"><div className="ml-h"><b>어느 달로 갈까요?</b><button className="linkbtn" onClick=${() => setMonOpen(false)}>닫기</button></div>
@@ -1786,8 +1890,11 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const winLine = (plays, solo) => {
     if (plays.length === 1) return joinBits(roundSummary({ ...plays[0], scores: {}, memo: '', minutes: '' }, solo));
     const t = winTally(plays);
-    const top = t.list.slice(0, 2).map(([n, c]) => `${dn(n)} ${c}승`);
-    const bits = [...(t.coopN ? [`우리가 ${t.coopW}승 ${t.coopN - t.coopW}패`] : []), ...top, ...(t.list.length > 2 ? [`외 ${t.list.length - 2}명`] : []), ];
+    // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 각 9승'
+    const best = t.list.length ? t.list[0][1] : 0; const tier = t.list.filter(([, c]) => c === best);
+    const top = !t.list.length ? [] : tier.length > 1 ? [`${tier.slice(0, 2).map(([n]) => dn(n)).join('·')}${tier.length > 2 ? ` 등 ${tier.length}명` : ''} 각 ${best}승`]
+      : t.list.length === 2 ? t.list.map(([n, c]) => `${dn(n)} ${c}승`) : [`${dn(t.list[0][0])} ${best}승`];
+    const bits = [...(t.coopN ? [`우리가 ${t.coopW}승 ${t.coopN - t.coopW}패`] : []), ...top];
     return bits.length ? html`<span className="crown">${bits.join(' · ')}</span>` : null;
   };
   const multiSeg = segs.length > 1;
@@ -1805,7 +1912,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   return html`<div className=${'play card dense' + (variant === 'couple' ? ' couplev' : cpl ? ' cplday' : '')} style=${cpl ? { '--cc': coupleColor(cpl) } : null}>
     <button className="when" onClick=${() => !full && NAV.day && NAV.day(day.date)} aria-label=${`${d.getMonth() + 1}월 ${d.getDate()}일 결과 전체 보기`}><span className="d">${d.getDate()}</span><span className=${'m' + (d.getDay() === 0 || d.getDay() === 6 ? ' we' : '')}>${DOW[d.getDay()]}요일</span></button>
     <div style=${{ minWidth: 0 }}>
-      <div className="dh">${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div>` : null}<span className="dh-t">${cpl ? html`<button className="cpname linkbtn inl" onClick=${() => NAV.couple && NAV.couple(cpl.id)}>${cpl.name || `${ME.name} ♥ ${cpl.partner}`} ›</button>` : gn.length && !inGroupView ? html`<b>${gn.length > 2 ? gn.slice(0, 2).join(' · ') + ' 외' : gn.join(' · ')}</b>` : null}</span>
+      <div className="dh">${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div>` : null}<span className="dh-t">${cpl ? html`<button className="cpname linkbtn inl" onClick=${() => NAV.couple && NAV.couple(cpl.id)}>${cpl.name || html`${ME.name} <span className="hrt">♥</span> ${cpl.partner}`} ›</button>` : gn.length && !inGroupView ? html`<b>${gn.length > 2 ? gn.slice(0, 2).join(' · ') + ' 외' : gn.join(' · ')}</b>` : null}</span>
         <button className="dots dh-more" aria-label="이 날 메뉴" aria-expanded=${menu} onClick=${() => setMenu(!menu)}>⋯</button>${menu ? html`<div className="daymenu">
         ${share ? html`<button className="dm-b" onClick=${() => { setMenu(false); share(day.date); }}>하루 요약 공유</button>` : null}
         ${edit && own ? html`<button className="dm-b" onClick=${() => { setMenu(false); edit(day.date); }}>고치기</button>` : null}
@@ -1918,7 +2025,7 @@ function Games({ st, open, q, setQ, openBarcode, go, pickWhat, openShelfImg }) {
   const seg = html`<div className="seg tabs shseg" role="tablist">${SEG.map(([k, l, n]) => html`<button key=${k} role="tab" aria-pressed=${mode === k} onClick=${() => setMode(k)}>${l}${mode === k ? html` <span className="cnt num">${n}</span>` : null}</button>`)}</div>`;
   const [lim, setLim] = useState(50);
   const lastP = useMemo(() => { const l = {}; st.plays.forEach(p => { if (!l[p.gameId] || l[p.gameId] < p.date) l[p.gameId] = p.date; }); return l; }, [st.plays]);
-  const counts0 = id => { const n = st.plays.filter(p => p.gameId === id).length; return n ? `해봤어요 ${n}판` : '안 해봄'; };
+  const counts0 = id => { const n = st.plays.filter(p => p.gameId === id).length; return n ? `${n}판 해봄` : '안 해봄'; };
   const favSorted = useMemo(() => favs.filter(id => GAME[id]).sort((a, b) => (lastP[b] || '').localeCompare(lastP[a] || '')), [favs, lastP]);
   const all = useMemo(() => searchGames(q, favs), [q, favs]);
   const list = q ? [...all.filter(g => st.collection[g.id]), ...all.filter(g => !st.collection[g.id])] : favSorted.map(id => GAME[id]);
@@ -2034,7 +2141,7 @@ function GameQnA({ id, st, qa, say, inLayer }) {
   const ordA = q => [...q.answers].sort((a, b) => (b.id === q.pick) - (a.id === q.pick) || (b.up || []).length - (a.up || []).length);
   const xname = x => (exps.find(e => e[0] === x) || [, x])[1];
   return html`<div className="qna">
-    ${!GAME[id].custom ? html`<div className="qa-rules"><a href=${`https://www.youtube.com/results?search_query=${encodeURIComponent(GAME[id].ko + ' 룰 설명')}`} target="_blank" rel="noopener">룰 설명 영상</a><a href=${`https://boardgamegeek.com/boardgame/${id}/files`} target="_blank" rel="noopener">룰북</a></div>` : null}
+    
     ${asking ? html`<div className="qa-ask">
       <textarea id="qa-text" className="input" rows="2" maxLength="300" placeholder="막힌 규칙을 적어 보세요. 비슷한 질문이 먼저 떠요" value=${t} onInput=${e => setT(e.target.value)} autoFocus=${!inLayer}></textarea>
       <div className="qa-askrow">${inLayer ? html`<button className=${'pill sm' + (awake ? ' on' : '')} aria-pressed=${awake} onClick=${toggleAwake}>${awake ? '화면 켜 두는 중' : '화면 켜 두기'}</button>` : html`<button className="linkbtn muted" onClick=${() => { setAsking(false); setT(''); }}>닫기</button>`}
@@ -2117,7 +2224,7 @@ function Detail({ id, st, allReviews, back, startPlay, startReview, toggleOwn, t
       ` : null}
     `: null}
     ${dtab === 'rate' ? html`${(() => { const ws = pub.filter(r => r.weight); const wavg = ws.length ? ws.reduce((a, r) => a + r.weight, 0) / ws.length : 0;
-      return html`<div className="facts two">
+      return !pub.length && !ws.length ? null : html`<div className="facts two">
         <div><b>${pub.length ? html`<${Rate} v=${Math.round(avg * 10) / 10} big/>` : '–'}</b><span>평점 ${pub.length ? `· ${pub.length}명` : ''}</span></div>
         <div><b>${ws.length ? `${wavg.toFixed(2)}` : '–'}<small>${ws.length ? ' / 5' : ''}</small></b><span>난이도 ${ws.length ? `· ${weightWord(wavg)}` : ''}</span></div>
       </div>`; })()}
@@ -2125,7 +2232,7 @@ function Detail({ id, st, allReviews, back, startPlay, startReview, toggleOwn, t
     <button className="writebtn" onClick=${() => startReview(id)}>${I.pen}<span>${myReview ? '평가 고치기' : '평가하기'}</span><span className="d">${myReview ? '평점·난이도·글·사진을 고칠 수 있어요' : '평점만 줘도 돼요. 난이도, 사진·영상도 넣을 수 있어요'}</span></button>
     ${list.length > 5 ? html`<${Seg} value=${rsort} options=${[['new', '최신순'], ['high', '높은 점수'], ['low', '낮은 점수'], ['text', '글 있는 것']]} onChange=${v => { setRsort(v); setRlim(10); }} label="평가 정렬"/>` : null}
     ${list.length ? html`${sortedList.slice(0, rlim).map(r => html`<${ReviewItem} key=${r.id} r=${r} st=${st} hideReview=${hideReview} cm=${cm}/>`)}${sortedList.length > rlim ? html`<${MoreBtn} left=${sortedList.length - rlim} unit="개" onClick=${() => setRlim(rlim + 20)}/>` : null}` :
-      html`<${Empty} title="아직 평가가 없어요" action=${html`<button className="btn primary" onClick=${() => startReview(id)}>첫 평가 남기기</button>`}>해봤다면 첫 평가를 남겨보세요.<//>`}
+      html`<${Empty} title="아직 평가가 없어요">위 버튼으로 첫 평가를 남길 수 있어요.<//>`}
     ` : null}
     ${dtab === 'qa' ? html`<${GameQnA} id=${id} st=${st} qa=${qa} say=${say}/>` : null}
     ${dtab !== 'info' ? null : g.custom ? html`<div className="ext">직접 추가한 게임이에요. 나중에 BGG 게임과 연결할 수 있게 할 거예요.</div>` : html`<div className="ext">게임 정보 출처: <a href=${`https://boardgamegeek.com/boardgame/${g.id}`} target="_blank" rel="noopener">BoardGameGeek</a></div>`}
@@ -2166,7 +2273,7 @@ function ShelfInfo({ info, onChange }) {
 const boxRatio = id => [1, 1, 1, 1.12, 0.78, 1, 1.28, 0.9][hash(id) % 8];
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 const initialOf = t => { const c = (t || '').charCodeAt(0); if (c >= 0xac00 && c <= 0xd7a3) { const k = CHO[Math.floor((c - 0xac00) / 588)]; return ({ 'ㄲ': 'ㄱ', 'ㄸ': 'ㄷ', 'ㅃ': 'ㅂ', 'ㅆ': 'ㅅ', 'ㅉ': 'ㅈ' })[k] || k; } const ch = (t || '#')[0].toUpperCase(); return /[A-Z]/.test(ch) ? ch : '#'; };
-function useCols() { const q = () => (window.innerWidth >= 412 ? 4 : 3); const [c, setC] = useState(q); useEffect(() => { const f = () => setC(q()); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f); }, []); return c; }
+function useCols() { const q = () => (window.innerWidth >= 340 ? 4 : 3); const [c, setC] = useState(q); useEffect(() => { const f = () => setC(q()); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f); }, []); return c; }
 function Shelf({ st, open, go, openBarcode, embedded, ids: idsIn, plank = true, captionOf, seg }) {
   const keep = k => { try { return localStorage.getItem('bg-shelf-' + k); } catch (e) { return null; } };
   const put = (k, v) => { try { localStorage.setItem('bg-shelf-' + k, v); } catch (e) {} };
@@ -2210,7 +2317,7 @@ function Shelf({ st, open, go, openBarcode, embedded, ids: idsIn, plank = true, 
       <span className="bx-art" style=${{ aspectRatio: `1 / ${boxRatio(id)}` }}>${c.photo ? html`<img src=${c.photo} alt=""/>` : html`<${Cover} g=${GAME[id]}/>`}
         ${lent ? html`<span className="tag">${c.lentTo || '빌려줌'}</span>` : null}
         ${!counts[id] && !sold ? html`<span className="newdot" title="안 해본 게임"></span>` : null}</span>
-      <span className="bx-cap">${capOf(id)}${xn ? html`<span className="xn">+확장</span>` : null}</span></button>`; };
+      <span className="bx-txt"><span className="bx-name">${GAME[id].ko}</span><span className="bx-cap">${[capOf(id), xn ? `확장 ${xn}` : ''].filter(Boolean).join(' · ') || '\u00a0'}</span></span></button>`; };
   const rows = []; for (let i = 0; i < shown.length; i += cols) rows.push(shown.slice(i, i + cols).map((id, k) => [id, i + k]));
   if (isShelf && !Object.keys(st.collection).length) return html`${seg || null}<div className="emptyshelf"><div className="es-scene"><${Avatar} name=${ME.name} size=${64}/><div className="plank"></div></div>
     <b>첫 게임을 올려 보세요</b><span>BGG 보관함을 한 번에 가져오거나, 박스 바코드를 찍어요.</span><div className="emptyacts"><button className="btn primary" onClick=${() => NAV.settings && NAV.settings()}>BGG에서 가져오기</button><button className="btn" onClick=${openBarcode}>바코드로 담기</button></div></div>`;
@@ -2219,7 +2326,7 @@ function Shelf({ st, open, go, openBarcode, embedded, ids: idsIn, plank = true, 
       <button className=${'sortbtn' + (filt !== 'all' ? ' on' : '')} aria-expanded=${menu} aria-label="정렬·골라 보기" onClick=${() => setMenu(!menu)}>${I.sliders}${filt !== 'all' ? html`<span className="num">1</span>` : null}</button></div>
     ${menu ? html`<div className="sortpanel"><div className="sp-g"><span className="sp-l">정렬</span>${[['recent', '최근 산 순'], ['plays', '많이 한 순'], ['dust', '오래 안 한 순'], ['name', '이름순']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${sort === k} onClick=${() => setSort(k)}>${l}</button>`)}</div>
       ${Object.keys(F).length > 1 ? html`<div className="sp-g"><span className="sp-l">골라 보기</span>${Object.entries(F).map(([k, [l, fn]]) => { const c = all.filter(fn).length; return c || k === filt ? html`<button key=${k} className="pill sm" aria-pressed=${filt === k} onClick=${() => { setFilt(k); setLimit(60); }}>${l} <span className="cnt">${c}</span></button>` : null; })}</div>` : null}
-      <div className="sp-g"><span className="sp-l">보기</span>${[['shelf', '선반'], ['stack', '목록']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</div></div>` : null}
+      <div className="sp-g"><span className="sp-l">보기</span>${[['shelf', '선반'], ['stack', '쌓아 보기']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</div></div>` : null}
     ${filt !== 'all' && !menu ? html`<div className="filton"><span>${F[filt][0]} ${ids.length}개만 보는 중</span><button className="linkbtn" onClick=${() => { setFilt('all'); setLimit(60); }}>모두 보기</button></div>` : null}
     ${!ids.length ? html`<div className="note">여기 해당하는 게임이 없어요.</div>` : null}
     ${view === 'shelf' ? html`<div className=${'shelf2' + (plank ? ' planks' : '')} style=${{ '--cols': cols }}>${rows.map((r, ri) => html`<div key=${ri} className="srow2">${r.map(([id, i]) => box(id, i))}</div>`)}</div>` :
@@ -2308,7 +2415,7 @@ function Me({ st, open, update, openPerson, openSettings, openYear, openChar, cm
         ${editing ? html`<form className="addrow" style=${{ marginTop: 0 }} onSubmit=${e => { e.preventDefault(); const v = nick.trim(); if (v) update(s => ({ ...s, me: v })); setEditing(false); }}>
             <input id="nick" className="input" value=${nick} maxLength="16" onInput=${e => setNick(e.target.value)} autoFocus/><button className="btn primary">저장</button></form>` :
           html`<div className="nm">${st.me} <button className="btn ghost" style=${{ padding: '2px 6px', fontSize: 13 }} onClick=${() => { setNick(st.me); setEditing(true); }}>이름 바꾸기</button></div>
-            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>${(st.couples || []).map(c => html`<button key=${c.id} className="linkbtn inl mecpl" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple(c.id)}>♥ ${c.partner} · D+${dPlus(c.since)} ›</button>`)}
+            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>${(st.couples || []).map(c => html`<button key=${c.id} className="linkbtn inl mecpl" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple(c.id)}><span className="hrt">♥</span> ${c.partner} · D+${dPlus(c.since)} ›</button>`)}
             ${st.mePhoto ? html`<button className="linkbtn muted" onClick=${() => update(s => ({ ...s, mePhoto: null }))}>사진 빼고 캐릭터로</button>` : html`<label className="linkbtn pfadd">프로필 사진 넣기<input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { const ph = await shrinkImage(f); update(s => ({ ...s, mePhoto: ph })); } catch (er) {} } }}/></label>`}`}
       </div></div>
     <div className="seg tabs" role="tablist" style=${{ margin: '16px 0 10px' }}>${[['stats', '통계'], ['people', '사람'], ['reviews', '평가·질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}</button>`)}</div>
@@ -2616,6 +2723,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
   const countOf = id => { const it = items.find(x => x.gameId === id); return it ? it.rounds.length : 0; };
   const places = [...new Set(['집', '보드게임카페', ...st.plays.map(p => p.place).filter(Boolean), ...(place ? [place] : [])])].slice(0, 6);
 
+  const [soloPrev, setSoloPrev] = useState([]);
   const togglePerson = n => {
     if (people.includes(n)) {
       setPeople(p => p.filter(x => x !== n));
@@ -2677,7 +2785,7 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
         <label className="datebox"><span className="num">${(() => { const x = parse(date); return `${x.getFullYear()}. ${x.getMonth() + 1}. ${x.getDate()}. (${DOW[x.getDay()]})`; })()}</span><input id="play-date" type="date" value=${date} max=${today()} onChange=${e => e.target.value && setDate(e.target.value)} aria-label="날짜 직접 고르기"/></label></div>
       ${!items.length && !editing && lastDay ? html`<button className="again" onClick=${copyLast}><span className="t">지난번처럼</span><span className="d">${relDay(lastDay.date)} · ${[...new Set(lastDay.plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', ')}${new Set(lastDay.plays.map(p => p.gameId)).size > 3 ? ' 외' : ''} · 사람·게임 그대로 한 판씩</span></button>` : null}
     </div>
-    <div className="field step"><h3 className="stephd"><span className="sn">1</span>누구랑 했어요?<span className="sub">${people.length ? html`${ME.name} 포함 ${people.length + 1}명 · <button className="linkbtn inl solobtn" onClick=${() => people.forEach(n => togglePerson(n))}>혼자 했어요</button>` : ''}</span></h3>
+    <div className="field step"><h3 className="stephd"><span className="sn">1</span>누구랑 했어요?<span className="sub">${people.length ? `${ME.name} 포함 ${people.length + 1}명` : ''}</span><button className="pill solochip" aria-pressed=${!people.length} onClick=${() => { if (people.length) { setSoloPrev(people); people.forEach(n => togglePerson(n)); } else soloPrev.forEach(n => togglePerson(n)); }}>혼자</button></h3>
       <${PeoplePicker} st=${st} people=${people} links=${links} toggle=${togglePerson} addPerson=${addPerson}/>
       ${people.length && !duo ? (() => { const ps = new Set(people); const opts = (st.groups || []).map(g => { let k = 0; ps.forEach(n => memSet(g).has(n) && k++); return [g, k]; }).filter(x => x[1] && x[0].id !== grpId).sort((a, b) => b[1] - a[1] || a[0].members.length - b[0].members.length).slice(0, 15).map(x => x[0]);
         const cur = (st.groups || []).find(g => g.id === grpId);
@@ -2721,13 +2829,14 @@ function PlaySheet({ again, st, gameId, editDate, close, onSave, onDeleteDay, sa
       <${MediaEdit} items=${photos} onChange=${setPhotos} max=${8} onErr=${setErr}/>
     </div>
     ${err ? html`<div className="err">${err}</div>` : null}
+    ${editing ? html`<div className="note"><button className="linkbtn inl muted discard" onClick=${() => setAsk('day')}>이 날 기록 지우기</button></div>` : null}
     ${fromCount.length ? html`<div className="note">이 날 ${[...new Set(fromCount.map(p => p.from))].map(n => n + '님').join(', ')}이 남긴 ${fromCount.length}판은 남긴 사람만 고칠 수 있어요. 여기엔 ${ME.name}님이 쓴 기록만 나와요.</div>` : null}
     ${synced.length ? html`<div className="note">${synced.map(n => n + '님').join(', ')}도 앱을 써요. ${editing ? '고친 내용은 같이 한 사람 기록에도 반영되고 알림이 가요.' : '저장하면 알림이 가고 그 친구 기록에도 바로 들어가요. 원하지 않으면 친구가 직접 뺄 수 있어요.'}</div>` : null}
     ${items.length && !editing ? html`<div className="note">중간에 닫아도 적던 내용은 남아 있어요. 다음 판 끝나고 이어서 적으면 돼요. <button className="linkbtn inl muted discard" onClick=${() => setAsk('draft')}>적던 것 버리기</button></div>` : null}
-    ${ask ? html`<div className="confirm" style=${{ marginTop: 16 }}><span>${ask === 'day' ? '이 날 내가 쓴 기록을 모두 지울까요? 같이 한 친구 기록에서도 빠져요. 되돌릴 수 없어요.' : '적던 기록을 버릴까요?'}</span>
+    ${ask ? html`<div className="cfm-bg" onClick=${() => setAsk(null)}></div><div className="confirm pop" role="alertdialog"><span>${ask === 'day' ? '이 날 내가 쓴 기록을 모두 지울까요? 같이 한 친구 기록에서도 빠져요. 되돌릴 수 없어요.' : '적던 기록을 버릴까요?'}</span>
         <div className="r"><button className="btn danger" onClick=${() => ask === 'day' ? onDeleteDay(editDate) : discardDraft()}>${ask === 'day' ? '지우기' : '버리기'}</button><button className="btn" onClick=${() => setAsk(null)}>취소</button></div></div>` : null}
     <div className="sheet-foot stick"><button className="btn primary" onClick=${submit}>${editing ? '고친 내용 저장' : total ? `${total}판 저장하기` : '저장하기'}</button>
-      ${editing ? html`<button className="btn ghost danger" onClick=${() => setAsk('day')}>이 날 지우기</button>` : null}</div>
+</div>
   <//>`;
 }
 
@@ -2748,7 +2857,6 @@ function PersonSheet({ st, name, close, open, linkFriend, block }) {
   const [copied, setCopied] = useState(false);
 
   const [askBlock, setAskBlock] = useState(false);
-  const invite = `https://example.com/invite/${hash(name + st.me).toString(36)}`;
   const s = personStats(st, name);
   const h = st.friends[name];
   const [id, setId] = useState('');
@@ -2781,8 +2889,8 @@ function PersonSheet({ st, name, close, open, linkFriend, block }) {
         <form className="addrow" onSubmit=${submit}><input className="input" placeholder="@아이디" value=${id} onInput=${e => { setId(e.target.value); setErr(''); }}/><button className="btn primary" type="submit">연결</button></form>
         ${err ? html`<div className="err">${err}</div>` : html`<div className="note">연결하면 그때부터 같이 하는 기록이 ${name}님 기록장에도 들어가요. 지난 기록은 그 날 기록을 고칠 때 바꿀 수 있어요. 예시 아이디: @soyeon.b</div>`}
         <div className="lb" style=${{ marginTop: 16 }}>아직 안 썼다면 초대하기</div>
-        <div className="invite"><span className="num">${invite}</span><button className="btn" onClick=${() => { try { navigator.clipboard.writeText(invite).then(() => setCopied(true), () => setCopied('sel')); } catch (e) { setCopied('sel'); } }}>${copied === true ? '복사했어요' : '링크 복사'}</button></div>
-        <div className="note">${copied === 'sel' ? '복사가 막혀 있어요. 링크를 길게 눌러 복사해 주세요. ' : ''}${name}님이 이 링크로 가입하면 자동으로 연결돼요. 지난 기록은 그 날 기록을 고칠 때 바꾸면 돼요. 지금 링크는 예시예요.</div></div>`}
+        <div className="invite pv"><span>초대 링크는 정식 버전에서 생겨요</span><button className="btn" disabled>링크 복사</button></div>
+        <div className="note">${name}님이 링크로 가입하면 자동으로 연결돼요. 지난 기록은 그 날 기록을 고칠 때 바꾸면 돼요.</div></div>`}
     ${h ? html`<div className="danger-zone">${askBlock ? html`<div className="confirm"><span>${name}님을 차단하면 친구가 끊기고, ${name}님이 기록에 넣어도 ${ME.name} 기록장에는 안 들어와요. 지금까지 기록은 남아요.</span>
         <div className="r"><button className="btn danger" onClick=${() => block(name)}>차단</button><button className="btn" onClick=${() => setAskBlock(false)}>취소</button></div></div>` :
       html`<button className="btn block ghost danger" onClick=${() => setAskBlock(true)}>차단하기</button>`}</div>` : null}
@@ -2806,8 +2914,8 @@ function SettingsSheet({ st, close, setSettings, say, resetTo }) {
     <h2 className="sec" style=${{ marginTop: 6 }}>계정</h2>
     ${s.account ? html`<div className="switch-row"><div><div className="t">${s.account} 계정으로 로그인됨 <span className="chip">예시</span></div><div className="d">폰을 바꿔도 같은 계정으로 로그인하면 기록이 그대로 있어요</div></div>
         <button className="btn ghost" onClick=${() => set({ account: null })}>로그아웃</button></div>` :
-      html`<div className="logins">${['카카오', 'Apple', 'Google'].map(a => html`<button key=${a} className=${'btn block login-' + (a === '카카오' ? 'kakao' : a.toLowerCase())} onClick=${() => { set({ account: a }); say(`${a}로 로그인했어요 (예시)`); }}>${a}로 계속하기</button>`)}</div>
-      <div className="note">지금은 로그인 없이 이 기기에만 저장돼요. 로그인하면 기기를 바꿔도 기록이 남고, 친구와 기록이 오가요.</div>`}
+      html`<div className="logins">${['카카오', 'Apple', 'Google'].map(a => html`<button key=${a} className=${'btn block login-' + (a === '카카오' ? 'kakao' : a.toLowerCase())} onClick=${() => { set({ account: a }); say(`미리보기라 실제 ${a} 로그인은 아직 안 돼요`); }}>${a}로 계속하기</button>`)}</div>
+      <div className="note">지금은 미리보기라 로그인은 아직 안 되고, 기록은 이 기기에만 저장돼요. 정식 버전에서 로그인하면 기기를 바꿔도 기록이 남고 친구와 기록이 오가요.</div>`}
 
     <h2 className="sec">공개 범위</h2>
     <div className="setrow"><div><div className="t">플레이 기록</div><div className="d">누가 ${ME.name} 기록장과 전적을 볼 수 있는지</div></div><${Seg} value=${s.recordVis} options=${VIS} onChange=${v => set({ recordVis: v })} label="기록 공개 범위"/></div>
@@ -2984,8 +3092,8 @@ function NewGroupSheet({ st, close, onCreate }) {
     <div className="field"><span className="lb">같이 할 사람<span className="hint">나중에 초대 링크로 더 불러도 돼요</span></span>
       ${mem.length ? html`<div className="hint" style=${{ margin: '0 0 6px' }}>${mem.length}명 골랐어요</div>` : null}
       <${PickList} cands=${cands} sel=${mem} onTog=${tog} mark=${n => st.friends[n]}/>
-      <div className="note">앱 친구는 초대 알림을 받고, 수락하면 모임에 들어와요. 앱이 없는 사람은 이름만 들어가요.</div></div>
-    <div className="sheet-foot"><button className="btn primary" disabled=${!name.trim()} onClick=${() => onCreate({ id: 'g' + uid(), name: name.trim(), members: mem, at: today() })}>만들기</button></div>
+      <div className="note">안 골라도 돼요. 모임을 먼저 만들고 나중에 초대해도 돼요. 앱이 없는 사람은 이름만 들어가요. 지금은 미리보기라 초대 알림은 아직 안 가요.</div></div>
+    <div className="sheet-foot"><button className="btn primary" disabled=${!name.trim()} onClick=${() => onCreate({ id: 'g' + uid(), name: name.trim(), members: mem, at: today(), owner: true })}>만들기</button></div>
   <//>`;
 }
 // 긴 목록 공통: '더 보기 · N개 남음'
@@ -3030,32 +3138,81 @@ function PickList({ cands, sel, onTog, label, mark }) {
 }
 
 /* ---------- 오늘 뭐 할까 ---------- */
-function WhatSheet({ st, gid, close, startPlay }) {
+// 추천 점수 비중 (설정값): 취향 40, 인원 25, 난이도 15, 시간 10, 평판 5, 새로움 5
+const REC_W = { taste: .40, fit: .25, weight: .15, time: .10, quality: .05, fresh: .05 };
+function recommend(st, allReviews, { n, time, level, scope, onlyNew, who }) {
+  const fb = st.recFb || {};
+  const owned = id => { const v = st.collection[id]; return v && (v.status || 'own') !== 'sold' && v.status !== 'lent' && v.status !== 'wish'; };
+  const pool = (scope === 'own' ? Object.keys(st.collection).map(Number).filter(owned) : GAMES.map(g => g.id).filter(id => scope === 'all' || !owned(id))).filter(id => GAME[id] && id > -30000 && fb[id] !== 'no');
+  const whoSet = new Set(who);
+  const plays = st.plays.filter(p => !p.from);
+  const withThem = {}, lastDate = {}, atN = {}, everWho = {};
+  plays.forEach(p => { const id = p.gameId; if (!lastDate[id] || lastDate[id] < p.date) lastDate[id] = p.date;
+    if (p.people.length + 1 === n) atN[id] = (atN[id] || 0) + 1;
+    const hit = p.people.filter(x => whoSet.has(x)).length; if (hit) { withThem[id] = (withThem[id] || 0) + hit; everWho[id] = true; } });
+  const maxWith = Math.max(1, ...Object.values(withThem)), maxN = Math.max(1, ...Object.values(atN));
+  const my = {}; st.reviews.forEach(r => my[r.gameId] = r); const conf = Math.min(1, st.reviews.length / 3);
+  const pubR = {}, pubW = {}; allReviews.forEach(r => { if (r.rating) (pubR[r.gameId] = pubR[r.gameId] || []).push(r.rating); if (r.weight) (pubW[r.gameId] = pubW[r.gameId] || []).push(r.weight); });
+  const avg = a => a && a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  const out = [];
+  pool.forEach(id => { const g = GAME[id];
+    if (g.pmin != null && !(g.pmin <= n && n <= g.pmax)) return;
+    if (time && g.tmin != null && g.tmin > time) return;
+    if (onlyNew && (who.length ? everWho[id] : lastDate[id])) return;
+    const w = avg(pubW[id]), q = avg(pubR[id]);
+    const why = [];
+    // 취향: 내 평점 > 같이 할 사람과 자주 한 정도 > 자료 없음(중간값)
+    // 자료가 없는 항목은 null → 남은 비중으로 다시 나눔. 내 평가가 3개 미만이면 취향을 약하게 봄
+    let taste = null; if (my[id] && my[id].rating) { taste = conf * my[id].rating / 10 + (1 - conf) * .5; if (my[id].rating >= 8) why.push(`${ME.name} 평점 ${my[id].rating}점`); }
+    else if (withThem[id]) { taste = .5 + .5 * withThem[id] / maxWith; if (withThem[id] >= maxWith * .5) why.push('같이 자주 한 게임'); }
+    const fit = g.pmin == null ? null : .7 + .3 * (atN[id] || 0) / maxN; if (atN[id] >= 3) why.push(`${n}명으로 ${atN[id]}판 해봤어요`);
+    let wt = null; if (level && w) { const target = { light: 1.6, mid: 2.6, heavy: 3.8 }[level]; wt = Math.max(0, 1 - Math.abs(w - target) / 2); if (wt > .75) why.push(`난이도 ${weightWord(Math.round(w))} (${pubW[id].length}명 평가)`); }
+    const tm = !time || g.tmax == null ? null : g.tmax <= time ? 1 : .6; if (time && g.tmax && g.tmax <= time) why.push(`${playtime(g)}`);
+    const ql = q ? (q * pubR[id].length + 6.5 * 10) / (pubR[id].length + 10) / 10 : null; // 평가 수가 적으면 6.5점 쪽으로 당김
+    const days = lastDate[id] ? (parse(today()) - parse(lastDate[id])) / 86400000 : null;
+    const fresh = days == null ? 1 : Math.min(1, days / 365); if (days == null) why.push(who.length ? '같이 안 해본 게임' : '아직 안 해봤어요'); else if (days > 90) why.push(`${Math.floor(days / 30)}달째 안 했어요`);
+    const parts = [['taste', taste], ['fit', fit], ['weight', wt], ['time', tm], ['quality', ql], ['fresh', fresh]].filter(([, v]) => v != null);
+    const wsum = parts.reduce((a, [k]) => a + REC_W[k], 0); const score = wsum ? parts.reduce((a, [k, v]) => a + REC_W[k] * v, 0) / wsum : 0;
+    out.push({ id, score, why: why.slice(0, 2), w, wn: (pubW[id] || []).length, later: fb[id] === 'later' }); });
+  return out.sort((a, b) => (a.later - b.later) || b.score - a.score);
+}
+function WhatSheet({ st, allReviews, gid, close, startPlay, update, say }) {
   const g = gid ? (st.groups || []).find(x => x.id === gid) : null;
-  const [n, setN] = useState(g ? g.members.length + 1 : Math.max(2, lastPeople(st).length + 1));
-  const [time, setTime] = useState(0);
+  const lp = lastPeople(st);
+  const opts = [['last', lp.length ? `지난번 (${lp.slice(0, 2).join('·')}${lp.length > 2 ? ` 외 ${lp.length - 2}명` : ''})` : null, lp],
+    ...(st.couples || []).map(c => ['c:' + c.id, `♥ ${c.partner}`, [c.partner]]), ['solo', '혼자', []],
+    ...(g ? [['g', g.name, g.members]] : [])].filter(o => o[1]);
+  const [whoK, setWhoK] = useState(g ? 'g' : opts[0][0]);
+  const who = (opts.find(o => o[0] === whoK) || opts[0])[2];
+  const [n, setN] = useState(Math.max(1, Math.min(8, who.length + 1)));
+  const [time, setTime] = useState(0); const [level, setLevel] = useState(''); const [scope, setScope] = useState('own'); const [onlyNew, setOnlyNew] = useState(false); const [more, setMore] = useState(false);
   const [pick, setPick] = useState(null);
-  const owners = {};
-  const add = (id, who) => { if (!GAME[id]) return; (owners[id] = owners[id] || []).includes(who) || owners[id].push(who); };
-  Object.entries(st.collection).forEach(([id, v]) => v.status !== 'sold' && v.status !== 'lent' && add(+id, '나'));
-  const lastDate = {}; st.plays.forEach(p => { if (!lastDate[p.gameId] || lastDate[p.gameId] < p.date) lastDate[p.gameId] = p.date; });
-  const fits = Object.keys(owners).map(Number).filter(id => { const x = GAME[id]; return (x.pmin == null || (x.pmin <= n && n <= x.pmax)) && (!time || x.tmin == null || x.tmin <= time); });
-  const why = id => { const d = lastDate[id]; if (!d) return '아직 안 해봤어요'; const ago = Math.round((parse(today()) - parse(d)) / 86400000); return ago > 60 ? `${Math.floor(ago / 30)}달째 안 했어요` : `마지막 ${relDay(d)}`; };
-  const score = id => (lastDate[id] ? Math.min(365, (parse(today()) - parse(lastDate[id])) / 86400000) : 400);
-  const list = fits.sort((a, b) => score(b) - score(a));
-  const roll = () => { if (!list.length) return; let k; do { k = list[Math.floor(Math.random() * list.length)]; } while (list.length > 1 && k === pick); setPick(k); };
+  const list = useMemo(() => recommend(st, allReviews, { n, time, level, scope, onlyNew, who }), [st.plays, st.collection, st.reviews, st.recFb, n, time, level, scope, onlyNew, whoK]);
+  const fb = (id, v) => { update(s => ({ ...s, recFb: { ...(s.recFb || {}), [id]: v } })); if (pick === id) setPick(null); say(v === 'no' ? `${GAME[id].ko}은(는) 추천에서 뺐어요` : '나중에 볼게요'); };
+  const roll = () => { if (!list.length) return; const top = list.slice(0, Math.min(5, list.length)); let k; do { k = top[Math.floor(Math.random() * top.length)].id; } while (top.length > 1 && k === pick); setPick(k); };
+  const pk = pick && list.find(x => x.id === pick);
   return html`<${Sheet} title="오늘 뭐 할까?" close=${close}>
-    <div className="field" style=${{ marginTop: 8 }}><span className="lb">몇 명?</span>
+    <div className="field" style=${{ marginTop: 8 }}><span className="lb">누구랑?</span>
+      <div className="dates">${opts.map(([k, l, ppl]) => html`<button key=${k} className="pill sm" aria-pressed=${whoK === k} onClick=${() => { setWhoK(k); setN(Math.max(1, Math.min(8, ppl.length + 1))); setPick(null); }}>${l}</button>`)}</div></div>
+    <div className="field"><span className="lb">몇 명?</span>
       <div className="dates">${[1, 2, 3, 4, 5, 6, 7, 8].map(k => html`<button key=${k} className="pill sm" aria-pressed=${n === k} onClick=${() => setN(k)}>${k}명</button>`)}</div></div>
+    <div className="field"><span className="lb">어디서 고를까?</span><div className="dates">
+      ${[['own', `${ME.name} 보관함`], ['new', '안 가진 게임'], ['all', '전체']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${scope === k} onClick=${() => { setScope(k); setPick(null); }}>${l}</button>`)}
+      <button className="pill sm" aria-pressed=${onlyNew} onClick=${() => setOnlyNew(!onlyNew)}>안 해본 것만</button></div></div>
+    ${!more ? html`<button className="linkbtn" onClick=${() => setMore(true)}>시간·난이도 고르기</button>` : html`
     <div className="field"><span className="lb">시간은?</span>
       <div className="dates">${[[0, '상관없어요'], [30, '30분 안쪽'], [60, '1시간'], [120, '2시간']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${time === k} onClick=${() => setTime(k)}>${l}</button>`)}</div></div>
-    <div className="note">${ME.name} 보관함에서 인원과 시간에 맞는 게임을 골라요. 오래 안 한 게임이 위에 와요.</div>
-    ${pick ? html`<div className="pickcard"><${Cover} g=${GAME[pick]}/><div><div className="t">${GAME[pick].ko}</div><div className="d">${players(GAME[pick])} · ${playtime(GAME[pick])} · 보관함</div>
-      <div className="r"><button className="btn primary" onClick=${() => { close(); startPlay(pick); }}>이걸로 기록하기</button><button className="btn" onClick=${roll}>다시 뽑기</button></div></div></div>` : null}
+    <div className="field"><span className="lb">무게는?</span>
+      <div className="dates">${[['', '상관없어요'], ['light', '가볍게'], ['mid', '적당히'], ['heavy', '무겁게']].map(([k, l]) => html`<button key=${k} className="pill sm" aria-pressed=${level === k} onClick=${() => setLevel(k)}>${l}</button>`)}</div></div>`}
+    ${pk ? html`<div className="pickcard"><${Cover} g=${GAME[pick]}/><div><div className="t">${GAME[pick].ko}</div><div className="d">${players(GAME[pick])} · ${playtime(GAME[pick])}</div>
+      ${pk.why.length ? html`<div className="d why">${pk.why.join(' · ')}</div>` : null}
+      <div className="r"><button className="btn primary" onClick=${() => { update(s => ({ ...s, recFb: { ...(s.recFb || {}), [pick]: 'played' } })); close(); startPlay(pick); }}>이걸로 기록하기</button></div>
+      <div className="r2"><button className="linkbtn muted" onClick=${() => fb(pick, 'later')}>나중에</button><button className="linkbtn muted" onClick=${() => fb(pick, 'no')}>관심 없음</button></div></div></div>` : null}
     <button className="btn block" style=${{ marginTop: 12 }} disabled=${!list.length} onClick=${roll}>${pick ? '다시 뽑기' : '하나 골라줘'}</button>
-    <h2 className="sec">할 수 있는 게임 ${list.length}개</h2>
-    ${list.length ? list.slice(0, 20).map(id => html`<${GameRow} key=${id} g=${GAME[id]} onOpen=${() => setPick(id)} side=${why(id)}/>`) :
+    <h2 className="sec">추천 순서</h2>
+    ${list.length ? list.slice(0, 20).map(x => html`<${GameRow} key=${x.id} g=${GAME[x.id]} onOpen=${() => setPick(x.id)} side=${x.why[0] || ''}/>`) :
       html`<div className="note">조건에 맞는 게임이 없어요. 인원이나 시간을 바꿔보세요.</div>`}
+    <div className="note">${ME.name}님 평점, 같이 한 기록, 앱 이용자 평가로 순서를 정해요. 자료가 없는 항목은 빼고 계산해요. BGG 평점·난이도는 연동되면 따로 보여 드려요.</div>
   <//>`;
 }
 
@@ -3319,7 +3476,7 @@ function PlanTab({ g, st, upGroup, say }) {
   return html`
     ${g.notice && !nEdit ? html`<div className="gnotice"><span className="lb">공지</span><span className="tx">${g.notice}</span>${g.owner ? html`<button className="linkbtn" onClick=${() => { setNt(g.notice); setNEdit(true); }}>고치기</button>` : null}</div>` : null}
     ${nEdit ? html`<div className="gnotice edit"><textarea className="input" rows="3" maxLength="200" value=${nt} onInput=${e => setNt(e.target.value)}></textarea>
-      <div style=${{ display: 'flex', gap: 8, marginTop: 6 }}><button className="btn primary sm" onClick=${() => { upGroup(g.id, x => ({ ...x, notice: nt.trim() })); setNEdit(false); say(nt.trim() ? '공지를 올렸어요 · 멤버에게 알림이 가요' : '공지를 내렸어요'); }}>올리기</button><button className="btn ghost sm" onClick=${() => setNEdit(false)}>취소</button></div></div>` : null}
+      <div style=${{ display: 'flex', gap: 8, marginTop: 6 }}><button className="btn primary sm" onClick=${() => { upGroup(g.id, x => ({ ...x, notice: nt.trim() })); setNEdit(false); say(nt.trim() ? '공지를 올렸어요' : '공지를 내렸어요'); }}>올리기</button><button className="btn ghost sm" onClick=${() => setNEdit(false)}>취소</button></div></div>` : null}
     ${up.map(e => html`<${EventCard} key=${e.id} e=${e} g=${g} st=${st} upEv=${upEv(e.id)}/>`)}
     ${!up.length && !making ? html`<${Empty} title="잡힌 약속이 없어요">날짜를 정하거나, 시간 투표로 다 같이 정할 수 있어요.<//>` : null}
     ${making ? html`<${NewEvent} cancel=${() => setMaking(false)} onSave=${e => { const eid = 'e' + uid(); upGroup(g.id, x => ({ ...x, events: [...(x.events || []), { id: eid, going: [], no: [], comments: [], ...e }], chat: [...(x.chat || []), { id: uid(), sys: true, ev: eid, text: `${st.me}님이 ${e.date ? evDay(e.date) + ' 약속을' : (e.title || '약속') + ' 시간 투표를'} 만들었어요`, at: Date.now() }] })); setMaking(false); say('약속을 올렸어요 · 멤버에게 알림이 가요'); }}/>` :
@@ -3337,7 +3494,7 @@ function ChatTab({ g, st, upGroup, toPlan }) {
     ${all.slice(-lim).map((m, i, arr) => { if (m.sys) return html`<div key=${m.id} className="msys"><span>${m.text}</span><button className="linkbtn" onClick=${toPlan}>보기</button></div>`; const mine = m.author === '나'; const same = i && !arr[i - 1].sys && arr[i - 1].author === m.author;
       return html`<div key=${m.id} className=${'msg' + (mine ? ' mine' : '') + (same ? ' cont' : '')}>${!mine && !same ? html`<${Avatar} name=${m.author} size=${28}/>` : html`<span className="av-sp"></span>`}
         <div className="mb">${!mine && !same ? html`<div className="ma">${m.author}</div>` : null}<div className="row"><span className="bub">${m.text}</span><span className="mt">${tm(m.at)}</span></div></div></div>`; })}
-    <form className="chatin" onSubmit=${send}><input className="input" placeholder=${`${g.name}에 메시지`} maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn primary" type="submit" disabled=${!t.trim()}>보내기</button></form>
+    <form className="chatin" onSubmit=${send}><input className="input" placeholder="메시지 보내기" maxLength="500" value=${t} onInput=${e => setT(e.target.value)}/><button className="btn primary" type="submit" disabled=${!t.trim()}>보내기</button></form>
   </div>`;
 }
 function GroupIntro({ g, st, back, open, counts, joined, say }) {
@@ -3355,7 +3512,7 @@ function GroupIntro({ g, st, back, open, counts, joined, say }) {
     <div className="gi-ppl"><span className="avstack">${mem.slice(0, 8).map(n => html`<${Avatar} key=${n} name=${nmOf(st, n)} size=${28}/>`)}</span>${mem.length > 8 ? html`<span>외 ${mem.length - 8}명</span>` : null}</div>
     ${top.length ? html`<h2 className="sec">자주 하는 게임</h2><div className="mini-shelf">${top.map(id => html`<button key=${id} className="ms-b" onClick=${() => open(id)} aria-label=${GAME[id].ko}><span className="ms-art" style=${{ aspectRatio: `1 / ${boxRatio(id)}` }}><${Cover} g=${GAME[id]}/></span></button>`)}</div><div className="ms-cap">이 모임 ${total}판</div>` : null}
     ${(it.rules || []).length ? html`<h2 className="sec">규칙·회비</h2>${it.rules.map(([t, b]) => html`<details key=${t} className="gi-rule"><summary>${t}</summary><p>${b}</p></details>`)}` : null}
-    ${joined ? null : html`<div className="gi-foot">${html`<button className="btn primary block" onClick=${() => say && say(it.join === 'ask' ? '가입 신청을 보냈어요' : '모임에 들어왔어요')}>${it.join === 'ask' ? '가입 신청' : '가입하기'}</button>`}</div>`}
+    ${joined ? null : html`<div className="gi-foot">${html`<button className="btn primary block" onClick=${() => say && say('미리보기라 가입은 정식 버전에서 돼요')}>${it.join === 'ask' ? '가입 신청' : '가입하기'} · 준비 중</button>`}</div>`}
   </div>`;
 }
 function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, leaveGroup, inviteToGroup, shareDay, pinGroup, muteGroup, hideGroupHome, upGroup, say }) {
@@ -3386,7 +3543,6 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
   const board = showRank ? groupBoard(rankPs, names).filter(r => r.vs >= (game ? 1 : minN)) : [];
   const mstat = tab === 'mem' ? groupBoard(ps, names) : [];
   const mlist = mstat.filter(r => !mq.trim() || nm(r.n).includes(mq.trim())).sort((a, b) => msort === 'name' ? nm(a.n).localeCompare(nm(b.n), 'ko') : b.played - a.played);
-  const link = `https://example.com/g/${hash(g.id).toString(36)}`;
   const cands = Object.keys(st.friends).filter(n => !g.members.includes(n));
   const isDec = new Date().getMonth() === 11;
   const nextEv = (g.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -3409,6 +3565,7 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
     ${isDec && ps.some(p => p.date.startsWith(String(new Date().getFullYear()))) ? html`<div className="gyear">올해 ${g.name} 결산이 나왔어요 · 기록 탭 순위에서 보기</div>` : null}
     <div className="seg tabs gtabs" role="tablist">${TABS2.map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}${k === 'plan' && nextEv && nextEv.date === today() ? html`<span className="tdot" aria-label="오늘 약속"></span>` : null}</button>`)}</div>
 
+    ${tab === 'plan' || tab === 'chat' ? html`<div className="pvline">미리보기예요. 약속·참석·대화는 지금 이 기기에만 저장되고, 다른 멤버에게는 정식 버전부터 보여요.</div>` : null}
     ${tab === 'plan' ? html`<${PlanTab} g=${g} st=${st} upGroup=${upGroup} say=${say}/>` : null}
     ${tab === 'chat' ? html`<${ChatTab} g=${g} st=${st} upGroup=${upGroup} toPlan=${() => setTab('plan')}/>` : null}
 
@@ -3416,11 +3573,11 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
       <div className="logbar"><span className="lb-sum">${game ? `${GAME[game].ko}만 보고 있어요` : ''}</span>
 </div>
       ${showRank ? html`<div className="rankbox">${game && COOP.has(game) ? html`<div className="note">협력 게임이라 순위가 없어요. 우리가 ${rankPs.filter(p => p.coop === 'win').length}승 ${rankPs.filter(p => p.coop === 'lose').length}패예요.</div>` :
-        board.length ? html`${(allRank ? board : board.slice(0, 10)).map((r, i) => html`<button key=${r.n} className="rank" onClick=${() => r.n !== '나' && openPerson(r.n)}><span className="i">${board.findIndex(x => Math.round(x.w / x.vs * 1000) === Math.round(r.w / r.vs * 1000)) + 1}</span><${Avatar} name=${nm(r.n)} size=${28}/>
-            <span className="n">${nm(r.n)}</span><span className="v"><b>${r.vs ? (Math.round(r.w / r.vs * 1000) / 10) + '%' : '–'}</b> <small>${r.vs}판</small></span></button>`)}
-          ${(() => { const k = board.findIndex(r => r.n === '나'); return !allRank && k >= 10 ? html`<div className="rank me"><span className="i">${k + 1}</span><span className="n">${ME.name}</span><span className="v"><b>${Math.round(board[k].w / board[k].vs * 1000) / 10}%</b> <small>${board[k].vs}판</small></span></div>` : null; })()}
+        board.length ? html`<div className="rankhd">이긴 비율 순${!game && minN > 1 ? ` · ${minN}판 이상` : ''}</div>${(allRank ? board : board.slice(0, 10)).map((r, i) => html`<button key=${r.n} className="rank" onClick=${() => r.n !== '나' && openPerson(r.n)}><span className="i">${board.findIndex(x => Math.round(x.w / x.vs * 1000) === Math.round(r.w / r.vs * 1000)) + 1}</span><${Avatar} name=${nm(r.n)} size=${28}/>
+            <span className="n">${nm(r.n)}</span><span className="v"><b>${r.vs ? (Math.round(r.w / r.vs * 1000) / 10) + '%' : '–'}</b></span></button>`)}
+          ${(() => { const k = board.findIndex(r => r.n === '나'); return !allRank && k >= 10 ? html`<div className="rank me"><span className="i">${k + 1}</span><span className="n">${ME.name}</span><span className="v"><b>${Math.round(board[k].w / board[k].vs * 1000) / 10}%</b></span></div>` : null; })()}
           ${board.length > 10 ? html`<button className="btn ghost block" onClick=${() => setAllRank(!allRank)}>${allRank ? '접기' : '전체 보기'}</button>` : null}
-          ${!game && minN > 1 ? html`<div className="note">${minN}판 이상 한 사람만 넣었어요</div>` : null}` :
+` :
         html`<div className="note">아직 순위를 낼 만큼 판이 없어요.</div>`}</div>` : null}
       ${showRank ? null : html`<${DayList} inGroupView key=${game || 'all'} plays=${rankPs} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}
         empty=${html`<${Empty} title="아직 모임 기록이 없어요">기록할 때 모임 사람을 한 명이라도 넣으면 여기에 모여요.<//>`}/>`}` : null}
@@ -3428,8 +3585,8 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
     ${tab === 'mem' ? html`
       ${inviting ? html`<div className="invitebox">
         ${cands.length ? html`<${PickList} cands=${cands} sel=${[]} onTog=${n => inviteToGroup(g.id, n)} label=${n => '+ ' + n}/>` : null}
-        <div className="invite"><span className="num">${link}</span><button className="btn" onClick=${() => { try { navigator.clipboard.writeText(link).then(() => setCopied(true), () => setCopied('sel')); } catch (e) { setCopied('sel'); } }}>${copied === true ? '복사했어요' : '링크 복사'}</button></div>
-        <div className="note">${copied === 'sel' ? '복사가 막혀 있어요. 링크를 길게 눌러 복사해 주세요. ' : ''}링크로 들어온 사람은 모임 소개를 먼저 보고 가입해요. 지금 링크는 예시예요.</div></div>` : html`<button className="btn block" style=${{ marginBottom: 10 }} onClick=${() => setInviting(true)}>${I.plus}초대하기</button>`}
+        <div className="invite pv"><span>초대 링크는 정식 버전에서 생겨요</span><button className="btn" disabled>링크 복사</button></div>
+        <div className="note">링크로 들어온 사람은 모임 소개를 먼저 보고 가입해요. 위에서 고른 사람은 이 기기의 모임에만 들어가요.</div></div>` : html`<button className="btn block" style=${{ marginBottom: 10 }} onClick=${() => setInviting(true)}>${I.plus}초대하기</button>`}
       ${g.owner && (g.requests || []).length ? html`<div className="reqbox"><div className="rq-h">가입 신청 ${g.requests.length}</div>${g.requests.map(n => html`<div key=${n} className="mrow static"><${Avatar} name=${n} size=${28}/><span className="n">${n}</span>
         <button className="btn sm primary" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => y !== n), members: [...x.members, n] })); say(`${n}님을 받았어요`); }}>받기</button><button className="btn sm ghost" onClick=${() => { upGroup(g.id, x => ({ ...x, requests: x.requests.filter(y => y !== n) })); say('신청을 거절했어요'); }}>거절</button></div>`)}</div>` : null}
       <div className="memtools">${g.members.length >= 20 ? html`<input className="input" type="search" placeholder="멤버 찾기" value=${mq} onInput=${e => setMq(e.target.value)}/>` : null}
@@ -3502,7 +3659,8 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
 function ShelfImageSheet({ st, close, say }) {
   const [size, setSize] = useState('feed'); const [dark, setDark] = useState(false); const [url, setUrl] = useState(null);
   const counts = useMemo(() => { const o = {}; st.plays.forEach(p => o[p.gameId] = (o[p.gameId] || 0) + 1); return o; }, [st.plays]);
-  const ids = Object.keys(st.collection).map(Number).filter(id => GAME[id] && (st.collection[id].status || 'own') !== 'sold').sort((a, b) => (counts[b] || 0) - (counts[a] || 0)).slice(0, 9);
+  const ids = Object.keys(st.collection).map(Number).filter(id => GAME[id] && id > -30000 && (st.collection[id].status || 'own') !== 'sold').sort((a, b) => (counts[b] || 0) - (counts[a] || 0)).slice(0, 9);
+  const rows = Math.max(1, Math.ceil(ids.length / 3));
   const all = Object.keys(st.collection).filter(id => GAME[id]).length;
   const firstY = (() => { const ys = Object.values(st.collection).map(v => (v.bought || v.at || '').slice(0, 4)).filter(Boolean).sort(); return ys[0] || (st.since || today()).slice(0, 4); })();
   useEffect(() => {
@@ -3513,9 +3671,9 @@ function ShelfImageSheet({ st, close, say }) {
     const top = size === 'feed' ? 120 : 260;
     x.fillStyle = ink; x.font = `800 84px ${font}`; x.fillText(`${st.me}의 선반`, 90, top + 70);
     x.fillStyle = sub; x.font = `500 38px ${font}`; x.fillText(`${all}개 · ${firstY}년부터`, 90, top + 130);
-    const rowsTop = top + 210, rowsH = (size === 'feed' ? 1180 : 1640) - rowsTop, rowH = rowsH / 3;
+    const rowsTop = top + 210, rowsH = (size === 'feed' ? 1180 : 1640) - rowsTop, rowH = rowsH / Math.max(rows, 2);
     const colW = (W - 180) / 3;
-    for (let r = 0; r < 3; r++) { const base = rowsTop + rowH * (r + 1) - 30;
+    for (let r = 0; r < rows; r++) { const base = rowsTop + rowH * (r + 1) - 30;
       ids.slice(r * 3, r * 3 + 3).forEach((id, k) => { const rt = boxRatio(id); const maxH = rowH - 50; const bw = Math.min(colW - 40, maxH / 1.28) * (rt < 1 ? 1.08 : 1), bh = bw * rt; const bx = 90 + k * colW + (colW - bw) / 2, by = base - bh;
         x.save(); x.shadowColor = 'rgba(0,0,0,.28)'; x.shadowBlur = 24; x.shadowOffsetY = 10; x.fillStyle = COVER_COLORS[hash(id) % COVER_COLORS.length]; x.fillRect(bx, by, bw, bh); x.restore();
         x.fillStyle = '#fff'; x.font = `700 34px ${font}`; x.textAlign = 'center';
@@ -3530,7 +3688,7 @@ function ShelfImageSheet({ st, close, say }) {
     <div className="seg" role="group" aria-label="크기" style=${{ marginBottom: 8 }}><button aria-pressed=${size === 'feed'} onClick=${() => setSize('feed')}>피드 4:5</button><button aria-pressed=${size === 'story'} onClick=${() => setSize('story')}>스토리 9:16</button></div>
     <div className="seg" role="group" aria-label="바탕" style=${{ marginBottom: 12, marginLeft: 8 }}><button aria-pressed=${!dark} onClick=${() => setDark(false)}>종이</button><button aria-pressed=${dark} onClick=${() => setDark(true)}>어두운</button></div>
     <div className="shimg">${url ? html`<img src=${url} alt="선반 이미지 미리보기"/>` : null}</div>
-    <div className="hint" style=${{ marginTop: 6 }}>많이 한 게임 9개가 올라가요.</div>
+    <div className="hint" style=${{ marginTop: 6 }}>많이 한 게임이 9개까지 올라가요.</div>
     <div className="sheet-foot"><button className="btn primary" disabled=${!url} onClick=${async () => { const blob = await (await fetch(url)).blob(); saveFile(`${st.me}-선반.png`, blob, say); }}>저장</button><button className="btn" onClick=${shareIt}>공유</button></div>
   <//>`;
 }
@@ -3568,22 +3726,43 @@ function GroupPicker({ st, people, toggle, freq }) {
 }
 function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editCouple }) {
   const [q, setQ] = useState('');
-  const [sort, setSort] = useState('recent');
+  const [sort, setSort] = useState('soon');
   const [glim, setGlim] = useState(50);
   const last = useMemo(() => Object.fromEntries((st.groups || []).map(g => [g.id, groupLast(st, g)])), [st.groups, st.plays]);
+  // 다음 약속: 날짜 정해진 것 중 가장 가까운 것, 없으면 투표 중인 것
+  const nextEv = useMemo(() => Object.fromEntries((st.groups || []).map(g => { const evs = (g.events || []).filter(e => !e.date || e.date >= today());
+    return [g.id, evs.filter(e => e.date).sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')))[0] || evs[0] || null]; })), [st.groups]);
+  const evKey = g => { const e = nextEv[g.id]; return e ? (e.date || '9999') + (e.time || '') : 'zzzz'; };
   let gs = (st.groups || []).filter(g => !q.trim() || g.name.includes(q.trim()));
-  gs = [...gs].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (sort === 'name' ? a.name.localeCompare(b.name, 'ko') : sort === 'size' ? b.members.length - a.members.length : last[b.id].localeCompare(last[a.id])));
+  gs = [...gs].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (sort === 'soon' ? evKey(a).localeCompare(evKey(b)) || last[b.id].localeCompare(last[a.id]) : sort === 'name' ? a.name.localeCompare(b.name, 'ko') : sort === 'size' ? b.members.length - a.members.length : last[b.id].localeCompare(last[a.id])));
   return html`<div className="screen">
     <div className="topbar">${back ? html`<button className="backbtn" onClick=${back}>${I.back}뒤로</button>` : html`<h1>모임</h1>`}<span className="tbr">${(st.couples || []).length ? null : html`<button className="btn ghost" onClick=${() => editCouple(null)}>♥ 커플</button>`}<button className="btn" onClick=${newGroup}>+ 모임 만들기</button></span></div>
     ${back ? html`<h1 style=${{ margin: '0 0 10px' }}>모임</h1>` : null}
     ${(st.couples || []).length ? html`<div className="gstrip" style=${{ marginBottom: 6 }}>${st.couples.map(c => html`<${CoupleCard} key=${c.id} c=${c} st=${st} onOpen=${() => openCouple(c.id)}/>`)}</div><h2 className="sec" style=${{ marginTop: 8 }}>모임</h2>` : null}
     <div className="stickybar"><div className="search">${I.games}<input type="search" placeholder="모임 이름으로 찾기" value=${q} onInput=${e => { setQ(e.target.value); setGlim(50); }}/></div>
-      <${Seg} value=${sort} options=${[['recent', '최근 모인 순'], ['name', '이름순'], ['size', '사람 많은 순']]} onChange=${setSort} label="정렬"/></div>
+      <${Seg} value=${sort} options=${[['soon', '약속 가까운 순'], ['recent', '최근 모인 순'], ['name', '이름순']]} onChange=${setSort} label="정렬"/></div>
     ${gs.slice(0, glim).map(g => html`<div key=${g.id} className="glrow"><button className="gl-main" onClick=${() => openGroup(g.id)}>
         <${GroupBadge} g=${g} size=${40}/>
-        <span className="n">${g.name}${g.pinned ? html` <span className="pinic" aria-label="고정함">${I.pin}</span>` : null}${g.mute ? html` <span className="muted-ic" aria-label="알림 꺼짐">🔕</span>` : null}<span className="d">${g.members.length + 1}명${last[g.id] ? ` · ${relDay(last[g.id])}` : ''}</span></span></button></div>`)}
+        <span className="n">${g.name}${g.pinned ? html` <span className="pinic" aria-label="고정함">${I.pin}</span>` : null}${g.mute ? html` <span className="muted-ic" aria-label="알림 꺼짐">🔕</span>` : null}${(() => { const e = nextEv[g.id]; if (!e) return html`<span className="d">약속 없음${last[g.id] ? ` · 마지막 모임 ${relDay(last[g.id])}` : ''}</span>`;
+          const me = (e.going || []).includes('나') ? 'go' : (e.no || []).includes('나') ? 'no' : (e.poll && (e.poll.votes || {})['나'] != null) ? 'vote' : null;
+          const when = e.date ? `${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}` : '시간 투표 중';
+          return html`<span className="d gl-ev"><span className=${'gl-when' + (e.date === today() ? ' td' : '')}>${when}</span>${e.place ? ` · ${e.place}` : ''}<span className=${'gl-me ' + (me || 'none')}>${me === 'go' ? '가요' : me === 'no' ? '못 가요' : me === 'vote' ? '투표함' : '답 안 함'}</span></span>`; })()}</span></button></div>`)}
     ${gs.length > glim ? html`<${MoreBtn} left=${gs.length - glim} unit="개" onClick=${() => setGlim(glim + 50)}/>` : null}
-    ${!gs.length ? html`<div className="note">'${q}' 모임이 없어요.</div>` : null}
+    ${!gs.length ? html`<div className="note">${q ? `'${q}' 모임이 없어요.` : '아직 모임이 없어요.'}</div>` : null}
+  </div>`;
+}
+
+/* ---------- 처음 열 때 ---------- */
+function Welcome({ start }) {
+  const [nick, setNick] = useState('');
+  const n = nick.trim();
+  return html`<div className="screen welcome">
+    <div className="wc-top"><div className="wc-art">${['#2f6f5e', '#b5562f', '#3e4a7a'].map((c, i) => html`<span key=${i} style=${{ background: c }}></span>`)}</div>
+      <h1>보드게임 기록장</h1><p>오늘 누구와 무슨 게임을 했고, 누가 이겼는지 남겨 두는 곳이에요.</p></div>
+    <label className="field"><span className="lb">닉네임</span><input className="input" placeholder="예: 에릭" maxLength="12" value=${nick} onInput=${e => setNick(e.target.value)}/></label>
+    <div className="wc-acts"><button className="btn primary block" disabled=${!n} onClick=${() => start('empty', n)}>내 기록장 시작하기</button>
+      <button className="btn block" onClick=${() => start('sample', n)}>예시로 먼저 둘러보기</button></div>
+    <div className="note">예시에는 기록·보관함·모임이 많이 들어 있어요. 둘러본 뒤 설정에서 한 번에 지울 수 있어요. 지금은 미리보기라 기록은 이 기기에만 저장돼요.</div>
   </div>`;
 }
 
@@ -3638,6 +3817,7 @@ function App() {
     const friends = { ...st.friends, ...links };
     const synced = [...new Set(plays.flatMap(p => p.people.filter(n => !before(st, p, n))))].filter(n => friends[n]);
     const { date, photos, editDate } = meta;
+    const firstToday = !editDate && !st.plays.some(p => p.date === date && !p.from);
     update(s => {
       const kept = editDate ? s.plays.filter(p => p.date !== editDate || p.from) : s.plays;
       const ph = { ...(s.photos || {}) }; if (editDate) delete ph[editDate];
@@ -3645,6 +3825,7 @@ function App() {
       const la = { ...(s.linkedAt || {}) }; Object.keys(links).forEach(n => { if (!s.friends[n] && s.plays.some(p => p.people.includes(n))) la[n] = today(); });
       return { ...s, plays: [...kept, ...plays], people: [...new Set([...s.people, ...plays.flatMap(p => p.people)])], friends, linkedAt: la, photos: ph, draft: editDate ? s.draft : null };
     });
+    if (!editDate && !firstToday) { setSheet(null); const ids = new Set(plays.map(p => p.id)); setToast({ m: `${[...new Set(plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')} 저장했어요`, undo: () => { update(s => ({ ...s, plays: s.plays.filter(p => !ids.has(p.id)) })); setToast(null); say('되돌렸어요'); } }); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 5000); return; }
     setSheet(editDate ? null : { kind: 'saved', date, plays, synced });
     let msg;
     if (editDate) msg = '고쳤어요';
@@ -3667,7 +3848,7 @@ function App() {
   const hideReview = (r, report) => { update(s => ({ ...s, hiddenReviews: { ...(s.hiddenReviews || {}), [r.id]: report ? 'report' : 'hide' } })); say(report ? '신고했어요. 확인하고 처리할게요. 이 평가는 이제 안 보여요' : '이 평가를 숨겼어요'); };
   const setShelfInfo = (id, v) => update(s => ({ ...s, collection: { ...s.collection, [id]: v } }));
   const linkFriend = (name, h, n) => { update(s => ({ ...s, friends: { ...s.friends, [name]: h }, linkedAt: { ...(s.linkedAt || {}), [name]: today() } }));
-    say(`${name}님과 연결했어요. 오늘부터 같이 한 기록은 ${name}님 기록장에도 들어가요`); };
+    say(`${name}님과 연결했어요 · 미리보기라 ${name}님 기록장으로는 아직 안 가요`); };
   const saveReview = r => {
     const had = st.reviews.some(x => x.id === r.id);
     update(s => ({ ...s, reviews: had ? s.reviews.map(x => x.id === r.id ? r : x) : [...s.reviews, r] }));
@@ -3697,14 +3878,14 @@ function App() {
   const openGroup = id => { setStack(s => ({ ...s, [tab]: 'g:' + id })); window.scrollTo(0, 0); };
   const newGroup = () => setSheet({ kind: 'newgroup' });
   const createGroup = g => { update(s => ({ ...s, groups: [...(s.groups || []), g] })); setSheet(null); openGroup(g.id);
-    const app = g.members.filter(n => st.friends[n]); say(app.length ? `모임을 만들었어요 · ${app.map(n => n + '님').join(', ')}에게 초대 알림을 보냈어요` : '모임을 만들었어요'); };
+    const app = g.members.filter(n => st.friends[n]); say('모임을 만들었어요. 모임장은 ' + ME.name + '님이에요'); };
   const leaveGroup = id => { update(s => ({ ...s, groups: (s.groups || []).filter(g => g.id !== id) })); back(); say('모임에서 나왔어요. 기록은 그대로 있어요'); };
-  const inviteToGroup = (id, n) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, members: [...g.members, n] } : g) })); say(`${n}님에게 초대 알림을 보냈어요`); };
+  const inviteToGroup = (id, n) => { update(s => ({ ...s, groups: s.groups.map(g => g.id === id ? { ...g, members: [...g.members, n] } : g) })); say(`${n}님을 넣었어요 · 미리보기라 알림은 아직 안 가요`); };
   const openCouple = id => { setStack(s => ({ ...s, [tab]: 'c:' + id })); window.scrollTo(0, 0); };
   const editCouple = c => setSheet({ kind: 'couple', c });
   const updCouple = (id, patch) => { update(s => ({ ...s, couples: s.couples.map(x => x.id === id ? { ...x, ...patch } : x) })); say('사진을 넣었어요'); };
   const saveCouple = c => { const had = (st.couples || []).some(x => x.id === c.id); update(s => ({ ...s, couples: had ? s.couples.map(x => x.id === c.id ? c : x) : [...(s.couples || []), c] })); setSheet(null);
-    if (!had) { openCouple(c.id); say(st.friends[c.partner] ? `${c.partner}님에게 커플 요청을 보냈어요` : '커플을 만들었어요'); } else say('저장했어요'); };
+    if (!had) { openCouple(c.id); say('커플을 만들었어요'); } else say('저장했어요'); };
   const delCouple = id => { update(s => ({ ...s, couples: s.couples.filter(x => x.id !== id) })); setSheet(null); back(); say('커플을 끊었어요. 기록은 그대로 있어요'); };
   const pickWhat = gid => setSheet({ kind: 'what', gid });
   const shareDay = d => setSheet({ kind: 'share', date: d });
@@ -3759,17 +3940,18 @@ function App() {
   else if (tab === 'groups') screen = html`<${GroupsList} ...${props} back=${null}/>`;
   else screen = html`<${Me} ...${props} update=${update} resetTo=${resetTo}/>`;
 
+  if (st.firstRun) return html`<${Welcome} start=${(kind, nick) => { if (kind === 'sample') { const s0 = seedState(); setSt(prepState(nick ? { ...s0, me: nick } : s0)); } else setSt(prepState({ ...empty(), me: nick })); }}/>`;
   return html`<${React.Fragment}>
     ${screen}
     <nav className="tabbar" aria-label="메뉴">${TABS.map(([k, l, ic]) => k === 'rec' ? html`<button key=${k} className="rectab" onClick=${() => startPlay(null)} aria-label="오늘 한 게임 기록하기"><span className="rc">${ic}</span><span>기록</span></button>` :
-      html`<button key=${k} aria-current=${tab === k ? 'page' : undefined} onClick=${() => go(k)}>${ic}<span>${k === 'me' ? ME.name : l}</span></button>`)}</nav>
+      html`<button key=${k} aria-current=${tab === k ? 'page' : undefined} onClick=${() => go(k)}>${ic}<span className=${k === 'me' ? 'tnk' : null}>${k === 'me' ? ME.name : l}</span></button>`)}</nav>
     ${sheet && sheet.kind === 'play' ? html`<${PlaySheet} key=${sheet.edit || 'new'} again=${sheet.again} st=${st} gameId=${sheet.id} editDate=${sheet.edit} close=${() => setSheet(null)} onSave=${savePlay} onDeleteDay=${deleteDay} saveDraft=${saveDraft} discardDraft=${discardDraft} addCustom=${addCustom} setRule=${setRule}/>` : null}
     ${sheet && sheet.kind === 'person' ? html`<${PersonSheet} st=${st} name=${sheet.name} close=${() => setSheet(null)} open=${open} linkFriend=${linkFriend} block=${block}/>` : null}
     ${sheet && sheet.kind === 'settings' ? html`<${SettingsSheet} st=${st} close=${() => setSheet(null)} setSettings=${setSettings} say=${say} resetTo=${resetTo}/>` : null}
     ${sheet && sheet.kind === 'char' ? html`<${CharSheet} st=${st} close=${() => setSheet(null)} onSave=${saveChar}/>` : null}
     ${sheet && sheet.kind === 'couple' ? html`<${CoupleSheet} st=${st} c=${sheet.c} close=${() => setSheet(null)} onSave=${saveCouple} onDelete=${delCouple}/>` : null}
     ${sheet && sheet.kind === 'newgroup' ? html`<${NewGroupSheet} st=${st} close=${() => setSheet(null)} onCreate=${createGroup}/>` : null}
-    ${sheet && sheet.kind === 'what' ? html`<${WhatSheet} st=${st} gid=${sheet.gid} close=${() => setSheet(null)} startPlay=${startPlay}/>` : null}
+    ${sheet && sheet.kind === 'what' ? html`<${WhatSheet} st=${st} allReviews=${allReviews} gid=${sheet.gid} close=${() => setSheet(null)} startPlay=${startPlay} update=${update} say=${say}/>` : null}
     ${qnaG && GAME[qnaG] ? html`<div className="qlayer" role="dialog" aria-modal="true" aria-label=${GAME[qnaG].ko + ' 규칙 질문'}><div className="ql-h"><b>${GAME[qnaG].ko} 규칙 질문</b><button className="btn" onClick=${() => setQnaG(null)}>기록으로 돌아가기</button></div><${GameQnA} id=${qnaG} st=${st} qa=${qa} say=${say} inLayer/></div>` : null}
     ${sheet && sheet.kind === 'saved' ? html`<${SavedSheet} st=${st} date=${sheet.date} plays=${sheet.plays} synced=${sheet.synced} editDay=${editDay} close=${() => setSheet(null)} share=${() => setSheet({ kind: 'share', date: sheet.date })} openCouple=${openCouple}/>` : null}
     ${sheet && sheet.kind === 'day' ? html`<${DaySheet} st=${st} date=${sheet.date} close=${() => setSheet(null)} open=${open} editDay=${editDay} shareDay=${shareDay} removeFromId=${removeFromId}/>` : null}
@@ -3778,90 +3960,12 @@ function App() {
     ${sheet && sheet.kind === 'shelfimg' ? html`<${ShelfImageSheet} st=${st} close=${() => setSheet(null)} say=${say}/>` : null}
     ${sheet && sheet.kind === 'barcode' ? html`<${BarcodeSheet} st=${st} close=${() => setSheet(null)} toggleOwn=${toggleOwn}/>` : null}
     ${sheet && sheet.kind === 'review' ? html`<${ReviewSheet} st=${st} gameId=${sheet.id} close=${() => setSheet(null)} onSave=${saveReview} onDelete=${delReview}/>` : null}
-    ${full ? html`<div className="toast" role="alert">저장 공간이 꽉 찼어요. 사진을 몇 장 빼주세요.</div>` : toast ? html`<div className="toast" role="status">${toast}</div>` : null}
+    ${full ? html`<div className="toast" role="alert">저장 공간이 꽉 찼어요. 사진을 몇 장 빼주세요.</div>` : toast ? html`<div className="toast" role="status">${toast.m || toast}${toast.undo ? html`<button className="t-undo" onClick=${toast.undo}>되돌리기</button>` : null}</div>` : null}
   <//>`;
 }
 
 ReactDOM.createRoot(document.getElementById('app')).render(html`<${App}/>`);
 })();
 </script>
-
-
-<style id="ux-polish">
-/* 2026-11 UX polish: touch targets, hierarchy, and mobile navigation */
-#app { min-height: 100svh; }
-.topbar { padding-block: 16px 12px; }
-.topbar h1 { font-size: 23px; letter-spacing: -.035em; }
-.recbig {
-  position: relative;
-  min-height: 76px;
-  padding: 13px 54px 13px 17px;
-  border-radius: 17px;
-  background: linear-gradient(115deg, var(--accent-fill), color-mix(in srgb, var(--accent-fill) 82%, #183e2d));
-  box-shadow: 0 5px 16px color-mix(in srgb, var(--accent-fill) 18%, transparent);
-  transition: transform .16s ease, box-shadow .16s ease;
-}
-.recbig::after {
-  content: "›";
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-54%);
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(255,255,255,.16);
-  font-size: 27px;
-  line-height: 1;
-  font-weight: 400;
-}
-.recbig b { font-size: 18px; letter-spacing: -.025em; }
-.recbig span { margin-top: 2px; }
-.recbig:active { transform: scale(.99); box-shadow: none; }
-.againline {
-  min-height: 44px;
-  margin: 4px 0 2px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--surface) 72%, var(--bg));
-}
-.search input {
-  min-height: 48px;
-  border-radius: 13px;
-  border-color: color-mix(in srgb, var(--line) 82%, var(--ink-3));
-  transition: border-color .16s ease, box-shadow .16s ease;
-}
-.search input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 13%, transparent);
-}
-.tabbar {
-  border-top-color: color-mix(in srgb, var(--line) 75%, transparent);
-  box-shadow: 0 -5px 22px rgba(20,30,25,.06);
-  padding-top: 7px;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  -webkit-backdrop-filter: saturate(140%) blur(14px);
-  backdrop-filter: saturate(140%) blur(14px);
-}
-.tabbar button {
-  min-height: 48px;
-  justify-content: center;
-  gap: 3px;
-  font-size: 12px;
-  transition: color .16s ease, transform .16s ease;
-}
-.tabbar button[aria-current="page"] { color: var(--accent); font-weight: 700; }
-.tabbar button[aria-current="page"] svg { color: var(--accent); }
-.tabbar .rectab .rc { width: 42px; height: 30px; border-radius: 10px; }
-.btn, .pill, .wp, .favbtn { min-height: 40px; }
-.iconbtn, .bellbtn { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
-h2.sec { margin-top: 25px; }
-@media (prefers-reduced-motion: reduce) {
-  .recbig, .search input, .tabbar button { transition: none; }
-}
-</style>
 
 </body></html>
