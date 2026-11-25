@@ -243,6 +243,10 @@ h2.sec .more { font-size: 13px; font-weight: 500; color: var(--ink-3); border: 0
 .rrow { display: flex; justify-content: space-between; align-items: center; padding: 6px 0 4px; }
 .rrow .rn { color: var(--ink); font-weight: 700; font-size: 13.5px; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rrow { gap: 8px; }
+.rppl { display: inline-flex; gap: 4px; align-items: center; border: 0; background: none; padding: 2px 0 4px; font: inherit; font-size: 13px; color: var(--ink-2); }
+.rppl-d { margin: 2px 0 8px; }
+.round.flash { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 10px; transition: outline-color .6s; }
+.confirm.pop.low { top: auto; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .hgwel { display: grid; gap: 10px; margin-top: 8px; }
 .hgw-card { display: grid; gap: 4px; text-align: left; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); font: inherit; color: var(--ink); }
 .hgw-card b { font-size: 16px; } .hgw-ev { font-size: 14px; color: var(--ink-2); } .hgw-n { font-size: 13px; color: var(--ink-3); }
@@ -1787,6 +1791,7 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .ctabs { grid-template-columns: none !important; }
 /* 시트 안 거르기(자주 같이 한·즐겨찾기·최근…): 칩 줄 */
 .sheet .seg:not(.tabs), .ptabs .seg, .seg.cwf { display: flex !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; width: auto; background: none; padding: 0; gap: 6px; border-radius: 0; grid-template-columns: none !important; }
+.sheet .seg.tblseg { flex-wrap: wrap; overflow: visible; row-gap: 3px; } .sheet .seg.tblseg button { flex: 1 0 auto; min-width: 0; padding-left: 8px; padding-right: 8px; } .sheet .seg.tblseg .tadd { flex: none; padding: 0 12px; }
 .sheet .seg:not(.tabs)::-webkit-scrollbar, .ptabs .seg::-webkit-scrollbar { display: none; }
 .sheet .seg:not(.tabs) button, .ptabs .seg button, .seg.cwf button { flex: none; min-height: 32px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); box-shadow: none; font-size: 14px; font-weight: 500; color: var(--ink-2); }
 .sheet .seg:not(.tabs) button[aria-pressed="true"], .ptabs .seg button[aria-pressed="true"], .seg.cwf button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); box-shadow: none; }
@@ -1935,6 +1940,8 @@ h2.sec { font-size: 16px; margin: 22px 0 8px; }
 .samplebar button:disabled { opacity: .45; }
 .btn:disabled, .btn.primary:disabled, .btn[disabled] { background: var(--sunk) !important; color: var(--ink-3) !important; border-color: transparent !important; box-shadow: none !important; cursor: default; }
 .cmk-err { margin-top: 6px; font-size: 13px; color: var(--danger, #c2410c); }
+.samplebar.ask2 { white-space: normal; flex-wrap: wrap; justify-content: center; border-radius: 18px; padding: 10px 12px; }
+.samplebar.ask2 span { width: 100%; text-align: center; }
 .samplebar input { width: 140px; border: 0; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff7ee; font: inherit; font-size: 15px; padding: 6px 12px; outline: none; }
 .samplebar input::placeholder { color: rgba(255,247,238,.6); }
 .backask { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px 10px 8px 12px; border-radius: 12px; background: var(--sunk); font-size: 13px; color: var(--ink-2); }
@@ -2470,7 +2477,8 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const todayDow = parse(today()).getDay();
   const playedToday = st.plays.some(p => p.date === today() && !p.from);
   const justTs = new Set(st.plays.filter(p => p.date === today() && !p.from && p.table).map(p => p.table)).size;
-  const justG0 = [...st.plays.filter(p => p.date === today() && !p.from), ...(scribed || [])].filter(p => GAME[p.gameId] && Date.now() - (p.at || 0) < 3 * 3600e3).sort((a, b) => (b.at || 0) - (a.at || 0))[0] || null;
+  const justAll = [...st.plays.filter(p => p.date === playDay() && !p.from), ...(scribed || [])].filter(p => GAME[p.gameId]).sort((a, b) => (b.at || 0) - (a.at || 0))[0] || null;
+  const justG0 = justAll && Date.now() - (justAll.at || 0) < 3 * 3600e3 ? justAll : null; const justOld = justAll && !justG0 ? justAll : null;
   const justG_old = playedToday ? [...st.plays].filter(p => p.date === today() && !p.from && GAME[p.gameId]).sort((a, b) => (b.at || 0) - (a.at || 0))[0] : null; // 게임 끝날 때마다 한 판씩
   const todayEv = (() => { for (const g of (st.groups || [])) { if (g.hideHome) continue; const e = (g.events || []).find(e => e.date === today() && (e.going || []).includes('나')); if (e) return [g, e]; } return null; })();
   const dayGroup = !st.draft && !playedToday ? groupsOrdered(st).slice(0, 8).find(g => groupWeekday(st, g) === todayDow) : null;
@@ -2491,19 +2499,21 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
           <button className="linkbtn muted" onClick=${() => mineR.forEach(x => cm.read(x.id))}>확인</button></div>`; })() : null}
       ${cplNew.map(([c, l]) => html`<div key=${c.id} className="cnote"><${Avatar} name=${c.partner} size=${28}/><button className="cn" onClick=${() => { setBell(false); NAV.couple && NAV.couple(c.id, 'wish'); }}><b>${c.partner}</b>님이 같이 할 게임으로 <b>${GAME[l[0].id].ko}</b>${l.length > 1 ? ` 외 ${nf(l.length - 1)}개` : ''}를 찜했어요</button></div>`)}
       ${!bellIds.length ? html`<div className="note" style=${{ margin: 0 }}>새 알림이 없어요.</div>` : null}</div><//>` : null}
-    ${!st.draft && justG0 ? html`<div className="recrow"><button className="recbig" onClick=${() => startPlay(justG0.gameId, false, null, justG0.table || 0)}><b>${justG0.table ? `${justG0.table}테이블 ` : ''}${GAME[justG0.gameId].ko} 한 판 더</b><span>${justG0.people.length ? '방금 한 사람 그대로 이어서 적어요' : '혼자 한 판 더 적어요'}</span></button><button className="recother" onClick=${() => startPlay(null, false, null, 0, true)}>다른 게임</button></div>` : html`<button className="recbig" onClick=${() => startPlay(null)}><b>${draftLabel ? '이어 적기' : playedToday ? '오늘 기록에 더하기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 새 판을 더해요' : todayEv ? `오늘 ${fmtTime(todayEv[1].time)} · ${todayEv[1].title || todayEv[0].name}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>`}
+    ${!st.draft && justG0 ? html`<div className="recrow"><button className="recbig" onClick=${() => startPlay(justG0.gameId, false, null, justG0.table || 0)}><b>${justG0.table ? `${justG0.table}테이블 ` : ''}${GAME[justG0.gameId].ko} 한 판 더</b><span>${justG0.people.length ? `${justG0.people.slice(0, 2).map(dn).join(', ')}${justG0.people.length > 2 ? ` 외 ${nf(justG0.people.length - 2)}명` : ''} 그대로` : '점수만 적으면 돼요'}</span></button><button className="recother" onClick=${() => startPlay(null, false, null, 0, true)}>다른 게임</button></div>` : html`<button className="recbig" onClick=${() => startPlay(null)}><b>${draftLabel ? '이어 적기' : playedToday ? '오늘 기록에 더하기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 새 판을 더해요' : todayEv ? `오늘 ${fmtTime(todayEv[1].time)} · ${todayEv[1].title || todayEv[0].name}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>`}
+    ${!st.draft && justOld ? html`<button className="againline more1" onClick=${() => startPlay(justOld.gameId, false, null, justOld.table || 0)}>아까 한 ${justOld.table ? `${justOld.table}테이블 ` : ''}${GAME[justOld.gameId].ko} · <b>한 판 더</b> ›</button>` : null}
     ${!st.draft && !playedToday && lastDay ? html`<button className="againline" onClick=${() => startPlay(null, true)}>지난번처럼: ${[...new Set(lastDay.plays.flatMap(p => p.people))].slice(0, 3).map(dn).join('·') || '혼자'} · ${[...new Set(lastDay.plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')}${new Set(lastDay.plays.map(p => p.gameId)).size > 2 ? ' 외' : ''}</button>` : null}
     <div className="search hsearch">${I.games}<input id="home-search" type="search" placeholder="게임, 사람, 모임으로 찾기" value=${hq} onInput=${e => setHq(e.target.value)} autoComplete="off"/></div>
     ${hq.trim() ? html`<div className="note" style=${{ marginTop: 0 }}>'${hq.trim()}' 들어간 기록만 보고 있어요 · <button className="linkbtn inl" onClick=${() => setHq('')}>전체 보기</button></div>` : null}
     ${mon ? html`<div className="note" style=${{ marginTop: 0 }}>${mon.slice(0, 4)}년 ${+mon.slice(5)}월부터 보고 있어요 · <button className="linkbtn inl" onClick=${() => setMon('')}>최근으로</button></div>` : null}
     ${monOpen ? html`<div className="monlist" role="dialog" aria-label="달 고르기"><div className="ml-h"><b>어느 달로 갈까요?</b><button className="linkbtn" onClick=${() => setMonOpen(false)}>닫기</button></div>
       ${monthList.map(([k, n]) => html`<button key=${k} className=${'ml-r' + (calYm === k ? ' on' : '')} onClick=${() => { setMon(''); goYm(k); setMonOpen(false); window.scrollTo(0, 0); }}><span>${k.slice(0, 4)}년 ${+k.slice(5)}월</span></button>`)}</div>` : null}
-    ${!hq.trim() && st.plays.length ? (() => {
+    ${!hq.trim() && (st.plays.length || (scribed || []).length) ? (() => {
       // 기록이 쌓인 뒤에도 일주일 안 모임 일정(가요·아직 답 안 함)은 한 줄로 남겨요
       const allEv = upcomingEvs(st, true); const evs = allEv.slice(0, 3);
       const goPlan = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'plan'); } catch (er) {} openGroup && openGroup(id); };
       const goLog = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'log'); } catch (er) {} openGroup && openGroup(id); };
-      const sc = scribed || []; const scG = [...new Set(sc.map(p => p.groupId).filter(Boolean))];
+      const sc0 = scribed || []; const scG = [...new Set(sc0.map(p => p.groupId).filter(Boolean))];
+      const sc = [...sc0, ...st.plays.filter(p => p.date === playDay() && !p.from && p.groupId && scG.includes(p.groupId))];
       return evs.length || sc.length ? html`<div className="hevs">
         ${sc.length ? html`<button className="hev" onClick=${() => scG[0] ? goLog(scG[0]) : null}><span className="hev-d">오늘</span><span className="hev-t"><b>${scG.length === 1 ? ((st.groups || []).find(g => g.id === scG[0]) || {}).name || '모임' : '모임'} 기록 ${nf(sc.length)}판 적었어요</b><span>${ME.name}님이 빠진 판은 모임 기록에만 있어요</span></span><span className="chev">›</span></button>` : null}
         ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${e.title || g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${evAns(e)}</span></button>`; })}${allEv.length > 3 && openGroups ? html`<button className="linkbtn hev-more" onClick=${openGroups}>일정 ${nf(allEv.length - 3)}개 더 보기 ›</button>` : null}</div>` : null; })() : null}
@@ -2511,7 +2521,7 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
     ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${goYm} onPick=${() => setMonOpen(true)}/>` : !hq.trim() && st.plays.length ? html`<${MonthNav} ym=${calYm} setYm=${goYm} minYm=${minYm} sticky onPick=${() => setMonOpen(true)}/>` : null}
     ${!hq.trim() && st.plays.length && !plays.some(p => p.date.slice(0, 7) === calYm) ? html`<div className="note">${+calYm.slice(5)}월에는 기록이 없어요.</div>` : null}
     <${DayList} key=${hq + view + calYm} onMonth=${null} plays=${hq.trim() ? plays : plays.filter(p => p.date.slice(0, 7) === calYm)} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}
-      empty=${(st.groups || []).length ? html`<div className="hgwel">${(st.groups || []).slice(0, 3).map(g => { const ev = (g.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')))[0];
+      empty=${(scribed || []).length ? null : (st.groups || []).length ? html`<div className="hgwel">${(st.groups || []).slice(0, 3).map(g => { const ev = (g.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')))[0];
           const mine = ev ? ((ev.going || []).includes('나') ? '가요' : (ev.maybe || []).includes('나') ? '아직 몰라요' : '아직 답 안 함') : null;
           return html`<button key=${g.id} className="hgw-card" onClick=${() => openGroup && openGroup(g.id)}><b>${g.name}</b>
             <span className="hgw-ev">${ev ? `다음 일정 ${relDay(ev.date)}${ev.time ? ' ' + fmtTime(ev.time) : ''} · ${mine}` : '아직 잡힌 일정이 없어요'}</span>
@@ -2592,7 +2602,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
       if (sc.length) { const low = ruleOf(st, plays[0].gameId) === 'low'; const b = low ? Math.min(...sc) : Math.max(...sc);
         const ids = new Set(plays.map(p => p.id)); const past = st.plays.filter(p => p.gameId === plays[0].gameId && !p.people.length && !ids.has(p.id) && (p.scores || {})['나'] != null).map(p => +p.scores['나']);
         const rec = past.length && (low ? b < Math.min(...past) : b > Math.max(...past));
-        return html`<span className="solosc">${wl ? `${wl} · ` : null}${rec ? html`<span className="rec">최고 기록</span> ` : plays.length > 1 ? '이날 최고 ' : ''}${nf(b)}점</span>`; } }
+        return html`<span className="solosc">${wl ? `${wl} · ` : null}${rec ? html`<span className="rec">최고 기록</span> ` : ''}${nf(b)}점</span>`; } }
     if (plays.length === 1) return joinBits(roundSummary({ ...plays[0], scores: {}, memo: '', minutes: '', ...(full ? {} : { exps: [] }) }, solo));
     const t = winTally(plays);
     // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 각 9승'
@@ -2862,8 +2872,8 @@ function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay
     ${synced && synced.length ? html`<div className="note" style=${{ textAlign: 'center' }}>${synced.map(n => n + '님').join(', ')} 기록장에도 들어가요</div>` : null}
     ${(() => { const today0 = date === playDay(); const lastBy = []; [...plays].reverse().forEach(p => { if (GAME[p.gameId] && !lastBy.some(x => x.gameId === p.gameId && (x.table || 0) === (p.table || 0))) lastBy.push(p); });
       const mores = today0 && NAV.more ? lastBy.slice(0, 3) : [];
-      return html`<div className="sc-links">${cpl ? html`<button className="linkbtn" onClick=${() => { close(); openCouple(cpl.id); }}>커플 화면</button>` : null}${today0 && NAV.more ? html`<button className="linkbtn" onClick=${() => { close(); NAV.more(null, 0, true); }}>다른 게임 적기</button>` : null}</div>
-      <div className="sheet-foot two">${mores.length ? html`<div className="sc-mores">${mores.map(p => html`<button key=${p.gameId + ':' + (p.table || 0)} className="btn" onClick=${() => { close(); NAV.more(p.gameId, p.table || 0); }}>${p.table && mores.some(x => x.table && x.table !== p.table) ? `${p.table}테이블 ` : ''}${GAME[p.gameId].ko} 한 판 더</button>`)}</div>` : html`<button className="btn" onClick=${close}>닫기</button>`}${share ? html`<button className="btn primary" onClick=${share}>공유하기</button>` : null}</div>`; })()}
+      return html`<div className="sc-links">${share && mores.length ? html`<button className="linkbtn" onClick=${share}>공유하기</button>` : null}${cpl ? html`<button className="linkbtn" onClick=${() => { close(); openCouple(cpl.id); }}>커플 화면</button>` : null}${today0 && NAV.more ? html`<button className="linkbtn" onClick=${() => { close(); NAV.more(null, 0, true); }}>다른 게임 적기</button>` : null}</div>
+      <div className="sheet-foot two"><button className="btn" onClick=${close}>닫기</button>${mores.length ? html`<div className="sc-mores">${mores.map(p => html`<button key=${p.gameId + ':' + (p.table || 0)} className="btn primary" onClick=${() => { close(); NAV.more(p.gameId, p.table || 0); }}>${p.table && mores.some(x => x.table && x.table !== p.table) ? `${p.table}테이블 ` : ''}${GAME[p.gameId].ko} 한 판 더</button>`)}</div>` : share ? html`<button className="btn primary" onClick=${share}>공유하기</button>` : null}</div>`; })()}
   <//>`;
 }
 /* ---------- 하루 결과 전체 ---------- */
@@ -3280,7 +3290,7 @@ function GamePicker({ onPick, favs, onCustom, np, noFocus }) {
 }
 const newRound = (prev, exps) => ({ mode: prev ? prev.mode : 'win', winners: [], ranks: {}, coop: null, draw: false, scores: {}, minutes: '', memo: '', exps: exps || [], people: null });
 const playDay = () => today();
-function RoundRow({ base = 0, i, r, gameId, gamePeople, options, xopts, onChange, onRemove, open, setOpen, rule, setRule, newbies, folded, unfold, last, prev, best, meOut }) {
+function RoundRow({ single, base = 0, i, r, gameId, gamePeople, options, xopts, onChange, onRemove, open, setOpen, rule, setRule, newbies, folded, unfold, last, prev, best, meOut }) {
   const set = patch => onChange({ ...r, ...patch });
   const pick = patch => set({ ...patch, autoPick: false });
   // 점수를 적으면 규칙대로 승자·순위를 미리 골라둠. 직접 누르면 그게 우선
@@ -3297,6 +3307,7 @@ function RoundRow({ base = 0, i, r, gameId, gamePeople, options, xopts, onChange
   const [xall, setXall] = useState(false);
   const [xq, setXq] = useState('');
   const [showPad, setPad] = useState(false);
+  const [showPpl, setShowPpl] = useState(false);
   const shuffle = a => { const b = [...a]; for (let k = b.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [b[k], b[j]] = [b[j], b[k]]; } return b; };
   const pickFirst = () => set({ first: shuffle(members.filter(n => n !== r.first))[0] || members[0] });
   const splitTeams = () => { const b = shuffle(members); const h = Math.ceil(b.length / 2); set({ teams: [b.slice(0, h), b.slice(h)] }); };
@@ -3325,6 +3336,8 @@ function RoundRow({ base = 0, i, r, gameId, gamePeople, options, xopts, onChange
     <div className="rrow"><span className="rn">${nf(base + i + 1)}번째 판${r.people ? html` <span className="diff">· 이 판만 ${r.people.length ? r.people.join(', ') : '혼자'}</span>` : null}</span>
       ${solo ? html`<label className="soloscore"><span>${ME.name} 점수</span><input className="input num" inputMode="numeric" value=${(r.scores || {})['나'] ?? ''} onInput=${e => { const v = e.target.value.replace(/[^\d\-]/g, ''); const sc = { ...(r.scores || {}) }; if (v === '') delete sc['나']; else sc['나'] = v; set({ scores: sc }); }} aria-label=${ME.name + ' 점수'}/>${best != null ? html`<em>${(r.scores || {})['나'] !== undefined && (rule === 'low' ? +r.scores['나'] < best : +r.scores['나'] > best) ? '최고 기록!' : `최고 ${best}점`}</em>` : null}</label>` : html`<div className="modes" role="group" aria-label="결과 적는 방식">
         ${[['win', TEAM.has(gameId) ? '이긴 팀' : '승자'], ['rank', '순위'], ['coop', '협력']].map(([k, l]) => html`<button key=${k} aria-pressed=${mode === k} onClick=${() => set({ mode: k })}>${l}</button>`)}</div>`}</div>
+    ${options.length && (!single || r.people) ? html`<button className="rppl" aria-expanded=${showPpl} onClick=${() => setShowPpl(!showPpl)}>${rp.length + (meOut ? 0 : 1) <= 1 ? '혼자' : `사람 ${nf(rp.length + (meOut ? 0 : 1))}명`}${r.people ? ' · 이 판만' : ''} <span aria-hidden="true">${showPpl ? '⌃' : '›'}</span></button>
+      ${showPpl ? html`<div className="dates rppl-d">${options.map(n => html`<button key=${n} className="pill sm" aria-pressed=${rp.includes(n)} onClick=${() => toggleRp(n)}>${n}</button>`)}</div>` : null}` : null}
     ${!solo ? html`<div className="whoq">${mode === 'rank' ? '몇 등 했어요?' : mode === 'coop' ? '게임 결과는요?' : '누가 이겼어요?'}${prev && decided(prev) && !decided(r) ? html`<button className="linkbtn sameprev" onClick=${() => pick({ mode: prev.mode, winners: [...(prev.winners || [])], ranks: { ...(prev.ranks || {}) }, coop: prev.coop, draw: !!prev.draw })}>앞 판처럼: ${joinBits(roundSummary({ ...prev, exps: [], scores: {}, memo: '' }, solo))}</button>` : null}</div>` : null}
     ${mode === 'win' ? html`<div className="wpills">${members.map(n => html`<button key=${n} className="wp" aria-pressed=${r.winners.includes(n)} aria-label=${`${nf(i + 1)}판 ${dn(n)} 승`}
         onClick=${() => pick({ draw: false, winners: r.winners.includes(n) ? r.winners.filter(x => x !== n) : [...r.winners, n] })}>${r.winners.includes(n) ? html`<span className="crownic" aria-hidden="true">♛</span>` : null}${dn(n)}</button>`)}
@@ -3373,8 +3386,6 @@ function RoundRow({ base = 0, i, r, gameId, gamePeople, options, xopts, onChange
       <${MediaEdit} items=${r.media} onChange=${m => set({ media: m })} max=${4}/>
       <div className="rl">메모</div>
       <input className="input" placeholder="이 판에 있었던 일" value=${r.memo} maxLength="120" onInput=${e => set({ memo: e.target.value })}/>
-      ${options.length ? html`<div className="rl">이 판에 낀 사람<span className="hint">이 판만 다를 때</span></div>
-      <div className="dates">${options.map(n => html`<button key=${n} className="pill sm" aria-pressed=${rp.includes(n)} onClick=${() => toggleRp(n)}>${n}</button>`)}</div>` : null}
       <button className="linkbtn danger" onClick=${onRemove}>이 판 지우기</button>
     </div>` : null}
   </div>`;
@@ -3508,7 +3519,7 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
   const [meOff, setMeOff] = useState(editing ? editPlays.length > 0 && editPlays.every(p => p.scribe) : dr ? !!dr.meOff : pre ? !pre.people.includes('나') : seat0 ? !!seat0.meOff : false);
   const [tables, setTables] = useState(dr ? dr.tables || null : seat0 ? seat0.tables || null : null); // { 이름: 테이블 번호 }, '나'도 들어가요
   const [tN, setTN] = useState(dr && dr.tN || seat0 && seat0.tN || 2);
-  const [curT, setCurT] = useState(dr && dr.curT || moreT || lastG && lastG.table || 1);
+  const [curT, setCurT] = useState(dr && dr.curT || moreT || lastG && lastG.table || justNow && justNow.table || 1);
   const [tEdit, setTEdit] = useState(false);
   const tPeople = t => people.filter(n => tables && tables[n] === t);
   const meOutFor = t => tables && t ? tables['나'] !== t : meOff;
@@ -3563,6 +3574,7 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
   // 결과를 적은 판은 끝난 판: 사람을 더하거나 빼도 그 판은 그대로 두고, 앞 판까지 바꿀지는 따로 물어요
   const hasRes = r => !!((r.winners || []).length || Object.keys(r.ranks || {}).length || Object.values(r.scores || {}).some(v => v !== '' && v != null) || r.coop != null || r.draw);
   const noRes = items.length > 0 && items.some(it => it.rounds.some(r => !hasRes(r)));
+  const soloNo = noRes && items.filter(it => it.rounds.some(r => !hasRes(r))).every(it => !it.people.length && !it.meOut);
   const [backAsk, setBackAsk] = useState(null); // { n, out }
   const dropFrom = (r, n) => { const rk = { ...(r.ranks || {}) }; delete rk[n]; const sc = { ...(r.scores || {}) }; delete sc[n]; return { ...r, winners: (r.winners || []).filter(x => x !== n), ranks: rk, scores: sc }; };
   const togglePerson = (n, all) => {
@@ -3665,8 +3677,8 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
         ${people.length >= 4 ? html`<button className="pill sm" aria-pressed=${tOn} onClick=${() => tOn ? (setTables(null), setTEdit(false), setItems(its => its.map(it => ({ ...it, t: 0, meOut: meOff })))) : startTables()}>${tOn ? '✓ 테이블 나눔' : '테이블 나누기'}</button>` : null}
         ${tOn ? html`<button className="linkbtn" onClick=${() => setTEdit(!tEdit)}>${tEdit ? '다 나눴어요' : '자리 바꾸기'}</button>` : null}</div>` : null}
       ${tOn && tEdit ? html`<div className="tblbox"><div className="hint">테이블을 고르고 그 자리에 앉은 사람을 눌러요. 한 번 더 누르면 빠져요.</div>
-        <div className="seg tblseg" role="group" aria-label="테이블 고르기">${Array.from({ length: tN }, (_, i) => i + 1).map(t => html`<button key=${t} aria-pressed=${curT === t} onClick=${() => setCurT(t)}>${t}테이블 <span className="num">${nf(['나', ...people].filter(n => tables[n] === t).length)}</span></button>`)}${tN < 8 ? html`<button onClick=${() => { setTN(tN + 1); setCurT(tN + 1); }} aria-label="테이블 더하기">+</button>` : null}</div>
-        <div className="dates">${['나', ...people].map(n => html`<button key=${n} className=${'pill sm' + (tables[n] && tables[n] !== curT ? ' other' : '')} aria-pressed=${tables[n] === curT} onClick=${() => seat(n)}>${n === '나' ? ME.name : n}${tables[n] ? html`<span className="tno num">${tables[n]}</span>` : null}</button>`)}</div>
+        <div className="seg tblseg" role="group" aria-label="테이블 고르기">${Array.from({ length: tN }, (_, i) => i + 1).map(t => html`<button key=${t} aria-pressed=${curT === t} onClick=${() => setCurT(t)}>${t}테이블 <span className="num">${nf(['나', ...people].filter(n => tables[n] === t).length)}</span></button>`)}${tN < 8 ? html`<button className="tadd" aria-label="테이블 더하기" onClick=${() => { setTN(tN + 1); setCurT(tN + 1); }} aria-label="테이블 더하기">+</button>` : null}</div>
+        <div className="dates">${['나', ...people].filter(n => !(n === '나' && tables['나'] === 0)).map(n => html`<button key=${n} className=${'pill sm' + (tables[n] && tables[n] !== curT ? ' other' : '')} aria-pressed=${tables[n] === curT} onClick=${() => seat(n)}>${n === '나' ? ME.name : n}${tables[n] ? html`<span className="tno num">${tables[n]}</span>` : null}</button>`)}</div>
         ${['나', ...people].some(n => !tables[n] && !(n === '나' && tables['나'] === 0)) ? html`<div className="hint">아직 안 앉은 사람: ${['나', ...people].filter(n => !tables[n] && !(n === '나' && tables['나'] === 0)).map(n => n === '나' ? ME.name : n).join(', ')}</div>` : null}</div>` : null}
       ${people.length && !duo ? (() => { const ps = new Set(people); const opts = (st.groups || []).map(g => { let k = 0; ps.forEach(n => memSet(g).has(n) && k++); return [g, k]; }).filter(x => x[0].id !== grpId).sort((a, b) => b[1] - a[1] || (b[0].at || '').localeCompare(a[0].at || '')).slice(0, 30).map(x => x[0]);
         const cur = (st.groups || []).find(g => g.id === grpId);
@@ -3706,7 +3718,7 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
           ${opts.length ? html`<details className="gpplx"><summary>함께한 사람 ${ppl.length ? `${nf(pn)}명` : '없음(혼자)'} · <span className="chg">바꾸기</span></summary><div className="gppl"><span className="rl">이 게임 한 사람</span><button className="pill sm" aria-pressed=${!it.meOut} onClick=${() => toggleGamePerson(K, '나')}>${ME.name}</button>${opts.map(n => html`<button key=${n} className="pill sm" aria-pressed=${ppl.includes(n)} onClick=${() => toggleGamePerson(K, n)}>${n}</button>`)}</div></details>` : null}
           ${g.pmax && Math.max(...it.rounds.map(r => (r.people || ppl).length + (it.meOut ? 0 : 1))) > g.pmax ? html`<div className="hint warnline">${jo(g.ko, '은', '는')} ${nf(g.pmax)}명까지예요. ${tOn ? '자리를 다시 볼까요?' : html`<button className="linkbtn inl" onClick=${startTables}>테이블 나누기</button>`}</div>` : null}
           <div className="rounds">${it.rounds.map((r, i) => { const key = K + ':' + i;
-            return html`<${RoundRow} key=${i} base=${editing ? 0 : st.plays.filter(p => p.date === date && p.gameId === it.gameId && (p.table || 0) === (it.t || 0)).length} i=${i} r=${r} meOut=${it.meOut} gameId=${it.gameId} gamePeople=${ppl} options=${opts} xopts=${xoptsFor(it.gameId)} open=${openR === key} setOpen=${() => setOpenR(openR === key ? null : key)} best=${bestSolo(it.gameId)} last=${i === it.rounds.length - 1} prev=${i ? it.rounds[i - 1] : null} folded=${i < it.rounds.length - 1 && !unf[key]} unfold=${() => setUnf(u => ({ ...u, [key]: true }))}
+            return html`<${RoundRow} key=${i} single=${it.rounds.length === 1} base=${editing ? 0 : st.plays.filter(p => p.date === date && p.gameId === it.gameId && (p.table || 0) === (it.t || 0)).length} i=${i} r=${r} meOut=${it.meOut} gameId=${it.gameId} gamePeople=${ppl} options=${opts} xopts=${xoptsFor(it.gameId)} open=${openR === key} setOpen=${() => setOpenR(openR === key ? null : key)} best=${bestSolo(it.gameId)} last=${i === it.rounds.length - 1} prev=${i ? it.rounds[i - 1] : null} folded=${i < it.rounds.length - 1 && !unf[key]} unfold=${() => setUnf(u => ({ ...u, [key]: true }))}
               newbies=${others.filter(p => !p.from).length >= 3 ? ppl.filter(n => others.filter(p => p.people.includes(n)).length >= 3 && !others.some(p => p.gameId === it.gameId && p.people.includes(n))) : []} rule=${ruleOf(st, it.gameId)} setRule=${k => setRule(it.gameId, k)} onRemove=${() => removeRound(K, i)} onChange=${nr => upd(K, x => ({ ...x, rounds: x.rounds.map((y, j) => j === i ? nr : y) }))}/>`; })}</div>
         </div>`; })}</div>` : null}
     </div>
@@ -3721,8 +3733,8 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
     ${st.hasSample && !editing ? html`<div className="note">지금은 예시 기록장이에요. 여기 적은 판은 '내 기록장 시작'을 누르면 내 기록장으로 옮겨 가요. 예시 친구에게는 알림이 가지 않아요.</div>` : null}
     ${synced.length && !st.hasSample ? html`<div className="note">${synced.map(n => n + '님').join(', ')}도 앱을 써요. ${editing ? '고친 내용은 같이 한 사람 기록에도 반영되고 알림이 가요.' : '저장하면 알림이 가고 그 친구 기록에도 바로 들어가요. 원하지 않으면 친구가 직접 뺄 수 있어요.'}</div>` : null}
     ${items.length && !editing ? html`<div className="note">중간에 닫아도 적던 내용은 남아 있어요. 다음 판 끝나고 이어서 적으면 돼요. <button className="linkbtn inl muted discard" onClick=${() => setAsk('draft')}>적던 것 버리기</button></div>` : null}
-    ${ask ? html`<div className="cfm-bg" onClick=${() => setAsk(null)}></div><div className="confirm pop" role="alertdialog"><span>${ask === 'nores' ? '결과를 안 적은 판이 있어요. 이대로 더할까요?' : ask === 'day' ? '이 날 내가 쓴 기록을 모두 지울까요? 같이 한 친구 기록에서도 빠져요. 되돌릴 수 없어요.' : '적던 기록을 버릴까요?'}</span>
-        <div className="r">${ask === 'nores' ? html`<button className="btn" onClick=${() => { setAsk(null); submit(true); }}>결과 없이 더하기</button><button className="btn primary" onClick=${() => { setAsk(null); const el = document.querySelector('.sheet .items .item:last-child .rounds > :last-child'); if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }}>결과 적기</button>` : html`<button className="btn danger" onClick=${() => ask === 'day' ? onDeleteDay(editDate) : discardDraft()}>${ask === 'day' ? '지우기' : '버리기'}</button><button className="btn" onClick=${() => setAsk(null)}>취소</button>`}</div></div>` : null}
+    ${ask ? html`<div className="cfm-bg" onClick=${() => setAsk(null)}></div><div className=${'confirm pop' + (ask === 'nores' ? ' low' : '')} role="alertdialog"><span>${ask === 'nores' ? (soloNo ? '점수를 안 적은 판이 있어요. 이대로 더할까요?' : '이긴 사람을 안 고른 판이 있어요. 이대로 더할까요?') : ask === 'day' ? '이 날 내가 쓴 기록을 모두 지울까요? 같이 한 친구 기록에서도 빠져요. 되돌릴 수 없어요.' : '적던 기록을 버릴까요?'}</span>
+        <div className="r">${ask === 'nores' ? html`<button className="btn" onClick=${() => { setAsk(null); submit(true); }}>${soloNo ? '점수 없이' : '결과 없이'} 더하기</button><button className="btn primary" onClick=${() => { setAsk(null); const el = [...document.querySelectorAll('.sheet .items .round')].find(x => !x.classList.contains('folded') && !x.querySelector('[aria-pressed="true"].wp') && !(x.querySelector('.soloscore input') || {}).value) || document.querySelector('.sheet .items .item:last-child .rounds > :last-child'); if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); const f = el.querySelector('.soloscore input') || el.querySelector('.wp'); setTimeout(() => f && f.focus(), 350); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); } }}>${soloNo ? '점수 적기' : '이긴 사람 고르기'}</button>` : html`<button className="btn danger" onClick=${() => ask === 'day' ? onDeleteDay(editDate) : discardDraft()}>${ask === 'day' ? '지우기' : '버리기'}</button><button className="btn" onClick=${() => setAsk(null)}>취소</button>`}</div></div>` : null}
     <div className="sheet-foot stick"><button className="btn primary" onClick=${() => submit()}>${editing ? '고친 내용 저장' : savedDay.length ? '더하기' : total ? `${nf(total)}판 저장하기` : '저장하기'}</button>
 </div>
   <//>`;
@@ -4328,6 +4340,7 @@ function ShareDaySheet({ st, date, close, say }) {
   const photo = ((st.photos || {})[date] || []).find(m => typeof m === 'string');
   const text = `${d.getMonth() + 1}월 ${d.getDate()}일 보드게임\n` + games.map(x => `${GAME[x.id].ko}${Object.keys(x.w).length ? ' (' + wtxt(x) + ')' : ''}`).join('\n') + (head.champ ? (champ ? `\n${champText(champ)}` : '') : `\n${head.big}${head.sub ? ' · ' + head.sub : ''}`);
   function wtxt(x) { const e = Object.entries(x.w); const cw = x.w.__cw || 0, cl = x.w.__cl || 0;
+    if (x.sc && x.sc.length && head.solo && games.length === 1) return ''; // 머리에 이미 점수가 있어요
     if (x.sc && x.sc.length) { const low = ruleOf(st, x.id) === 'low'; return `${x.sc.length > 1 ? '최고 ' : ''}${nf(low ? Math.min(...x.sc) : Math.max(...x.sc))}점`; }
     if (cw || cl) return cw + cl === 1 ? (cw ? '우리가 이겼어요' : '아깝게 졌어요') : `우리가 ${nf(cw)}승 ${nf(cl)}패`;
     return e.sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${k === '나' ? st.me : k} ${nf(v)}승`).join(', ') + (e.length > 3 ? ' 외' : ''); }
@@ -5619,8 +5632,13 @@ function PeopleList({ st, openPerson }) {
 /* ---------- 처음 열 때 ---------- */
 // 예시를 보는 중 아래에 뜨는 띠. 닉네임을 안 적었으면 여기서 한 칸만 물어요
 function SampleBar({ st, start }) {
-  const [ask, setAsk] = useState(false); const [n, setN] = useState('');
-  const go = () => { if (st.pendingNick) return start(st.pendingNick); if (!ask) return setAsk(true); if (n.trim()) start(n.trim()); };
+  const [ask, setAsk] = useState(false); const [n, setN] = useState(''); const [who, setWho] = useState(null);
+  // 예시를 보며 적은 판에 예시 사람이 있으면, 옮길 때 그 사람을 남길지 한 번 물어요
+  const seedNames = useMemo(() => { if (!st.sampleAt) return []; const seed = new Set(st.plays.filter(p => (p.at || 0) < st.sampleAt || p.sample).flatMap(p => p.people));
+    return [...new Set(st.plays.filter(p => !p.from && (p.at || 0) >= st.sampleAt).flatMap(p => p.people).filter(x => seed.has(x)))]; }, [st.plays]);
+  const nick = () => st.pendingNick || n.trim();
+  const go = () => { if (!nick()) { if (!ask) return setAsk(true); return; } if (seedNames.length && !who) return setWho('ask'); start(nick(), false); };
+  if (who === 'ask') return html`<div className="samplebar ask2" role="dialog"><span>예시 사람 ${seedNames.slice(0, 2).join('·')}${seedNames.length > 2 ? ` 외 ${nf(seedNames.length - 2)}명` : ''}도 옮길까요?</span><button onClick=${() => start(nick(), true)}>빼고 옮기기</button><button onClick=${() => start(nick(), false)}>이름만 남기기</button></div>`;
   return html`<form className=${'samplebar' + (ask ? ' ask' : '')} role="note" onSubmit=${e => { e.preventDefault(); go(); }}>${ask ? html`<input autoFocus maxLength="12" placeholder="내 닉네임" aria-label="내 닉네임" value=${n} onInput=${e => setN(e.target.value)} enterKeyHint="go"/>` : html`<span>예시 기록장을 보고 있어요</span>`}<button type="submit" disabled=${ask && !n.trim()}>${ask ? '시작' : '내 기록장 시작 ›'}</button></form>`;
 }
 function Welcome({ start }) {
@@ -5719,7 +5737,7 @@ function App() {
       return { ...s, groups, plays: [...kept, ...plays], people: [...new Set([...s.people, ...plays.flatMap(p => p.people)])], friends, linkedAt: la, photos: ph, ...(seating !== undefined ? { seating } : {}), draft: editDate ? s.draft : null };
     });
     const allScribe = plays.length && plays.every(p => p.scribe);
-    if (!editDate && (!firstToday || allScribe)) { setSheet(null); const ids = new Set(plays.map(p => p.id)); setToast({ m: allScribe ? `모임 기록 ${nf(plays.length)}판 저장했어요` : `${[...new Set(plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')} 저장했어요`, more: date !== playDay() || !GAME[plays[plays.length - 1].gameId] ? null : () => { setToast(null); startPlay(plays[plays.length - 1].gameId, false, null, plays[plays.length - 1].table || 0); }, undo: () => { update(s => ({ ...s, plays: s.plays.filter(p => !ids.has(p.id)) })); setToast(null); say('되돌렸어요'); } }); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 4000); return; }
+    if (!editDate && (!firstToday || allScribe)) { setSheet(null); const ids = new Set(plays.map(p => p.id)); setToast({ m: allScribe ? `모임 기록 ${nf(plays.length)}판 저장했어요` : (() => { const sp = plays.find(p => !p.people.length && (p.scores || {})['나'] != null); if (sp) { const low = ruleOf(st, sp.gameId) === 'low'; const v = +sp.scores['나']; const past = st.plays.filter(x => x.gameId === sp.gameId && !x.people.length && (x.scores || {})['나'] != null).map(x => +x.scores['나']); if (past.length && (low ? v < Math.min(...past) : v > Math.max(...past))) return `최고 기록이에요 · ${GAME[sp.gameId].ko} ${nf(v)}점`; } return `${[...new Set(plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 2).join(', ')} 저장했어요`; })(), more: date !== playDay() || !GAME[plays[plays.length - 1].gameId] ? null : () => { setToast(null); startPlay(plays[plays.length - 1].gameId, false, null, plays[plays.length - 1].table || 0); }, undo: () => { update(s => ({ ...s, plays: s.plays.filter(p => !ids.has(p.id)) })); setToast(null); say('되돌렸어요'); } }); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 4000); return; }
     setSheet(editDate ? null : { kind: 'saved', date, plays, synced });
     let msg;
     if (editDate) msg = '고쳤어요';
@@ -5887,10 +5905,10 @@ function App() {
   if (st.firstRun) return html`<${Welcome} start=${(kind, nick) => { if (kind === 'sample') { const s0 = seedState(); setSt(prepState({ ...s0, pendingNick: nick || '', sampleAt: Date.now() })); } else setSt(prepState({ ...empty(), me: nick })); }}/>`;
   return html`<${React.Fragment}>
     ${screen}
-    ${st.hasSample && !sheet ? html`<${SampleBar} st=${st} start=${nick => { // 예시 사람(지민·현우…)은 진짜 친구가 아니라서 빼고 옮겨요. 직접 적은 이름은 남아요
+    ${st.hasSample && !sheet ? html`<${SampleBar} st=${st} start=${(nick, drop) => { // 예시 사람(지민·현우…)은 진짜 친구가 아니라서 빼고 옮겨요. 직접 적은 이름은 남아요
       const seedP = new Set([...st.plays.filter(p => (p.at || 0) < (st.sampleAt || 0) || p.sample).flatMap(p => p.people), ...Object.keys(st.friends || {})]);
       // 예시 사람도 '이름만 적은 사람'으로 남겨요. 친구·라이벌은 옮기지 않아요
-      const keep = n => true; const ko = o => Object.fromEntries(Object.entries(o || {}).filter(([k]) => keep(k)));
+      const keep = n => !drop || n === '나' || !seedP.has(n); const ko = o => Object.fromEntries(Object.entries(o || {}).filter(([k]) => keep(k)));
       const mine = st.sampleAt ? st.plays.filter(p => !p.from && (p.at || 0) >= st.sampleAt).map(p => { const people = p.people.filter(keep); return { ...p, people, winners: (p.winners || []).filter(keep), ranks: ko(p.ranks), scores: ko(p.scores), groupId: null, sample: undefined, ...(people.length ? {} : { mode: 'coop' }) }; }) : [];
       setStack({}); setTab('home'); const base = { ...empty(), me: nick }; setSt(prepState(mine.length ? { ...base, plays: mine, people: [...new Set(mine.flatMap(p => p.people))], customGames: st.customGames || [] } : base));
       if (mine.length) say(`예시를 보며 적은 ${nf(mine.length)}판을 내 기록장으로 옮겼어요`); }}/>` : null}
