@@ -58,7 +58,8 @@
 .iw-ask { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: var(--sunk); color: var(--ink); }
 .ia-h { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
 .ia-r { display: flex; gap: 8px; font-size: 13.5px; line-height: 1.5; } .ia-r span { flex: none; width: 76px; color: var(--ink-3); } .ia-r b { font-weight: 600; min-width: 0; }
-.ia-b { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.ia-b { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; } .ia-col { flex-direction: column; align-items: stretch; } .ia-col .btn { justify-content: flex-start; }
+.ia-l { display: block; font-size: 13px; padding: 2px 0 0; min-height: 0; } .ia-rest { align-items: center; } .ia-rest b { flex: 1; }
 
 .hev-more { display: block; padding: 8px 0; font-size: 13px; }
 </style></head><body>
@@ -2503,7 +2504,7 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
       const sc = scribed || []; const scG = [...new Set(sc.map(p => p.groupId).filter(Boolean))];
       return evs.length || sc.length ? html`<div className="hevs">
         ${sc.length ? html`<button className="hev" onClick=${() => scG[0] ? goLog(scG[0]) : null}><span className="hev-d">오늘</span><span className="hev-t"><b>${scG.length === 1 ? ((st.groups || []).find(g => g.id === scG[0]) || {}).name || '모임' : '모임'} 기록 ${nf(sc.length)}판 적었어요</b><span>${ME.name}님이 빠진 판은 모임 기록에만 있어요</span></span><span className="chev">›</span></button>` : null}
-        ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title, e.place].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${go ? '가요' : (e.maybe || []).includes('나') ? '아직 몰라요' : '답 안 함'}</span></button>`; })}${allEv.length > 3 && openGroups ? html`<button className="linkbtn hev-more" onClick=${openGroups}>일정 ${nf(allEv.length - 3)}개 더 보기 ›</button>` : null}</div>` : null; })() : null}
+        ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${e.title || g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${evAns(e)}</span></button>`; })}${allEv.length > 3 && openGroups ? html`<button className="linkbtn hev-more" onClick=${openGroups}>일정 ${nf(allEv.length - 3)}개 더 보기 ›</button>` : null}</div>` : null; })() : null}
     <div ...${swipe}>
     ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${goYm} onPick=${() => setMonOpen(true)}/>` : !hq.trim() && st.plays.length ? html`<${MonthNav} ym=${calYm} setYm=${goYm} minYm=${minYm} sticky onPick=${() => setMonOpen(true)}/>` : null}
     ${!hq.trim() && st.plays.length && !plays.some(p => p.date.slice(0, 7) === calYm) ? html`<div className="note">${+calYm.slice(5)}월에는 기록이 없어요.</div>` : null}
@@ -2646,6 +2647,8 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
 // - 같은 사람·같은 승자이고 내가 적은 시각과 1시간 안이면(시각을 모르면 같은 날이면) 같은 판으로 보고 하나로 합쳐요. 카드에 합쳤다고 써요
 // - 같은 사람인데 승자가 다르고 1시간 안이면, 그 한 판만 "같은 판이에요?"로 물어요(내 판과 나란히 보여 줘요)
 // - 나머지는 그냥 넣어요
+// 일정에 내가 한 답: 홈·모임 탭이 같은 말을 써요
+const evAns = e => (e.going || []).includes('나') ? '가요' : (e.no || []).includes('나') ? '못 가요' : (e.maybe || []).includes('나') ? '아직 몰라요' : '답 안 함';
 function applyInboxItem(s, it) {
   const t = Date.now(); let k = 0; let skipped = 0; let ask = 0;
   const ppl = [it.from, ...it.people];
@@ -2653,46 +2656,55 @@ function applyInboxItem(s, it) {
   const key = a => [...new Set(a.map(me))].sort().join('|');
   const used = new Set();
   const near = p => !it.at || !p.at ? null : Math.abs(it.at - p.at) < H;
-  const merged = [];
+  const merged = []; const pairs = {};
+  const asked = new Set(s.plays.filter(p => p.askVs).map(p => p.askVs));
   const plays = it.games.flatMap(([id, c, w]) => {
-    const pool = s.plays.filter(p => p.date === it.date && p.gameId === id && !p.from && !p.scribe && key(p.people) === key(ppl.filter(n => me(n) !== '나')));
+    // 이미 짝지은 내 판(pairOf)·묻고 있는 내 판은 후보에서 빼요. 안 그러면 내 한 판이 다음 올림 때마다 또 합쳐져요
+    const pool = s.plays.filter(p => p.date === it.date && p.gameId === id && !p.from && !p.scribe && !p.pairOf && !asked.has(p.id) && key(p.people) === key(ppl.filter(n => me(n) !== '나')));
     const gid = (bestGroup(s, ppl) || {}).id || null;
     return Array.from({ length: c }, (_, i) => Array.isArray(w[0]) ? (w[i] || []) : i === 0 ? w : []).flatMap(wi => {
+      const np = { id: uid(), gameId: id, date: it.date, people: ppl, groupId: gid, mode: 'win', winners: wi.map(me), memo: '', from: it.from, inboxId: it.id, at: t + k++ };
       const same = pool.find(p => !used.has(p.id) && key(p.winners || []) === key(wi) && near(p) !== false);
-      if (same) { used.add(same.id); skipped++; merged.push([id, wi]); return []; }
+      if (same) { used.add(same.id); skipped++; pairs[same.id] = it.id; merged.push({ play: np, mine: same.id }); return []; }
       const close = pool.find(p => !used.has(p.id) && near(p) === true);
       if (close) { used.add(close.id); ask++; }
-      return [{ id: uid(), gameId: id, date: it.date, people: ppl, groupId: gid, mode: 'win', winners: wi.map(me), memo: '', from: it.from, inboxId: it.id, at: t + k++, ...(close ? { askVs: close.id } : {}) }];
+      return [{ ...np, ...(close ? { askVs: close.id } : {}) }];
     });
   });
-  return { ...s, plays: [...s.plays, ...plays], people: [...new Set([...s.people, ...ppl])], inbox: [...(s.inbox || []).filter(x => x.id !== it.id), { ...it, applied: true, added: plays.length, skipped, ask, merged }] };
+  return { ...s, plays: [...s.plays.map(p => pairs[p.id] ? { ...p, pairOf: pairs[p.id] } : p), ...plays], people: [...new Set([...s.people, ...ppl])], inbox: [...(s.inbox || []).filter(x => x.id !== it.id), { ...it, applied: true, added: plays.length, skipped, ask, merged }] };
 }
 // 받은 기록 알림: 같은 날·같은 사람이 판마다 올려도 카드 하나로 묶어요. 최근 것이 위
 const inboxGroups = items => { const o = {}; items.forEach(it => { const k = it.from + '|' + it.date; (o[k] = o[k] || []).push(it); });
   return Object.entries(o).map(([k, its]) => ({ k, from: its[0].from, date: its[0].date, its, at: Math.max(...its.map(x => x.at || 0)) })).sort((a, b) => b.date.localeCompare(a.date) || b.at - a.at); };
 function Inbox({ st, dismiss, removeFromMine, onGo }) {
   const all = inboxGroups((st.inbox || []).filter(it => it.applied && !it.seen && !(st.blocked || {})[it.from]));
-  const [more, setMore] = useState(false);
+  const [more, setMore] = useState(false); const [keep, setKeep] = useState(null); const [rest, setRest] = useState(null);
   if (!all.length) return null;
+  const wl = q => (q.winners || []).length ? `${q.winners.map(dn).join('·')} 승` : '결과 없음';
+  const hm = t => new Date(t).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: '2-digit' });
   const list = more ? all : all.slice(0, 1);
   const done = g => g.its.forEach(dismiss);
   return html`${list.map(g => { const games = {}; g.its.forEach(it => it.games.forEach(([id, c, w]) => { const per = Array.from({ length: c }, (_, i) => Array.isArray(w[0]) ? (w[i] || []) : i === 0 ? w : []); (games[id] = games[id] || []).push(...per); }));
-      const n = Object.values(games).reduce((a, x) => a + x.length, 0); const added = g.its.reduce((a, x) => a + (x.added || 0), 0); 
+      const n = Object.values(games).reduce((a, x) => a + x.length, 0); const added = st.plays.filter(p => p.from === g.from && g.its.some(x => x.id === p.inboxId)).length;
+      const asks = st.plays.filter(p => p.askVs && g.its.some(x => x.id === p.inboxId));
+      const mg = g.its.flatMap(x => Array.isArray(x.merged) ? x.merged.map((m, i) => ({ ...m, iid: x.id, i })) : []); const sk = mg.length;
       const ppl = [...new Set(g.its.flatMap(it => [it.from, ...it.people]))];
       return html`<div key=${g.k} className="inbox">
       <div className="ih"><${Avatar} name=${g.from}/><span><b>${g.from}</b>님이 ${relDay(g.date)} ${ME.name}님과 같이 한 ${n > 1 ? `${nf(n)}판을` : '기록을'} 남겼어요</span></div>
       <div className="ig">${Object.entries(games).map(([id, per]) => { const cnt = {}; per.forEach(r => r.forEach(x => cnt[x] = (cnt[x] || 0) + 1));
         const ent = Object.entries(cnt).sort((a, b) => b[1] - a[1]); const bits = [...ent.slice(0, 2).map(([x, k]) => `${dn(x)} ${nf(k)}승`), ...(ent.length > 2 ? [`외 ${nf(ent.length - 2)}명`] : [])];
         return GAME[id] ? html`<span key=${id}>${GAME[id].ko} ${nf(per.length)}판${bits.length ? html` · <span className="crown">${bits.join(' · ')}</span>` : ''}</span>` : null; })}</div>
-      <div className="iw">함께: ${ppl.join(', ')} · ${added ? `${ME.name} 기록장에도 들어왔어요` : '같은 판이 이미 있어서 하나로 합쳤어요'}</div>
-      ${(() => { const sk = g.its.reduce((a, x) => a + (x.skipped || 0), 0); return sk ? html`<div className="iw">${nf(sk)}판은 ${ME.name}님이 이미 적은 판과 같아서 하나로 합쳤어요.</div>` : null; })()}
-      ${g.its.length > 1 ? (() => { const last = [...g.its].sort((a, b) => (b.at || 0) - (a.at || 0))[0]; return html`<div className="iw">방금 들어온 판: ${last.games.map(([id, c]) => GAME[id] ? `${GAME[id].ko} ${nf(c)}판` : '').filter(Boolean).join(', ')}</div>`; })() : null}
-      ${st.plays.filter(p => p.askVs && g.its.some(x => x.id === p.inboxId)).map(p => { const mine = st.plays.find(x => x.id === p.askVs); const wl = q => (q.winners || []).length ? `${q.winners.map(dn).join('·')} 승` : '결과 없음';
-        return html`<div key=${p.id} className="iw-ask"><div className="ia-h">같은 판이에요?</div>
-          <div className="ia-r"><span>${g.from}님 기록</span><b>${GAME[p.gameId] ? GAME[p.gameId].ko : ''} · ${wl(p)}</b></div>
-          ${mine ? html`<div className="ia-r"><span>${ME.name}님 기록</span><b>${GAME[mine.gameId] ? GAME[mine.gameId].ko : ''} · ${wl(mine)}</b></div>` : null}
-          <div className="ia-b"><button className="btn sm" onClick=${() => NAV.inboxAsk && NAV.inboxAsk(p.id, false)}>다른 판이에요</button><button className="btn sm" onClick=${() => NAV.inboxAsk && NAV.inboxAsk(p.id, true)}>같은 판 · ${g.from}님 것 빼기</button></div></div>`; })}
-      <div className="ib"><button className="btn" onClick=${() => done(g)}>확인</button><button className="linkbtn muted" onClick=${() => { done(g); onGo && onGo(); NAV.day && NAV.day(g.date); }}>기록 보기</button>${NAV.fix ? html`<button className="linkbtn muted" onClick=${() => { onGo && onGo(); NAV.fix({ from: g.from, date: g.date }); }}>틀렸어요</button>` : null}</div>
+      <div className="iw">함께: ${ppl.join(', ')}${added ? ` · ${ME.name} 기록장에도 들어왔어요` : ''}</div>
+      ${sk ? html`<div className="iw">${nf(sk)}판은 ${ME.name}님이 이미 적은 판과 같아서 하나로 합쳤어요. ${mg.some(m => m.play) ? html`<button className="linkbtn ia-l" onClick=${() => setRest(rest === g.k ? null : g.k)}>다른 판이에요 · 되살리기</button>` : null}</div>` : null}
+      ${rest === g.k ? html`<div className="iw-ask">${mg.filter(m => m.play).map(m => html`<div key=${m.iid + m.i} className="ia-r ia-rest"><span>${g.from}님 기록</span><b>${wl(m.play)}${m.play.at ? ` · ${hm(m.play.at)}` : ''}</b><button className="btn sm" onClick=${() => NAV.inboxRestore && NAV.inboxRestore(m.iid, m.i)}>되살리기</button></div>`)}</div>` : null}
+      ${g.its.length > 1 ? (() => { const last = [...g.its].sort((a, b) => (b.at || 0) - (a.at || 0))[0]; return html`<div className="iw">방금 들어온 판${last.at ? ` (${hm(last.at)})` : ''}: ${last.games.map(([id, c]) => GAME[id] ? `${GAME[id].ko} ${nf(c)}판` : '').filter(Boolean).join(', ')}</div>`; })() : null}
+      ${asks.map(p => { const mine = st.plays.find(x => x.id === p.askVs); const pick = keep === p.id;
+        return html`<div key=${p.id} className="iw-ask"><div className="ia-h">${pick ? '어느 기록을 남길까요?' : '같은 판이에요?'}</div>
+          ${pick ? html`<div className="ia-b ia-col"><button className="btn sm" onClick=${() => { setKeep(null); NAV.inboxAsk(p.id, 'theirs'); }}>${g.from}님 기록 · ${wl(p)}</button>${mine ? html`<button className="btn sm" onClick=${() => { setKeep(null); NAV.inboxAsk(p.id, 'mine'); }}>${ME.name}님 기록 · ${wl(mine)}</button>` : null}</div>`
+          : html`<div className="ia-r"><span>${g.from}님 기록</span><b>${GAME[p.gameId] ? GAME[p.gameId].ko : ''} · ${wl(p)}${p.at ? ` · ${hm(p.at)}` : ''}</b></div>
+          ${mine ? html`<div className="ia-r"><span>${ME.name}님 기록</span><b>${GAME[mine.gameId] ? GAME[mine.gameId].ko : ''} · ${wl(mine)}${mine.at ? ` · ${hm(mine.at)}` : ''}</b></div>` : null}
+          <div className="ia-b"><button className="btn sm" onClick=${() => NAV.inboxAsk(p.id, 'diff')}>다른 판이에요</button><button className="btn sm" onClick=${() => mine ? setKeep(p.id) : NAV.inboxAsk(p.id, 'theirs')}>같은 판이에요</button></div>`}</div>`; })}
+      ${asks.length ? null : html`<div className="ib"><button className="btn" onClick=${() => done(g)}>확인</button><button className="linkbtn muted" onClick=${() => { done(g); onGo && onGo(); NAV.day && NAV.day(g.date); }}>기록 보기</button>${NAV.fix ? html`<button className="linkbtn muted" onClick=${() => { onGo && onGo(); NAV.fix({ from: g.from, date: g.date }); }}>틀렸어요</button>` : null}</div>`}
     </div>`; })}
     ${all.length > 1 ? html`<div className="inmore"><button className="linkbtn" onClick=${() => setMore(!more)}>${more ? '접기' : `받은 기록 ${nf(all.length - 1)}개 더 보기`}</button><button className="linkbtn muted" onClick=${() => all.forEach(done)}>모두 확인</button></div>` : null}`;
 }
@@ -5114,7 +5126,7 @@ function GroupHome({ g, st, upGroup, say, open, setTab, setPost, setWrite, setMk
     ${ev ? html`<div className="hsec"><div className="hs-h"><h2 className="sec">다음 일정</h2><button className="linkbtn" onClick=${() => setTab('plan')}>전체 일정</button></div>
       <${EventCard} e=${ev} g=${g} st=${st} upEv=${upEv(ev.id)} staff=${staff} compact onOpen=${() => setTab('plan')}/></div>` : null}
 
-    ${ps.length ? html`<button className="hrow" onClick=${toRank}><span className="hr-l">내 순위</span><span className="hr-v">${myRank ? html`전체 기간 <b>${N(myRank.i)}위</b> · ${myRank.rate}` : '아직 순위 없음'}</span><span className="chev">›</span></button>` : null}
+    ${myRank ? html`<button className="hrow" onClick=${toRank}><span className="hr-l">내 순위</span><span className="hr-v">전체 기간 <b>${N(myRank.i)}위</b> · ${myRank.rate}</span><span className="chev">›</span></button>` : null}
 
     <div className="hsec"><div className="hs-h"><h2 className="sec">최근 기록</h2>${ps.length ? html`<button className="linkbtn" onClick=${() => setTab('log')}>전체</button>` : null}</div>
       ${lastDays.length ? html`<${DayList} inGroupView=${staff ? 'staff:' + g.id : true} plays=${ps.filter(p => lastDays.some(d => d.date === p.date))} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>` :
@@ -5281,9 +5293,9 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
       ${ps.length ? html`<div className="logbar"><span className="lb-sum">${game ? `${GAME[game].ko}만 보고 있어요` : '기록할 때 이 모임을 고른 판만 모여요'}</span></div>` : null}
       ${!ps.length ? html`<${Empty} title="이 모임으로 남긴 기록이 없어요" action=${NAV.play ? html`<button className="btn primary" onClick=${() => NAV.play({ people: ['나'], grp: g.id })}>첫 모임 기록하기</button>` : null}>기록할 때 '어느 모임 기록이에요?'에서 이 모임을 고르면 여기에 모여요. 일정 명단에서 바로 시작할 수도 있어요.<//>` : null}
       ${ps.length && showRank ? html`<div className="rankbox">${game && COOP.has(game) ? html`<div className="note">협력 게임이라 순위가 없어요. 우리가 ${nf(rankPs.filter(p => p.coop === 'win').length)}승 ${nf(rankPs.filter(p => p.coop === 'lose').length)}패예요.</div>` :
-        board.length ? html`${fewG ? html`<div className="hint">아직 판이 적어서 순위가 자주 바뀌어요. 판이 더 쌓이면 자리 잡혀요.</div>` : null}<div className="rankhd">${perL} · 이긴 비율 순 (판 수도 같이 봐요)${!game && per === 'all' && minN > 1 && board.every(r => r.vs >= minN) ? ` · ${nf(minN)}판 이상` : ''}</div>${(allRank ? board : board.slice(0, 10)).map(r => html`<button key=${r.n} className=${'rank' + (r.n === '나' ? ' meline' : '')} onClick=${() => r.n !== '나' && openPerson(r.n)}><span className="i num">${N(rankI(r))}</span><${Avatar} name=${nm(r.n)} size=${28}/>
-            <span className="n">${nm(r.n)}${r.n === '나' ? html` <span className="me-t">나</span>` : null}</span><span className="v"><b>${pct(r)}</b></span></button>`)}
-          ${!allRank && myRow && board.indexOf(myRow) >= 10 ? html`<div className="rank meline"><span className="i num">${N(rankI(myRow))}</span><${Avatar} name=${nm('나')} size=${28}/><span className="n">${ME.name} <span className="me-t">나</span></span><span className="v"><b>${pct(myRow)}</b></span></div>` : null}
+        board.length ? html`${fewG ? html`<div className="hint">아직 판이 적어서 순위가 자주 바뀌어요. 판이 더 쌓이면 자리 잡혀요.</div>` : null}<div className="rankhd">${perL} · 이긴 비율 순${!game && per === 'all' && minN > 1 && board.every(r => r.vs >= minN) ? ` · ${nf(minN)}판 이상` : ''}</div>${(allRank ? board : board.slice(0, 10)).map(r => html`<button key=${r.n} className=${'rank' + (r.n === '나' ? ' meline' : '')} onClick=${() => r.n !== '나' && openPerson(r.n)}><span className="i num">${N(rankI(r))}</span><${Avatar} name=${nm(r.n)} size=${28}/>
+            <span className="n">${nm(r.n)}${r.n === '나' ? html` <span className="me-t">나</span>` : null}</span><span className="v"><b>${pct(r)}</b><span className="rv-s">${nf(r.vs)}판 ${nf(r.w)}승</span></span></button>`)}
+          ${!allRank && myRow && board.indexOf(myRow) >= 10 ? html`<div className="rank meline"><span className="i num">${N(rankI(myRow))}</span><${Avatar} name=${nm('나')} size=${28}/><span className="n">${ME.name} <span className="me-t">나</span></span><span className="v"><b>${pct(myRow)}</b><span className="rv-s">${nf(myRow.vs)}판 ${nf(myRow.w)}승</span></span></div>` : null}
           ${board.length > 10 ? html`<button className="btn ghost block" onClick=${() => setAllRank(!allRank)}>${allRank ? '접기' : '전체 보기'}</button>` : null}
 ` :
         html`<div className="note">${per === 'all' ? '아직 순위를 낼 만큼 판이 없어요.' : `${perL}에는 아직 승부가 난 판이 없어요.`}</div>`}</div>` : null}
@@ -5563,13 +5575,13 @@ function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editC
     ${st.groups.length < 4 ? null : html`<div className="stickybar"><div className="search">${I.games}<input type="search" placeholder="모임 이름으로 찾기" value=${q} onInput=${e => { setQ(e.target.value); setGlim(50); }}/></div>
       <div className="gl-sortrow"><${Seg} value=${sort} options=${[['act', '최근 활동순'], ['near', '가까운 순'], ['name', '이름순']]} onChange=${setSort} label="정렬"/>${sort === 'near' ? html`<${AreaPick} myArea=${myArea} setMyArea=${setMyArea}/>` : null}</div>${sort === 'near' && !myArea ? html`<div className="hint">내 지역을 고르면 가까운 모임부터 보여요. 온라인 모임은 맨 위에 둬요.</div>` : null}</div>`}
     ${myEvs.length && !q.trim() ? html`<div className="myevs"><div className="rooms-h">다가오는 일정</div>${myEvs.slice(0, evAll ? 30 : 3).map(([g, e]) => html`<button key=${e.id} className="roomrow" onClick=${() => { try { sessionStorage.setItem('bg-gtab-' + g.id, 'plan'); } catch (er) {} openGroup(g.id); }}><span className=${'rr-d' + (e.date === today() ? ' td' : '')}><b className="num">${N(parse(e.date).getDate())}</b><span>${DOW[parse(e.date).getDay()]}</span></span>
-        <span className="rr-b"><b>${e.title || g.name}</b><span>${[evDay(e.date) + (e.time ? ' ' + fmtTime(e.time) : ''), e.title ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + ((e.going || []).includes('나') ? 'go' : 'none')}>${(e.going || []).includes('나') ? '가요' : '답 안 함'}</span></button>`)}${myEvs.length > 3 ? html`<button className="linkbtn" style=${{ padding: '8px 0' }} onClick=${() => setEvAll(!evAll)}>${evAll ? '접기' : `일정 ${N(myEvs.length - 3)}개 더 보기`}</button>` : null}</div>` : null}
+        <span className="rr-b"><b>${e.title || g.name}</b><span>${[evDay(e.date) + (e.time ? ' ' + fmtTime(e.time) : ''), e.title ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + ((e.going || []).includes('나') ? 'go' : 'none')}>${evAns(e)}</span></button>`)}${myEvs.length > 3 ? html`<button className="linkbtn" style=${{ padding: '8px 0' }} onClick=${() => setEvAll(!evAll)}>${evAll ? '접기' : `일정 ${N(myEvs.length - 3)}개 더 보기`}</button>` : null}</div>` : null}
     ${gs.slice(0, glim).map(g => html`<div key=${g.id} className="glrow"><button className="gl-main" onClick=${() => openGroup(g.id)}>
         <${GroupThumb} g=${g} size=${60}/>
         <span className="n">${g.name}${g.pinned ? html` <span className="pinic" aria-label="고정함">${I.pin}</span>` : null}${g.mute ? html` <span className="muted-ic">알림 끔</span>` : null}${canRun(g) && (g.requests || []).length ? html` <span className="gl-req">신청 ${g.requests.length}</span>` : null}<span className="d gl-w">${whereText(g, myArea)} · 멤버 ${N(memCount(g))}명</span>${(() => { const e = nextEv[g.id]; if (!e) { const lp = (g.posts || []).reduce((m, p) => Math.max(m, p.at), 0); const t = lp ? `새 글 ${agoT(lp)}` : last[g.id] ? `마지막 기록 ${relDay(last[g.id])}` : null; return t ? html`<span className="d">${t}</span>` : null; }
           const me = (e.going || []).includes('나') ? 'go' : (e.no || []).includes('나') ? 'no' : (e.poll && (e.poll.votes || {})['나'] != null) ? 'vote' : null;
           const when = e.date ? `${evDay(e.date)}${e.time ? ' ' + fmtTime(e.time) : ''}` : '투표 중';
-          return html`<span className="d gl-ev"><span className=${'gl-when' + (e.date === today() ? ' td' : '')}>${when}</span>${e.place ? html`<span className="gl-pl"> · ${e.place}</span>` : null}<span className=${'gl-me ' + (me || 'none')}>${me === 'go' ? '가요' : me === 'no' ? '못 가요' : me === 'vote' ? '투표함' : '답 안 함'}</span></span>`; })()}</span></button></div>`)}
+          return html`<span className="d gl-ev"><span className=${'gl-when' + (e.date === today() ? ' td' : '')}>${when}</span>${e.place ? html`<span className="gl-pl"> · ${e.place}</span>` : null}<span className=${'gl-me ' + (me || 'none')}>${me === 'go' ? '가요' : me === 'no' ? '못 가요' : me === 'vote' ? '투표함' : evAns(e)}</span></span>`; })()}</span></button></div>`)}
     ${gs.length > glim ? html`<${MoreBtn} left=${gs.length - glim} unit="개" onClick=${() => setGlim(glim + 50)}/>` : null}
     ${!gs.length ? html`<div className="note">${q ? `'${q}' 모임이 없어요.` : '아직 들어간 모임이 없어요. 모임 찾기에서 관심 있는 모임을 찾거나, 직접 만들어 보세요. 만나지 않고 대화만 하는 모임도 괜찮아요.'}</div>` : null}`}
   </div>`;
@@ -5802,10 +5814,21 @@ function App() {
   NAV.more = (id, t, other) => startPlay(id, false, null, t, other);
   NAV.fix = x => setSheet({ kind: 'fix', ...x });
   // 받은 판이 내 판과 같은지 물었을 때: 같으면 그 한 판만 빼고(되돌리기 있음), 다르면 물음만 지워요
-  NAV.inboxAsk = (pid, same) => { const p = st.plays.find(x => x.id === pid); if (!p) return;
-    if (!same) { update(s => ({ ...s, plays: s.plays.map(x => x.id === pid ? (({ askVs, ...r }) => r)(x) : x) })); say('다른 판으로 둘게요'); return; }
-    update(s => ({ ...s, plays: s.plays.filter(x => x.id !== pid) }));
-    clearTimeout(toastT.current); setToast({ m: `겹친 ${p.from}님 판을 뺐어요`, undo: () => { update(s => ({ ...s, plays: [...s.plays, (({ askVs, ...r }) => r)(p)] })); setToast(null); say('되돌렸어요'); } }); toastT.current = setTimeout(() => setToast(null), 5000); };
+  // 받은 판이 내 판과 같은지: diff 다른 판 / theirs 친구 기록 남김 / mine 내 기록 남김. 같은 판이면 짝 표시(pairOf)를 남겨 다음 올림에서 또 합치지 않아요
+  const undoToast = (m, snap) => { clearTimeout(toastT.current); setToast({ m, undo: () => { update(s => ({ ...s, plays: snap.plays, inbox: snap.inbox })); setToast(null); say('되돌렸어요'); } }); toastT.current = setTimeout(() => setToast(null), 5000); };
+  NAV.inboxAsk = (pid, keep) => { const p = st.plays.find(x => x.id === pid); if (!p) return; const snap = { plays: st.plays, inbox: st.inbox };
+    const clean = x => (({ askVs, ...r }) => r)(x);
+    if (keep === 'diff') { update(s => ({ ...s, plays: s.plays.map(x => x.id === pid ? clean(x) : x) })); say('다른 판으로 둘게요'); return; }
+    if (keep === 'mine') { update(s => ({ ...s, plays: s.plays.filter(x => x.id !== pid).map(x => x.id === p.askVs ? { ...x, pairOf: p.inboxId } : x),
+        inbox: (s.inbox || []).map(it => it.id === p.inboxId ? { ...it, merged: [...(Array.isArray(it.merged) ? it.merged : []), { play: clean(p), mine: p.askVs }] } : it) }));
+      undoToast('하나로 합쳤어요', snap); return; }
+    update(s => ({ ...s, plays: s.plays.filter(x => x.id !== p.askVs).map(x => x.id === pid ? clean(x) : x) }));
+    undoToast(`${p.from}님 기록만 남겼어요`, snap); };
+  // 합친 판 되살리기: 친구 판을 다시 넣고 내 판의 짝 표시를 지워요
+  NAV.inboxRestore = (iid, i) => { const it = (st.inbox || []).find(x => x.id === iid); const m = it && Array.isArray(it.merged) && it.merged[i]; if (!m || !m.play) return; const snap = { plays: st.plays, inbox: st.inbox };
+    update(s => ({ ...s, plays: [...s.plays.map(x => x.id === m.mine ? (({ pairOf, ...r }) => r)(x) : x), m.play],
+      inbox: (s.inbox || []).map(x => x.id === iid ? { ...x, merged: x.merged.filter((_, j) => j !== i) } : x) }));
+    undoToast(`따로 한 판으로 되살렸어요`, snap); };
   NAV.bellSeen = ids => update(s => ({ ...s, bellSeen: [...new Set([...(s.bellSeen || []), ...ids])].slice(-400) }));
   const sendFix = r => { update(s => ({ ...s, fixReqs: [...(s.fixReqs || []), r].slice(-200) })); setSheet(null); say(`${r.to}님께 보냈어요 · 고치면 알림이 와요`); };
   NAV.share = d => shareDay(d);
