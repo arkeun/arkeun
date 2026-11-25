@@ -1500,6 +1500,9 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .cw-who .b.new { background: var(--accent-fill, var(--accent)); color: var(--accent-fill-ink, #fff); }
 .cw-heart { flex: none; width: 44px; height: 44px; border: 0; background: none; font-size: 22px; line-height: 1; color: var(--ink-3); border-radius: 50%; }
 .cw-heart.on { color: var(--cc); }
+.cmemo { display: flex; align-items: center; gap: 10px; width: 100%; margin: 12px 0 0; padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--cc, #d6336c) 30%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--cc, #d6336c) 8%, var(--surface)); font: inherit; color: inherit; text-align: left; }
+.cmemo .lb { flex: none; font-size: 12px; font-weight: 700; color: var(--cc, #d6336c); } .cmemo .t { flex: 1; min-width: 0; font-size: 14px; } .cmemo .chev { color: var(--ink-3); }
+.sc-mile { margin-top: 10px; font-size: 14px; font-weight: 700; }
 .tp { margin: 4px 0 14px; } .tp-row { display: flex; gap: 12px; overflow-x: auto; padding: 4px 16px 6px; margin: 0 -16px; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; }
 .tp-c { flex: none; width: 128px; display: flex; flex-direction: column; gap: 6px; scroll-snap-align: start; }
 .tp-art { position: relative; border: 0; padding: 0; background: none; border-radius: 12px; overflow: hidden; } .tp-art > *:first-child { display: block; width: 128px !important; height: 128px !important; }
@@ -2714,9 +2717,16 @@ function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay
   else { const dayPs = all.filter(p => !p.from).length ? all.filter(p => !p.from) : plays; const c = dayChamp(dayPs); const names = [...new Set(dayPs.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', ');
     big = c && c.tops.length === 1 ? `오늘의 승자 ${dn(c.tops[0])}` : names; sub = !c ? '' : c.tops.length === 1 ? (c.list.length > 1 ? c.list.slice(0, 3).map(x => `${dn(x[0])} ${nf(x[1])}승`).join(' · ') : names) : champText(c); }
   const empty = plays.filter(p => !decided(p) && p.people.length).length;
+  // 기록하는 수고에 대한 작은 보상: 그 게임의 10·25·50·100…번째 판이나 전체 100·500·1,000…번째 판이면 알려 줘요
+  const MS = [10, 25, 50, 100, 200, 300, 500, 1000, 2000, 3000, 5000];
+  const mile = (() => { const mine = st.plays.filter(p => !p.from); const tot = mine.length;
+    for (const m of [...MS].reverse()) if (m >= 100 && tot >= m && tot - plays.length < m) return `${ME.name}님의 ${nf(m)}번째 기록이에요`;
+    for (const gid of [...new Set(plays.map(p => p.gameId))]) { const n = mine.filter(p => p.gameId === gid).length, k = plays.filter(p => p.gameId === gid).length;
+      const m = [...MS].reverse().find(m => n >= m && n - k < m); if (m && GAME[gid]) return `${GAME[gid].ko} ${nf(m)}번째 판이에요`; }
+    return null; })();
   return html`<${Sheet} title="저장했어요" close=${close}>
     <div className=${'savedcard' + (cpl ? ' cpl' : '')} style=${cpl ? { '--cc': coupleColor(cpl) } : null}>
-      <div className="sc-big">${big}</div>${sub ? html`<div className="sc-sub">${sub}</div>` : null}</div>
+      <div className="sc-big">${big}</div>${sub ? html`<div className="sc-sub">${sub}</div>` : null}${mile ? html`<div className="sc-mile">🎉 ${mile}</div>` : null}</div>
     ${empty && editDay ? html`<button className="btn block whoask" onClick=${() => { close(); editDay(date); }}>누가 이겼어요? 적기${empty > 1 ? ` · ${nf(empty)}판 비어 있어요` : ''}</button>` : null}
     ${synced && synced.length ? html`<div className="note" style=${{ textAlign: 'center' }}>${synced.map(n => n + '님').join(', ')} 기록장에도 들어가요</div>` : null}
     <div className="sheet-foot two">${cpl ? html`<button className="btn" onClick=${() => { close(); openCouple(cpl.id); }}>커플 화면</button>` : html`<button className="btn" onClick=${close}>닫기</button>`}<button className="btn primary" onClick=${share}>공유하기</button></div>
@@ -3639,7 +3649,7 @@ function PersonGame({ st, name, gid, back, open, editDay, removeFromId, shareDay
   const vs = ps.filter(p => modeOf(p) !== 'coop' && decided(p)).sort((x, y) => y.date.localeCompare(x.date));
   const a = vs.filter(p => wonBy(p, '나')).length, b = vs.filter(p => wonBy(p, name)).length, o = vs.length - a - b;
   let k = 0; const w0 = vs[0] ? (wonBy(vs[0], '나') ? '나' : wonBy(vs[0], name) ? name : null) : null; if (w0) for (const p of vs) { if (wonBy(p, w0)) k++; else break; }
-  const lead = a === b ? (vs.length ? '지금은 동점이에요' : '') : a > b ? `${ME.name}님이 ${nf(a - b)}번 더 이겼어요` : `${name}님이 ${nf(b - a)}번 더 이겼어요`;
+  const lead = a === b ? (vs.length ? '지금은 동점이에요' : '') : a > b ? `${ME.name}님이 ${nf(a - b)}승 앞서 있어요` : `${name}님이 ${nf(b - a)}승 앞서 있어요 · 따라잡을 차례예요`;
   if (!g) return html`<${Page} title="게임이 없어요" close=${back}/>`;
   return html`<${Page} title=${`${name}님과 ${g.ko}`} close=${back}>
     <div className="pvg">
@@ -4164,7 +4174,7 @@ function ShareDaySheet({ st, date, close, say }) {
   const photo = ((st.photos || {})[date] || []).find(m => typeof m === 'string');
   const text = `${d.getMonth() + 1}월 ${d.getDate()}일 보드게임\n` + games.map(x => `${GAME[x.id].ko}${Object.keys(x.w).length ? ' (' + wtxt(x) + ')' : ''}`).join('\n') + (champ ? `\n${champText(champ)}` : '');
   function wtxt(x) { const e = Object.entries(x.w); const cw = x.w.__cw || 0, cl = x.w.__cl || 0;
-    if (cw || cl) return cw + cl === 1 ? (cw ? '우리가 이김' : '우리가 짐') : `우리가 ${nf(cw)}승 ${nf(cl)}패`;
+    if (cw || cl) return cw + cl === 1 ? (cw ? '우리가 이겼어요' : '아깝게 졌어요') : `우리가 ${nf(cw)}승 ${nf(cl)}패`;
     return e.sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${k === '나' ? st.me : k} ${nf(v)}승`).join(', ') + (e.length > 3 ? ' 외' : ''); }
   const share = async () => { try { if (navigator.share) { await navigator.share({ text }); return; } await navigator.clipboard.writeText(text); say('요약을 복사했어요. 단톡방에 붙여넣으면 돼요'); } catch (e) { say('복사가 막혀 있어요. 카드를 길게 눌러 캡처해 주세요'); } };
   const [theme, setTheme0] = useState(() => { try { return localStorage.getItem('bg-share-theme') || 'night'; } catch (e) { return 'night'; } });
@@ -4289,7 +4299,7 @@ function CoupleCard({ c, st, onOpen }) {
     <div className="gn">${c.name || `${ME.name} ♥ ${c.partner}`}</div>
     <div className="gm">${c.since ? `D+${dPlus(c.since)} · ` : ''}${ps.length ? `둘이 ${nf(ps.length)}판` : '아직 둘이 한 기록 없음'}</div>
     ${(() => { const nx = c.next && (!c.next.date || c.next.date >= today()) ? c.next : null; const both = wishOf(c).filter(w => GAME[w.id] && w.me && w.them).length; const nw = wishNew(c).length;
-      return nx ? html`<div className="gm2">다음 플레이 ${nx.date ? evDay(nx.date) : '날짜 미정'}</div>` : nw ? html`<div className="gm2">${c.partner}님이 새로 찜한 게임 ${nf(nw)}개</div>` : both ? html`<div className="gm2">둘 다 찜한 게임 ${nf(both)}개</div>` : ps.length ? html`<div className="gm2">마지막 ${relDay(ps.map(p => p.date).sort().pop())}</div>` : null; })()}
+      return nx ? html`<div className="gm2">다음에 같이 할 날 ${nx.date ? evDay(nx.date) : '날짜 미정'}</div>` : nw ? html`<div className="gm2">${c.partner}님이 새로 찜한 게임 ${nf(nw)}개</div>` : both ? html`<div className="gm2">둘 다 찜한 게임 ${nf(both)}개</div>` : ps.length ? html`<div className="gm2">마지막 ${relDay(ps.map(p => p.date).sort().pop())}</div>` : null; })()}
   </button>`;
 }
 function CoupleSheet({ st, c, close, onSave, onDelete }) {
@@ -4328,7 +4338,7 @@ function CoupleSheet({ st, c, close, onSave, onDelete }) {
     <div className="sheet-foot"><button className="btn primary" onClick=${() => !partner ? setNeed(true) : onSave({ ...(c || {}), id: c ? c.id : 'c' + uid(), partner, since: since || null, name: name.trim(), color, photo, photoThem, partnerPhoto: pphoto })}>${c ? '저장' : '만들기'}</button>
 </div>
     ${c ? html`<div className="cunlink"><button className="linkbtn muted" onClick=${() => setAsk(true)}>커플 끊기</button></div>` : null}
-    ${ask ? html`<div className="confirm"><span>커플을 끊을까요? 둘이 한 기록은 ${ME.name} 기록장에 그대로 남아요. 같이 할 게임 찜, 다음 플레이, 커플 사진은 지워져요.</span><div className="r"><button className="btn danger" onClick=${() => onDelete(c.id)}>끊기</button><button className="btn" onClick=${() => setAsk(false)}>취소</button></div></div>` : null}
+    ${ask ? html`<div className="confirm"><span>커플을 끊을까요? 둘이 한 기록은 ${ME.name} 기록장에 그대로 남아요. 같이 할 게임 찜, 다음에 같이 할 날, 커플 사진은 지워져요.</span><div className="r"><button className="btn danger" onClick=${() => onDelete(c.id)}>끊기</button><button className="btn" onClick=${() => setAsk(false)}>취소</button></div></div>` : null}
   <//>`;
 }
 /* ---------- v27: 모임 약속·대화·소개, 커플 추억, 사고 싶은, 선반 이미지 ---------- */
@@ -5230,7 +5240,7 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
             ${!wl.length ? html`<span className="hint">아직 찜한 게임이 없어요. 날짜만 적어도 돼요.</span>` : null}</div>
           <div className="r"><button className="btn primary" disabled=${!pDate && !pGames.length} onClick=${savePlan}>적어 두기</button><button className="btn" onClick=${() => setPlanning(false)}>취소</button>
             ${nx ? html`<button className="linkbtn muted" onClick=${() => { upCouple(c.id, x => ({ ...x, next: null }), '지웠어요'); setPlanning(false); }}>지우기</button>` : null}</div></div>` :
-        nx ? html`<div className="cnext"><div className="lb">다음 플레이</div><div className="t">${nx.date ? evDay(nx.date) : '날짜 미정'}</div>${nx.games && nx.games.filter(id => GAME[id]).length ? html`<div className="g">${nx.games.filter(id => GAME[id]).map(id => GAME[id].ko).join(' · ')}</div>` : null}
+        nx ? html`<div className="cnext"><div className="lb">다음에 같이 할 날</div><div className="t">${nx.date ? evDay(nx.date) : '날짜 미정'}</div>${nx.games && nx.games.filter(id => GAME[id]).length ? html`<div className="g">${nx.games.filter(id => GAME[id]).map(id => GAME[id].ko).join(' · ')}</div>` : null}
           <div className="r">${nx.date && nx.date <= today() ? html`<button className="btn primary" onClick=${() => startPlay(nx.games && nx.games[0] || null)}>오늘 한 거 기록하기</button>` : null}<button className="btn" onClick=${startPlan}>바꾸기</button></div>
           ${papp ? html`<div className="hint">미리보기라 ${c.partner}님에게는 아직 안 보여요.</div>` : null}</div>` :
         html`<button className="cnext empty" onClick=${startPlan}><span className="t">다음에 같이 할 날 정하기</span><span className="d">날짜와 할 게임을 적어 두면 여기 맨 위에 보여요</span></button>`}
@@ -5238,6 +5248,9 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
       ${fresh.length ? html`<button className="cwait" onClick=${() => setTab('wish')}><span><b>${c.partner}님이 새로 찜한 게임 ${nf(fresh.length)}개</b></span><span>${fresh.slice(0, 2).map(w => GAME[w.id].ko).join(', ')}${nf(fresh.length > 2 ? ' 외' : '')}</span><span className="go">›</span></button>` : null}
       ${wl.length ? html`<h2 className="sec">${both.length ? '둘 다 찜한 게임' : '찜한 게임'}<button className="more" onClick=${() => setTab('wish')}>전체 ›</button></h2>
         <div className="ntrow">${(both.length ? both : wl).slice(0, 4).map(w => html`<button key=${w.id} className="ms-b" onClick=${() => open(w.id)} aria-label=${GAME[w.id].ko}><span className="ms-art"><${Cover} g=${GAME[w.id]}/></span><span className="ntn">${GAME[w.id].ko}</span></button>`)}</div>` : null}
+      ${(() => { const t = today(); const hit = [1, 2, 3, 4, 5].map(y => [y, `${+t.slice(0, 4) - y}${t.slice(4)}`]).map(([y, d]) => [y, d, ps.filter(p => p.date === d)]).find(x => x[2].length);
+        if (!hit) return null; const [y, d, dps] = hit; const gn = [...new Set(dps.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].filter(Boolean);
+        return html`<button className="cmemo" onClick=${() => NAV.day && NAV.day(d)}><span className="lb">${nf(y)}년 전 오늘</span><span className="t">둘이 ${gn.slice(0, 2).join(', ')}${gn.length > 2 ? ` 외 ${nf(gn.length - 2)}개` : ''} 했어요</span><span className="chev">›</span></button>`; })()}
       <h2 className="sec">최근에 둘이 한 게임${ps.length ? html`<button className="more" onClick=${() => setTab('log')}>전체 ›</button>` : null}</h2>
       ${ps.length ? [...ps].sort((x, y) => y.date.localeCompare(x.date)).slice(0, 3).map(p => html`<button key=${p.id} className="crecent" onClick=${() => NAV.day && NAV.day(p.date)}><span className="dt">${relDay(p.date)}</span><span className="g">${GAME[p.gameId] ? GAME[p.gameId].ko : ''}</span><span className="r">${joinBits(roundSummary({ ...p, memo: '', scores: {} }, false))}</span></button>`) :
         html`<div className="note">기록할 때 ${c.partner}님만 넣으면 여기 모여요.</div>`}
@@ -5553,7 +5566,7 @@ function App() {
   const addCustom = x => { const picked = typeof x === 'object';
     const g = picked ? x : { id: -(Date.now() % 1e9), ko: x, en: '직접 추가한 게임', year: null, pmin: null, pmax: null, tmin: null, tmax: null, age: null, custom: true };
     registerCustom([g]); update(s => ({ ...s, customGames: [...(s.customGames || []).filter(c => c.id !== g.id), g] }));
-    say(picked ? `'${g.ko}'을(를) 골랐어요. 다른 사람 기록과 같은 게임으로 묶여요` : `'${g.ko}'을(를) 새로 추가했어요. 다른 사람도 이 이름으로 찾을 수 있어요`); return g.id; };
+    say(picked ? `'${g.ko}' 게임을 골랐어요. 다른 사람 기록과 같은 게임으로 묶여요` : `'${g.ko}' 게임을 새로 추가했어요. 다른 사람도 이 이름으로 찾을 수 있어요`); return g.id; };
   const setSettings = (v, extra) => update(s => { const b = { ...(s.blocked || {}) }; if (extra && extra.unblock) delete b[extra.unblock]; return { ...s, settings: v, blocked: b }; });
   const block = name => { update(s => { const f = { ...s.friends }; delete f[name]; return { ...s, friends: f, blocked: { ...(s.blocked || {}), [name]: true } }; }); setSheet(null); if (String(stack[tabRef.current] || '').startsWith('p:')) back(); say(`${name}님을 차단했어요`); };
   const hideReview = (r, report) => { update(s => ({ ...s, hiddenReviews: { ...(s.hiddenReviews || {}), [r.id]: report ? 'report' : 'hide' } })); say(report ? '신고했어요. 확인하고 처리할게요. 이 평가는 이제 안 보여요' : '이 평가를 숨겼어요'); };
