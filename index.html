@@ -47,6 +47,13 @@
 
 .tblseg { flex-wrap: wrap; overflow: visible; } .tblseg button { flex: 1 0 22%; min-width: 0; }
 .iw.ask { color: var(--ink-2); }
+
+.hevs { margin: 0 0 8px; border-top: 1px solid var(--line); }
+.hev { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px 0; border: 0; border-bottom: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; }
+.hev-d { flex: none; min-width: 40px; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--sunk); border-radius: 8px; padding: 3px 6px; }
+.hev-d.td { background: var(--accent); color: #fff; }
+.hev-t { flex: 1; min-width: 0; display: flex; flex-direction: column; } .hev-t b { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .hev-t span { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hev .chev { color: var(--ink-3); flex: none; }
 </style></head><body>
 <title>보드게임 기록장</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -2424,7 +2431,7 @@ function Empty({ title, children, action }) {
 /* ---------- 홈 ---------- */
 // 모임이 주로 모이는 요일 (최근 20번 기준)
 function groupWeekday(st, g) { const ds = [...new Set(groupPlaysOf(st, g).map(p => p.date))].sort().slice(-20); if (ds.length < 4) return null; const c = Array(7).fill(0); ds.forEach(d => c[parse(d).getDay()]++); const m = Math.max(...c); return m >= ds.length * .5 ? c.indexOf(m) : null; }
-function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeFromMine, editDay, removeFromId, shareDay, openGroup, openSettings }) {
+function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeFromMine, editDay, removeFromId, shareDay, openGroup, openSettings, scribed }) {
   const [calYm, setCalYm] = useState(() => (st.plays.reduce((m, p) => p.date > m ? p.date : m, '') || today()).slice(0, 7));
   const [view, setView0] = useState(() => { try { return localStorage.getItem('bg-home-view') || 'list'; } catch (e) { return 'list'; } });
   const setView = v => { setView0(v); try { localStorage.setItem('bg-home-view', v); } catch (e) {} };
@@ -2477,6 +2484,15 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
     ${mon ? html`<div className="note" style=${{ marginTop: 0 }}>${mon.slice(0, 4)}년 ${+mon.slice(5)}월부터 보고 있어요 · <button className="linkbtn inl" onClick=${() => setMon('')}>최근으로</button></div>` : null}
     ${monOpen ? html`<div className="monlist" role="dialog" aria-label="달 고르기"><div className="ml-h"><b>어느 달로 갈까요?</b><button className="linkbtn" onClick=${() => setMonOpen(false)}>닫기</button></div>
       ${monthList.map(([k, n]) => html`<button key=${k} className=${'ml-r' + (calYm === k ? ' on' : '')} onClick=${() => { setMon(''); goYm(k); setMonOpen(false); window.scrollTo(0, 0); }}><span>${k.slice(0, 4)}년 ${+k.slice(5)}월</span></button>`)}</div>` : null}
+    ${!hq.trim() && st.plays.length ? (() => {
+      // 기록이 쌓인 뒤에도 일주일 안 모임 일정(가요·아직 답 안 함)은 한 줄로 남겨요
+      const evs = (st.groups || []).filter(g => !g.hideHome && !g.mute).flatMap(g => (g.events || []).filter(e => e.date && e.date >= today() && e.date <= daysAgo(-7) && !(e.no || []).includes('나')).map(e => [g, e])).sort((a, b) => (a[1].date + (a[1].time || '')).localeCompare(b[1].date + (b[1].time || ''))).slice(0, 2);
+      const goPlan = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'plan'); } catch (er) {} openGroup && openGroup(id); };
+      const goLog = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'log'); } catch (er) {} openGroup && openGroup(id); };
+      const sc = scribed || []; const scG = [...new Set(sc.map(p => p.groupId).filter(Boolean))];
+      return evs.length || sc.length ? html`<div className="hevs">
+        ${sc.length ? html`<button className="hev" onClick=${() => scG[0] ? goLog(scG[0]) : null}><span className="hev-d">오늘</span><span className="hev-t"><b>${scG.length === 1 ? ((st.groups || []).find(g => g.id === scG[0]) || {}).name || '모임' : '모임'} 기록 ${nf(sc.length)}판 적었어요</b><span>${ME.name}님이 빠진 판은 모임 기록에만 있어요</span></span><span className="chev">›</span></button>` : null}
+        ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title, e.place].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${go ? '가요' : (e.maybe || []).includes('나') ? '고민 중' : '답 안 함'}</span></button>`; })}</div>` : null; })() : null}
     <div ...${swipe}>
     ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${goYm} onPick=${() => setMonOpen(true)}/>` : !hq.trim() && st.plays.length ? html`<${MonthNav} ym=${calYm} setYm=${goYm} minYm=${minYm} sticky onPick=${() => setMonOpen(true)}/>` : null}
     ${!hq.trim() && st.plays.length && !plays.some(p => p.date.slice(0, 7) === calYm) ? html`<div className="note">${+calYm.slice(5)}월에는 기록이 없어요.</div>` : null}
@@ -5777,7 +5793,8 @@ function App() {
   const toggleWish = id => { const had = (st.wish || []).includes(id); update(s => ({ ...s, wish: had ? s.wish.filter(x => x !== id) : [id, ...(s.wish || [])] })); say(had ? '사고 싶은 목록에서 뺐어요' : '사고 싶은 목록에 담았어요'); };
   const openShelfImg = () => setSheet({ kind: 'shelfimg' });
   const qa = (gid, fn) => update(s => ({ ...s, qna: { ...(s.qna || {}), [gid]: fn(qnaOf(s, gid)) } }));
-  const props = { upCouple, qa, st: stv, allReviews, open, startPlay, startReview, go, dismiss, removeFromMine, editDay, openPerson, removeFromId, hideReview, setShelfInfo, openSettings, shareDay, openGroup, newGroup, pickWhat, openYear, openBarcode, leaveGroup, inviteToGroup, say, openCouple, editCouple, openChar, cm, openGroups, pinGroup, muteGroup, hideGroupHome, upGroup, editGroup, openPub, toggleSaveGroup, setMyArea, toggleWish, openShelfImg, updCouple };
+  const scribedToday = useMemo(() => st.plays.filter(p => p.scribe && p.date === playDay()), [st.plays]);
+  const props = { scribed: scribedToday, upCouple, qa, st: stv, allReviews, open, startPlay, startReview, go, dismiss, removeFromMine, editDay, openPerson, removeFromId, hideReview, setShelfInfo, openSettings, shareDay, openGroup, newGroup, pickWhat, openYear, openBarcode, leaveGroup, inviteToGroup, say, openCouple, editCouple, openChar, cm, openGroups, pinGroup, muteGroup, hideGroupHome, upGroup, editGroup, openPub, toggleSaveGroup, setMyArea, toggleWish, openShelfImg, updCouple };
 
   let screen;
   if (detail === 'gl') screen = html`<${GroupsList} ...${props} back=${back}/>`;
