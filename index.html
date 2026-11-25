@@ -2753,7 +2753,7 @@ function dayHead(st, date, plays) {
 }
 function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay }) {
   const all = st.plays.filter(p => p.date === date);
-  const { big, sub, cpl } = dayHead(st, date, plays);
+  const { big, sub, cpl, solo } = dayHead(st, date, plays);
   const empty = plays.filter(p => !decided(p) && p.people.length).length;
   // 기록하는 수고에 대한 작은 보상: 그 게임의 10·25·50·100…번째 판이나 전체 100·500·1,000…번째 판이면 알려 줘요
   const MS = [10, 25, 50, 100, 200, 300, 500, 1000, 2000, 3000, 5000];
@@ -4217,6 +4217,7 @@ function ShareDaySheet({ st, date, close, say }) {
   const games = []; ps.forEach(p => { let x = games.find(y => y.id === p.gameId); if (!x) { x = { id: p.gameId, n: 0, w: {} }; games.push(x); } x.n++; if (!p.people.length && (p.scores || {})['나'] != null) (x.sc = x.sc || []).push(+p.scores['나']); (modeOf(p) === 'coop' ? (p.coop ? [p.coop === 'win' ? '__cw' : '__cl'] : []) : modeOf(p) === 'rank' ? Object.keys(p.ranks || {}).filter(k => p.ranks[k] === 1) : p.winners || []).forEach(n => x.w[n] = (x.w[n] || 0) + 1); });
   const people = [...new Set(ps.flatMap(p => p.people))];
   const champ = dayChamp(ps.filter(p => !p.from).length ? ps.filter(p => !p.from) : ps);
+  const own = ps.filter(p => !p.from); const head = dayHead(st, date, own.length ? own : ps);
   const photo = ((st.photos || {})[date] || []).find(m => typeof m === 'string');
   const text = `${d.getMonth() + 1}월 ${d.getDate()}일 보드게임\n` + games.map(x => `${GAME[x.id].ko}${Object.keys(x.w).length ? ' (' + wtxt(x) + ')' : ''}`).join('\n') + (head.champ ? (champ ? `\n${champText(champ)}` : '') : `\n${head.big}${head.sub ? ' · ' + head.sub : ''}`);
   function wtxt(x) { const e = Object.entries(x.w); const cw = x.w.__cw || 0, cl = x.w.__cl || 0;
@@ -4229,7 +4230,6 @@ function ShareDaySheet({ st, date, close, say }) {
   const cardRef = useRef(null);
   const gs = [...games].sort((a, b) => b.n - a.n);
   const totalN = ps.length;
-  const own = ps.filter(p => !p.from); const head = dayHead(st, date, own.length ? own : ps);
   const heroName = head.champ && champ && !champ.all && champ.tops.length === 1 ? dn(champ.tops[0]) : null;
   const heroLine = !head.champ ? head.big : !champ ? '오늘도 한 판 했어요' : champ.all ? '오늘은 다 같이 비겼어요' : champ.tops.length > 1 ? `${champ.tops.slice(0, 2).map(dn).join(' · ')} 공동 1위` : null;
   // 그림으로 저장·공유: 카드를 그림으로 바꿔 인스타그램·카카오톡에 바로 올려요
