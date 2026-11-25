@@ -62,24 +62,31 @@ def ask_gemini(meta, prompt, texts, images):
     parts = [{"text": prompt}] + [{"text": t} for t in texts]
     for p, mime, b64 in images:
         parts += [{"text": f"그림: {p}"}, {"inline_data": {"mime_type": mime, "data": b64}}]
-    models = [meta["model"]] if meta["model"] else ["gemini-flash-latest", "gemini-3.8-flash", "gemini-flash-lite-latest", "gemini-pro-latest"]
+    models = [meta["model"]] if meta["model"] else ["gemini-flash-lite-latest", "gemini-3-flash-preview", "gemini-2.5-flash-lite", "gemma-4-31b-it", "gemini-flash-latest"]
     errors = []
     for m in models:
-      for attempt in range(4):
+      for attempt in range(5):
         try:
             r = post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
-                     {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]},
+                     ({"contents": [{"role": "user", "parts": [{"text": SYSTEM}] + parts}]} if m.startswith("gemma") else
+                      {"system_instruction": {"parts": [{"text": SYSTEM}]}, "contents": [{"role": "user", "parts": parts}]}),
                      {"x-goog-api-key": key})
             out = "".join(p.get("text", "") for p in r["candidates"][0]["content"]["parts"])
             return m, out
         except urllib.error.HTTPError as e:
             errors.append(f"{m}: {e.code} {e.read().decode(errors='replace')[:900]}")
-            if e.code in (500, 503) and attempt < 3:
-                time.sleep(20 * (attempt + 1)); continue
+            if e.code in (500, 503) and attempt < 4:
+                time.sleep(30 * (attempt + 1)); continue
             break
         except Exception as e:
             errors.append(f"{m}: {e}"); break
-    raise RuntimeError("모든 모델 실패\n" + "\n".join(errors))
+    try:
+        req = urllib.request.Request("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", headers={"x-goog-api-key": key})
+        names = [x["name"] for x in json.load(urllib.request.urlopen(req, timeout=60)).get("models", []) if "generateContent" in x.get("supportedGenerationMethods", [])]
+        errors.append("쓸 수 있는 모델: " + ", ".join(names))
+    except Exception as e:
+        errors.append(f"모델 목록 실패: {e}")
+    raise RuntimeError("모든 모델 실패\n" + "\n".join(e[:400] for e in errors))
 
 def ask_openai(meta, prompt, texts, images):
     key = os.environ.get("OPENAI_API_KEY")
