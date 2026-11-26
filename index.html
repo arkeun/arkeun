@@ -2595,8 +2595,8 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   // 모임 화면에선 테이블이 달라도 같은 게임은 한 줄로 모아요
   const key = p => inGroupView ? 'all' : p.people.slice().sort().join('|');
   const segs = [];
-  // 어느 날이든 처음 판부터(자정이 지나도 순서가 뒤집히지 않게). 방금 판은 홈 '한 판 더' 버튼이 맡아요
-  day.plays.forEach(p => {
+  // 오늘 카드는 방금 판이 위로(판마다 올릴 때 접힌 곳에 숨지 않게), 지난 날은 처음 판부터
+  (day.date === playDay() ? [...day.plays].sort((a, b) => (b.at || 0) - (a.at || 0)) : day.plays).forEach(p => {
     let seg = segs.find(s => s.k === key(p));
     if (!seg) { seg = { k: key(p), people: p.people, games: [] }; segs.push(seg); }
     if (inGroupView && seg.people !== p.people) seg.people = [...new Set([...seg.people, ...p.people])];
