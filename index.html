@@ -50,7 +50,7 @@
 
 .hevs { margin: 0 0 8px; border-top: 1px solid var(--line); }
 .hev { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px 0; border: 0; border-bottom: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; }
-.hev-d { flex: none; min-width: 40px; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--sunk); border-radius: 8px; padding: 3px 6px; }
+.hev-d { flex: none; width: 58px; box-sizing: border-box; white-space: nowrap; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--sunk); border-radius: 8px; padding: 3px 6px; }
 .hev-d.td { background: var(--accent); color: #fff; }
 .hev-t { flex: 1; min-width: 0; display: flex; flex-direction: column; } .hev-t b { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .hev-t > span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal !important; } .hev-t span { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hev .chev { color: var(--ink-3); flex: none; }
@@ -937,6 +937,7 @@ button.person { font: inherit; cursor: pointer; }
 .sc2-g .n { font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sc2-g .n i { font-style: normal; font-weight: 400; font-size: 12px; color: var(--ink2); }
 .sc2-g .w { flex: none; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: var(--ink2); }
 .sc2-g.more { font-size: 12px; color: var(--ink2); }
+.rk2 { aspect-ratio: auto; } .rk2 .sc2-g .n i { font-style: normal; font-weight: 800; font-size: 14px; color: var(--ink2); margin-right: 4px; } .rk2 .sc2-g.me .n { color: var(--hi); }
 .sc2-foot { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink2); position: relative; z-index: 1; }
 .sc2-av { display: flex; } .sc2-av > * { margin-left: -6px; box-shadow: 0 0 0 2px var(--b); border-radius: 50%; } .sc2-av > *:first-child { margin-left: 0; }
 .sc2-ppl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sc2-tot { flex: none; font-weight: 700; color: var(--ink1); }
@@ -2509,14 +2510,14 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
       ${monthList.map(([k, n]) => html`<button key=${k} className=${'ml-r' + (calYm === k ? ' on' : '')} onClick=${() => { setMon(''); goYm(k); setMonOpen(false); window.scrollTo(0, 0); }}><span>${k.slice(0, 4)}년 ${+k.slice(5)}월</span></button>`)}</div>` : null}
     ${!hq.trim() && (st.plays.length || (scribed || []).length) ? (() => {
       // 기록이 쌓인 뒤에도 일주일 안 모임 일정(가요·아직 답 안 함)은 한 줄로 남겨요
-      const allEv = upcomingEvs(st, true); const evs = allEv.slice(0, 3);
+      const allEv = upcomingEvs(st, true); const evs = allEv.slice(0, 3); const oneG = new Set(allEv.map(([g]) => g.id)).size <= 1;
       const goPlan = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'plan'); } catch (er) {} openGroup && openGroup(id); };
       const goLog = id => { try { sessionStorage.setItem('bg-gtab-' + id, 'log'); } catch (er) {} openGroup && openGroup(id); };
       const sc0 = scribed || []; const scG = [...new Set(sc0.map(p => p.groupId).filter(Boolean))];
       const sc = [...sc0, ...st.plays.filter(p => p.date === playDay() && !p.from && p.groupId && scG.includes(p.groupId))];
       return evs.length || sc.length ? html`<div className="hevs">
         ${sc.length ? html`<button className="hev" onClick=${() => scG[0] ? goLog(scG[0]) : null}><span className="hev-d">오늘</span><span className="hev-t"><b>${scG.length === 1 ? ((st.groups || []).find(g => g.id === scG[0]) || {}).name || '모임' : '모임'} 기록 ${nf(sc.length)}판 적었어요</b><span>${ME.name}님이 빠진 판은 모임 기록에만 있어요</span></span><span className="chev">›</span></button>` : null}
-        ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${e.title || g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${evAns(e)}</span></button>`; })}${allEv.length > 3 && openGroups ? html`<button className="linkbtn hev-more" onClick=${openGroups}>일정 ${nf(allEv.length - 3)}개 더 보기 ›</button>` : null}</div>` : null; })() : null}
+        ${evs.map(([g, e]) => { const go = (e.going || []).includes('나'); return html`<button key=${e.id} className="hev" onClick=${() => goPlan(g.id)}><span className=${'hev-d' + (e.date === today() ? ' td' : '')}>${(x => x.length <= 2 ? x : `${parse(e.date).getMonth() + 1}/${parse(e.date).getDate()} ${DOW[parse(e.date).getDay()]}`)(evDay(e.date))}</span><span className="hev-t"><b>${e.title || g.name}</b><span>${[e.time ? fmtTime(e.time) : null, e.title && !oneG ? g.name : null, (x => x && !(e.title || '').includes(x) ? x : null)(e.place || e.platform)].filter(Boolean).join(' · ')}</span></span><span className=${'gl-me ' + (go ? 'go' : 'none')}>${evAns(e)}</span></button>`; })}${allEv.length > 3 && openGroups ? html`<button className="linkbtn hev-more" onClick=${openGroups}>일정 ${nf(allEv.length - 3)}개 더 보기 ›</button>` : null}</div>` : null; })() : null}
     <div ...${swipe}>
     ${view === 'cal' ? html`<${HomeCal} plays=${plays} st=${st} onDay=${d => NAV.day(d)} ym=${calYm} setYm=${goYm} onPick=${() => setMonOpen(true)}/>` : !hq.trim() && st.plays.length ? html`<${MonthNav} ym=${calYm} setYm=${goYm} minYm=${minYm} sticky onPick=${() => setMonOpen(true)}/>` : null}
     ${!hq.trim() && st.plays.length && !plays.some(p => p.date.slice(0, 7) === calYm) ? html`<div className="note">${+calYm.slice(5)}월에는 기록이 없어요.</div>` : null}
@@ -2636,7 +2637,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
         ${edit && staffG && froms.length ? html`<button className="dm-b" onClick=${() => { setMenu(false); edit(day.date, staffG); }}>운영진으로 고치기</button>` : null}
         ${froms.length && NAV.fix ? html`<button className="dm-b" onClick=${() => { setMenu(false); NAV.fix({ from: froms[0], date: day.date }); }}>${froms[0]}님께 고쳐 달라고 하기</button>` : null}
         ${inbox && removeFrom ? html`<button className="dm-b muted" onClick=${() => { setMenu(false); removeFrom(inbox.inboxId); }}>내 기록장에서 빼기</button>` : null}</div>` : null}</div>
-      ${variant === 'couple' || cpl ? null : html`<div className="pplrow">${allPpl.length ? html`<span className="avstack">${allPpl.slice(0, 4).map(n => html`<${Avatar} key=${n} name=${n} size=${24}/>`)}</span><span className="pn"><${Who} names=${allPpl.slice(0, allPpl.length > 3 ? 2 : 3)} st=${st}/>${allPpl.length > 3 ? ` 외 ${nf(allPpl.length - 2)}명` : ''}${froms.length ? html`<span className="dh-from"> · ${froms.slice(0, 2).map(n => n + '님').join(', ')}${own ? '도' : '이'} 남김</span>` : null}</span>` : html`<span className="pn">혼자</span>`}</div>`}
+      ${variant === 'couple' || cpl ? null : html`<div className="pplrow">${allPpl.length ? html`<span className="avstack">${allPpl.slice(0, 4).map(n => html`<${Avatar} key=${n} name=${n} size=${24}/>`)}</span><span className="pn">${(k => html`<${Who} names=${allPpl.slice(0, k)} st=${st}/>${allPpl.length > k ? ` 외 ${nf(allPpl.length - k)}명` : ''}`)(froms.length ? (allPpl.length > 2 ? 1 : 2) : allPpl.length > 3 ? 2 : 3)}${froms.length ? html`<span className="dh-from"> · ${froms.slice(0, 2).map(n => n + '님').join(', ')}${own ? '도' : '이'} 남김</span>` : null}</span>` : html`<span className="pn">혼자</span>`}</div>`}
       <div className="gtable">${shownRows.map(gl => { const g = GAME[gl.gameId]; if (!g) return null; const n = gl.plays.length;
         const solo = !gl.sg.people.length; const first = firsts && gl.plays.some(p => firsts.has(p.id)); const k = gl.sg.k + gl.gameId; const isOpen = full ? openG !== k : openG === k;
         const media = gl.plays.flatMap(p => p.media || []);
@@ -2707,8 +2708,8 @@ function Inbox({ st, dismiss, removeFromMine, onGo }) {
         const ent = Object.entries(cnt).sort((a, b) => b[1] - a[1]); const bits = [...ent.slice(0, 2).map(([x, k]) => `${dn(x)} ${nf(k)}승`), ...(ent.length > 2 ? [`외 ${nf(ent.length - 2)}명`] : [])];
         return GAME[id] ? html`<span key=${id}>${GAME[id].ko} ${nf(per.length)}판${bits.length ? html` · <span className="crown">${bits.join(' · ')}</span>` : ''}</span>` : null; })}</div>
       <div className="iw">함께: ${ppl.join(', ')}${added ? ` · ${ME.name} 기록장에도 들어왔어요` : ''}</div>
-      ${sk ? html`<div className="iw">${nf(sk)}판은 ${ME.name}님이 이미 적은 판과 같아서 하나로 합쳤어요. ${mg.some(m => m.play) ? html`<button className="linkbtn ia-l" onClick=${() => setRest(rest === g.k ? null : g.k)}>다른 판이에요 · 되살리기</button>` : null}</div>` : null}
-      ${rest === g.k ? html`<div className="iw-ask">${mg.filter(m => m.play).map(m => html`<div key=${m.iid + m.i} className="ia-r ia-rest"><span>${g.from}님 기록</span><b>${wl(m.play)}${m.play.at ? ` · ${hm(m.play.at)}` : ''}</b><button className="btn sm" onClick=${() => NAV.inboxRestore && NAV.inboxRestore(m.iid, m.i)}>되살리기</button></div>`)}</div>` : null}
+      ${sk ? html`<div className="iw">${nf(sk)}판은 ${ME.name}님이 이미 적은 판과 같아서 하나로 합쳤어요. ${mg.some(m => m.play) ? html`<button className="linkbtn ia-l" onClick=${() => { const rs = mg.filter(m => m.play); rs.length === 1 ? NAV.inboxRestore && NAV.inboxRestore(rs[0].iid, rs[0].i) : setRest(rest === g.k ? null : g.k); }}>${mg.filter(m => m.play).length === 1 ? '다른 판이었어요 · 되살리기' : '다른 판이 있어요 · 골라서 되살리기'}</button>` : null}</div>` : null}
+      ${rest === g.k ? html`<div className="iw-ask"><div className="ia-h">${g.from}님 기록 중 되살릴 판</div>${mg.filter(m => m.play).map(m => html`<div key=${m.iid + m.i} className="ia-r ia-rest"><b>${GAME[m.play.gameId] ? GAME[m.play.gameId].ko + ' · ' : ''}${wl(m.play)}${m.play.at ? ` · ${hm(m.play.at)}` : ''}</b><button className="btn sm" onClick=${() => NAV.inboxRestore && NAV.inboxRestore(m.iid, m.i)}>되살리기</button></div>`)}</div>` : null}
       ${g.its.length > 1 ? (() => { const last = [...g.its].sort((a, b) => (b.at || 0) - (a.at || 0))[0]; return html`<div className="iw">방금 들어온 판${last.at ? ` (${hm(last.at)})` : ''}: ${last.games.map(([id, c]) => GAME[id] ? `${GAME[id].ko} ${nf(c)}판` : '').filter(Boolean).join(', ')}</div>`; })() : null}
       ${asks.map(p => { const mine = st.plays.find(x => x.id === p.askVs); const pick = keep === p.id;
         return html`<div key=${p.id} className="iw-ask"><div className="ia-h">${pick ? '어느 기록을 남길까요?' : '같은 판이에요?'}</div>
@@ -4329,6 +4330,36 @@ function WhatSheet({ st, allReviews, gid, who0, close, startPlay, update, say })
   <//>`;
 }
 
+/* ---------- 모임 순위 카드 ---------- */
+// 카드를 그림으로 바꿔 공유해요. 그림이 막히면 글로 보내요
+async function cardShare(el, name, text, plain, say) {
+  try {
+    if (!window.html2canvas) await new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+    const cv = await window.html2canvas(el, { backgroundColor: null, scale: 3, useCORS: true });
+    const blob = await new Promise(r => cv.toBlob(r, 'image/png')); const file = new File([blob], name, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text }); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click(); say('그림으로 저장했어요');
+  } catch (e) { if (e && e.name === 'AbortError') return; plain(); }
+}
+function ShareRankSheet({ title, sub, rows, few, close, say }) {
+  const [theme, setTheme0] = useState(() => { try { return localStorage.getItem('bg-share-theme') || 'night'; } catch (e) { return 'night'; } });
+  const setTheme = t => { setTheme0(t); try { localStorage.setItem('bg-share-theme', t); } catch (e) {} };
+  const ref = useRef(null); const top = rows[0];
+  const text = `${title} ${sub}\n` + rows.map(r => `${r.i}. ${r.n} ${r.pct} (${nf(r.vs)}판 ${nf(r.w)}승)`).join('\n');
+  const plain = async () => { try { if (navigator.share) { await navigator.share({ text }); return; } await navigator.clipboard.writeText(text); say('순위를 복사했어요 · 단톡방에 붙여 넣으면 돼요'); } catch (e) { if (!(e && e.name === 'AbortError')) say('복사가 막혀 있어요. 카드를 길게 눌러 캡처해 주세요'); } };
+  return html`<${Sheet} title="순위 공유" close=${close}>
+    <div className="sc2-themes" role="tablist" aria-label="카드 색">${[['night', '밤'], ['paper', '종이'], ['mint', '민트'], ['pink', '분홍']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${theme === k} className=${'sc2-dot t-' + k} onClick=${() => setTheme(k)}><i></i>${l}</button>`)}</div>
+    <div className=${'sc2 rk2 t-' + theme} ref=${ref}>
+      <div className="sc2-top"><span className="sc2-brand">♟ 보드게임 기록장</span><span className="sc2-dd num">${today().slice(2).replace(/-/g, '.')}</span></div>
+      <div className="sc2-date"><b>${title}</b><span>${sub}</span></div>
+      ${top ? html`<div className="sc2-hero"><span className="sc2-crown">👑</span><span className="sc2-hl">1위</span><b className="sc2-name">${top.n}</b><span className="sc2-best">${top.pct}</span></div>` : null}
+      <div className="sc2-list">${rows.map(r => html`<div key=${r.i + r.n} className=${'sc2-g' + (r.me ? ' me' : '')}><span className="n"><i className="num">${nf(r.i)}</i> ${r.n}</span><span className="w">${r.pct} · ${nf(r.vs)}판 ${nf(r.w)}승</span></div>`)}</div>
+      ${few ? html`<div className="sc2-g more">아직 판이 적어서 순위가 자주 바뀌어요</div>` : null}
+    </div>
+    <div className="sheet-foot two"><button className="btn" onClick=${plain}>글로 보내기</button><button className="btn primary" onClick=${() => cardShare(ref.current, `${title}-순위.png`, text, plain, say)}>그림으로 공유</button></div>
+  <//>`;
+}
+
 /* ---------- 하루 요약 카드 ---------- */
 function ShareDaySheet({ st, date, close, say }) {
   const ps = st.plays.filter(p => p.date === date);
@@ -4963,7 +4994,11 @@ function Roster({ e, g, st, upEv, staff, close }) {
 function NewEvent({ g, onSave, cancel, game0 }) {
   const x = gx(g);
   const [vote, setVote] = useState(false);
-  const [date, setDate] = useState(daysAgo(-3)); const [time, setTime] = useState('19:00'); const [place, setPlace] = useState(x.modes.includes('offline') && x.area ? `${x.area} ` : ''); const [cap, setCap] = useState('');
+  // 날짜 기본값: 이 모임이 자주 모이는 요일 중 가장 가까운 날(오늘 포함). 기록이 없으면 오늘. 시간도 지난 일정을 따라요
+  const evp = (g.events || []).filter(e => e.date); const dw = {}; evp.forEach(e => { const k = parse(e.date).getDay(); dw[k] = (dw[k] || 0) + 1; });
+  const favD = Object.keys(dw).length ? +Object.entries(dw).sort((a, b) => b[1] - a[1])[0][0] : null;
+  const lastT = (evp.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || {}).time;
+  const [date, setDate] = useState(favD == null ? today() : daysAgo(-((favD - new Date().getDay() + 7) % 7))); const [time, setTime] = useState(lastT || '19:00'); const [place, setPlace] = useState(x.modes.includes('offline') && x.area ? `${x.area} ` : ''); const [cap, setCap] = useState('');
   const [opts, setOpts] = useState(['', '', '']); const [title, setTitle] = useState(game0 ? `${gameName(game0)} 같이 해요` : ''); const [multi, setMulti] = useState(false);
   const [apply, setApply] = useState('first'); const [repeat, setRepeat] = useState(''); const [open, setOpen] = useState(false);
   const [game, setGame] = useState(game0 || null); const [bring, setBring] = useState(''); const [cost, setCost] = useState(''); const [desc, setDesc] = useState(''); const [more, setMore] = useState(!!game0);
@@ -5253,15 +5288,16 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
   const rankPs = game ? perPs.filter(p => p.gameId === game) : perPs;
   const pct = r => r.w ? `${Math.round(r.w / r.vs * 1000) / 10}%` : '아직 승 없음';
   // 큰 모임은 전체 기간에 5판 이상만. 첫 정모처럼 아무도 못 넘으면 1판부터 보여요
-  // 판이 적을 땐(승부 난 판이 5판 안 되거나, 큰 모임에서 5판 넘긴 사람이 없을 때) 순위가 자주 바뀐다고 알려요
-  const fewG = (showRank || tab === 'home') && !game && per === 'all' && (rankPs.filter(p => modeOf(p) !== 'coop' && decided(p)).length < 5 || (minN > 1 && !groupBoard(rankPs, names).some(r => r.vs >= minN)));
+  // 판이 적을 땐(승부 난 판이 10판 안 되거나 모인 날이 3일 안 될 때, 큰 모임에서 5판 넘긴 사람이 없을 때) 순위가 자주 바뀐다고 알려요
+  const fewG = (showRank || tab === 'home') && !game && per === 'all' && ((dec => dec.length < 10 || new Set(dec.map(p => p.date)).size < 3)(rankPs.filter(p => modeOf(p) !== 'coop' && decided(p))) || (minN > 1 && !groupBoard(rankPs, names).some(r => r.vs >= minN)));
   const board = showRank || tab === 'home' ? (b0 => { const b = b0.filter(r => r.vs >= (game ? 1 : per === 'all' ? minN : 1)); return b.length ? b : b0.filter(r => r.vs >= 1); })(groupBoard(rankPs, names)) : [];
   const rankI = r => board.findIndex(x => x.w === r.w && x.vs === r.vs) + 1;
   const myRow = board.find(r => r.n === '나');
   const myRank = myRow && !fewG ? { i: rankI(myRow), rate: pct(myRow) } : null;
   const perL = { all: '전체 기간', month: `${new Date().getMonth() + 1}월`, year: `${new Date().getFullYear()}년` }[per];
-  const shareRank = () => { const t = `${g.name} ${perL} 순위${game ? ` · ${GAME[game].ko}` : ''}\n` + board.slice(0, 10).map(r => `${rankI(r)}. ${nm(r.n)} ${pct(r)} (${r.w}승 ${r.vs}판)`).join('\n');
-    if (navigator.share) navigator.share({ text: t }).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => say('순위를 복사했어요 · 단톡방에 붙여 넣으면 돼요'), () => say('복사하지 못했어요')); };
+  // 순위 공유: 그림 카드 시트를 열어요(글로 보내기도 그 안에 있어요)
+  const [rkShare, setRkShare] = useState(false);
+  const shareRank = () => setRkShare(true);
   const isDec = new Date().getMonth() === 11;
   const nextEv = (g.events || []).filter(e => e.date && e.date >= today()).sort((a, b) => a.date.localeCompare(b.date))[0];
   const report = (what, ref, text, who) => setRep({ what, ref, text, who });
@@ -5326,6 +5362,7 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
       <div className="hint" style=${{ margin: '4px 0 10px' }}>운영진이 보고 처리해요. 신고한 ${rep.what === 'post' ? '글' : '댓글'}은 ${ME.name}님에게 바로 안 보여요.</div>
       <div className="rp-pick">${REPORT_WHY.map(w => html`<button key=${w} className="prow" onClick=${() => { upGroup(g.id, y => ({ ...y, myHidden: [...(y.myHidden || []), rep.ref], reports: [...(y.reports || []), { id: 'r' + uid(), ...rep, reason: w, by: '나', at: Date.now(), state: 'review' }] })); setRep(null); say('신고했어요 · 운영진이 확인해요'); }}>${w}</button>`)}</div>
     <//>` : null}
+    ${rkShare ? html`<${ShareRankSheet} title=${g.name} sub=${`${perL} 순위${game && GAME[game] ? ` · ${GAME[game].ko}` : ''}`} rows=${board.slice(0, 8).map(r => ({ i: rankI(r), n: nm(r.n), me: r.n === '나', pct: pct(r), w: r.w, vs: r.vs }))} few=${fewG} close=${() => setRkShare(false)} say=${say}/>` : null}
   </div>`;
 }
 
