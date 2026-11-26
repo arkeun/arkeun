@@ -1,4 +1,4 @@
-id: q-20261126-103606-7581
+id: q-20261126-103803-27808
 to: gemini
 file: ai-review/shots/before/390-01-home-0.jpg
 file: ai-review/shots/before/390-01-home-1.jpg
@@ -63,20 +63,12 @@ file: ai-review/shots/before/390-42-search-2.jpg
 file: ai-review/shots/before/390-42-search-3.jpg
 file: ai-review/shots/before/390-42-search-4.jpg
 file: ai-review/shots/before/eric-phone-record.jpg
-file: ai-review/shots/before/360-01-home-0.jpg
-file: ai-review/shots/before/360-11-sheet-0.jpg
-file: ai-review/shots/before/360-11-sheet-1.jpg
-file: ai-review/shots/before/360-11-sheet-2.jpg
-file: ai-review/shots/before/360-13-after-save.jpg
-file: ai-review/shots/before/360-15-solo-1.jpg
-file: ai-review/shots/before/360-20-shelf-0.jpg
-file: ai-review/shots/before/360-30-groups-0.jpg
-file: ai-review/shots/before/360-40-my-0.jpg
 ---
-# 역할: 시각 디자이너
-너는 토스·오늘의집·당근에서 일한 시각 디자이너예요. 볼 것: 색 대비(회색 글씨가 흐린지, WCAG 기준), 카드와 바탕의 구분(베이지 바탕에 베이지 카드), 글자 크기·굵기로 나뉘는 단계(어디부터 봐야 할지 보이는지), 여백과 줄 높이, 버튼 무게(진한 초록 버튼만 혼자 무거운지), 아이콘·칩·입력칸 모양이 화면마다 같은지, 360px에서 꺾이거나 잘리는 곳.
-**반드시 실제 국내 앱의 같은 종류 화면과 나란히 놓고 비교**해 주세요: 토스(입력 시트·저장 완료), 오늘의집(카드·사진 목록), 당근(목록 줄 높이), 왓챠피디아(평가 화면), 소모임(모임 화면). "토스의 ○○ 화면은 이렇게 하는데 여기는 이렇다"처럼 구체적으로.
-지금 쓰는 색(참고): 바탕 크림 #f7f2ea 계열, 카드 #fffdf8 계열, 주 초록 #3e7b57 계열, 갈색 글씨.
+# 역할: 브랜드·느낌 담당
+너는 게임·취미 앱의 브랜드 디자이너예요. 이 앱이 **신나는 놀이 기록**처럼 느껴지는지, **서류·관공서 양식**처럼 느껴지는지 판단해 주세요.
+볼 것: 이긴 순간(승자 고르기), 저장한 순간(저장 직후 화면), 오늘의 승자, 연속 기록·최고 점수 같은 기분이 살아야 할 곳이 밋밋하지 않은지. 반대로 너무 유치하거나 과한 축하가 들어갈 곳은 아닌지(진 사람 배려도 있어야 함, 커플은 승패를 앞세우지 않음).
+게임 박스 그림, 캐릭터(프로필 대신 보드게임 말 모양 캐릭터), 색이 보드게임다운 느낌을 주는지. 참고 앱: 듀오링고(달성감), 토스(완료 화면), 왓챠피디아(취향 기록), 비트윈(커플).
+각 제안은 "어느 순간에, 무엇을(애니메이션·문구·색·그림), 얼마나 짧게"까지 적어 주세요. 기록을 빨리 쓰는 걸 방해하면 안 돼요(하루 수십 판을 적는 사람도 있음).
 
 ## 앱 소개 (꼭 읽고 판단해 주세요)
 - 한국 사람이 쓰는 보드게임 **기록 앱**이에요. 핵심은 "누구와 어떤 게임을 했고 누가 이겼는지"를 쉽게 쓰고 쉽게 다시 보는 것.
