@@ -1,92 +1,70 @@
-id: q-20261126-104640-5396
+id: q-20261126-105812-6077
 to: gemini
-file: ai-review/shots/before/390-01-home-0.jpg
-file: ai-review/shots/before/390-01-home-1.jpg
-file: ai-review/shots/before/390-01-home-2.jpg
-file: ai-review/shots/before/390-01-home-3.jpg
-file: ai-review/shots/before/390-01-home-4.jpg
-file: ai-review/shots/before/390-02-cal.jpg
-file: ai-review/shots/before/390-03-day-0.jpg
-file: ai-review/shots/before/390-03-day-1.jpg
-file: ai-review/shots/before/390-11-sheet-0.jpg
-file: ai-review/shots/before/390-11-sheet-1.jpg
-file: ai-review/shots/before/390-11-sheet-2.jpg
-file: ai-review/shots/before/390-11-sheet-3.jpg
-file: ai-review/shots/before/390-13-after-save.jpg
-file: ai-review/shots/before/390-13-home-after.jpg
-file: ai-review/shots/before/390-14-again-0.jpg
-file: ai-review/shots/before/390-14-again-1.jpg
-file: ai-review/shots/before/390-14-again-2.jpg
-file: ai-review/shots/before/390-15-solo-0.jpg
-file: ai-review/shots/before/390-15-solo-1.jpg
-file: ai-review/shots/before/390-15-solo-2.jpg
-file: ai-review/shots/before/390-20-shelf-0.jpg
-file: ai-review/shots/before/390-20-shelf-1.jpg
-file: ai-review/shots/before/390-20-shelf-2.jpg
-file: ai-review/shots/before/390-20-shelf-3.jpg
-file: ai-review/shots/before/390-21-game-info-0.jpg
-file: ai-review/shots/before/390-21-game-info-1.jpg
-file: ai-review/shots/before/390-21-game-질문-0.jpg
-file: ai-review/shots/before/390-21-game-질문-1.jpg
-file: ai-review/shots/before/390-21-game-평가-0.jpg
-file: ai-review/shots/before/390-21-game-평가-1.jpg
-file: ai-review/shots/before/390-21-game-평가-2.jpg
-file: ai-review/shots/before/390-21-game-평가-3.jpg
-file: ai-review/shots/before/390-30-groups-0.jpg
-file: ai-review/shots/before/390-30-groups-1.jpg
-file: ai-review/shots/before/390-30-groups-2.jpg
-file: ai-review/shots/before/390-30-groups-3.jpg
-file: ai-review/shots/before/390-30-groups-4.jpg
-file: ai-review/shots/before/390-31-group-home-0.jpg
-file: ai-review/shots/before/390-31-group-home-1.jpg
-file: ai-review/shots/before/390-31-group-home-2.jpg
-file: ai-review/shots/before/390-31-group-기록-0.jpg
-file: ai-review/shots/before/390-31-group-기록-1.jpg
-file: ai-review/shots/before/390-31-group-기록-2.jpg
-file: ai-review/shots/before/390-31-group-기록-3.jpg
-file: ai-review/shots/before/390-31-group-기록-4.jpg
-file: ai-review/shots/before/390-31-group-멤버-0.jpg
-file: ai-review/shots/before/390-31-group-멤버-1.jpg
-file: ai-review/shots/before/390-31-group-일정-0.jpg
-file: ai-review/shots/before/390-31-group-일정-1.jpg
-file: ai-review/shots/before/390-31-group-일정-2.jpg
-file: ai-review/shots/before/390-40-my-0.jpg
-file: ai-review/shots/before/390-40-my-1.jpg
-file: ai-review/shots/before/390-41-bell-0.jpg
-file: ai-review/shots/before/390-41-bell-1.jpg
-file: ai-review/shots/before/390-41-bell-2.jpg
-file: ai-review/shots/before/390-41-bell-3.jpg
-file: ai-review/shots/before/390-41-bell-4.jpg
-file: ai-review/shots/before/390-42-search-0.jpg
-file: ai-review/shots/before/390-42-search-1.jpg
-file: ai-review/shots/before/390-42-search-2.jpg
-file: ai-review/shots/before/390-42-search-3.jpg
-file: ai-review/shots/before/390-42-search-4.jpg
+file: ai-review/shots/after/390-01-home-0.jpg
+file: ai-review/shots/after/390-11-sheet-0.jpg
+file: ai-review/shots/after/390-11-sheet-1.jpg
+file: ai-review/shots/after/390-11-sheet-2.jpg
+file: ai-review/shots/after/390-11-sheet-3.jpg
+file: ai-review/shots/after/390-13-after-save.jpg
+file: ai-review/shots/after/390-13-home-after.jpg
+file: ai-review/shots/after/390-14-again-0.jpg
+file: ai-review/shots/after/390-15-solo-0.jpg
+file: ai-review/shots/after/390-15-solo-1.jpg
+file: ai-review/shots/after/390-16-solo-saved.jpg
+file: ai-review/shots/after/390-03-day-0.jpg
+file: ai-review/shots/after/390-40-my-0.jpg
+file: ai-review/shots/after/390-20-shelf-0.jpg
+file: ai-review/shots/after/360-11-sheet-1.jpg
+file: ai-review/shots/after/360-13-after-save.jpg
 file: ai-review/shots/before/eric-phone-record.jpg
-file: docs/reviews/app-words.md
 ---
-# 역할: 문구 검토자
-너는 토스·당근 수준의 UX 라이터예요. 처음 보는 사람이 **뜻을 바로 아는지**, 어색한 말투·번역투·숫자 표현이 없는지 봐 주세요.
-예시로 이미 알려진 것: "1번째 판"은 "1판"이 자연스러움, 시트 오른쪽 "선택"(사진·영상 옆)은 무슨 뜻인지 안 와닿음, "본판만"도 낯섦.
-화면 캡처 속 모든 글자와 함께 붙인 문구 전체 목록(docs/reviews/app-words.md)도 봐 주세요. 같은 뜻인데 화면마다 다른 말(예: 판/게임/라운드, 빼기/지우기/삭제), 버튼 말이 결과를 예상하게 하는지, 긴 닉네임이 들어갔을 때 어색해지는 문장("보드게임좋아하는에릭님은 적기만 해요" 등), 조사(을/를) 처리.
-문제마다 "지금 문구 → 바꿀 문구 → 이유"로 적어 주세요. 최소 20개.
+# 2차: 반박·재확인과 고친 화면 확인
+앞서 너(제미나이)는 역할 다섯 개(시각·느낌·구조·상황별·문구)로 의견을 냈어요. Claude가 코드와 맞춰 보고 일부는 고치고 일부는 반대했어요. 아래 표가 그 결과예요. 붙인 사진은 **고친 뒤 화면**이에요(eric-phone-record만 고치기 전).
 
-## 앱 소개 (꼭 읽고 판단해 주세요)
-- 한국 사람이 쓰는 보드게임 **기록 앱**이에요. 핵심은 "누구와 어떤 게임을 했고 누가 이겼는지"를 쉽게 쓰고 쉽게 다시 보는 것.
-- 하단 탭: 홈(내 기록장) · 보관함(가진 게임) · 기록(가운데, 누르면 기록 시트) · 모임 · {닉네임}(통계·내 정보).
-- 기록은 하루 단위로 묶여요. 한 날에 여러 게임·여러 판. 판마다 승자/순위/협력(우리가 이김·짐), 점수·사진·메모는 선택.
-- 이용자: 커플(둘이 자주 함), 모임 기록 담당(80명 동호회, 하루 수십 판 적음), 모임 일반 멤버(남이 적은 기록을 봄), 혼자 하는 사람(솔로 게임, 점수 위주), 처음 깐 사람.
-- 규모: 기록 수천 판, 모임 수백 개, 보관함 수백 개를 가정해요.
-- 정해진 원칙: 화면마다 목적 하나 / "나" 대신 닉네임 / 기록장에는 시간·판 수 통계를 두지 않고 통계 탭에만 / 부정 버튼(빼기·나가기)은 ⋯ 안으로 / 이모지 대신 선 아이콘 / 보관함은 특히 예쁘게(크림 바탕·나무 선반) / ~해요체.
-- 지금 상태: 웹 초안(React). 게임 이름 "예시 게임 123"은 아직 실제 데이터가 없어서 넣은 자리 채우기예요(문제로 보지 않아도 돼요).
+할 일:
+1. "동의하지 않은 것" 각각에 대해, Claude의 이유가 맞으면 "인정", 틀리면 근거를 들어 "반박"해 주세요. 짧게.
+2. 고친 화면을 보고, **고친 게 만든 새 문제**나 아직 덜 고쳐진 곳을 찾아 주세요(어느 사진, 무엇, 어떻게). 특히 혼자 기록(15·16), 저장 직후(13), 게임 카드 ⋯(11-sheet-1의 스플렌더 카드 오른쪽 ⋯를 누른 상태).
+3. 앞 의견 중 아직 안 고친 것 가운데 **이용자에게 가장 큰 것 3개**를 다시 골라 주세요(이유 포함).
+좋은 점은 빼고, 쉬운 한국어로.
 
-## 캡처 설명
-- 모두 '많이 쓴 상태'(예시 기록 수백 판, 긴 닉네임 "보드게임좋아하는에릭")에서 찍었어요. 파일 이름 앞 숫자는 폭(390 또는 360px), 끝 숫자는 같은 화면을 아래로 내린 순서예요.
-- 01 홈(목록) · 02 홈(달력) · 03 하루 결과 상세 · 11 기록 시트(게임 3개 스플렌더·팬데믹·아줄, 판 5개) · 13 저장 직후 시트와 홈 · 14 '한 판 더'로 연 시트 · 15 혼자 하는 기록 시트 · 20 보관함 · 21 게임 화면(정보·평가·질문) · 30 모임 목록 · 31 모임 안(홈·일정·기록·멤버) · 40 닉네임 탭(통계) · 41 알림 · 42 검색("지민") · eric-phone-record = 앱 주인이 실제 아이폰에서 찍은 혼자 기록 화면.
+## ⑩ 2026-11-26 화면 전체 다시 검토: 역할 다섯 명 (에릭님 요청)
 
-## 공통 조건
-- 고장(버그)만 찾지 말고 **맡은 역할의 눈으로** 판단해 주세요.
-- 문제마다 **어느 화면(파일 이름) / 왜 문제인지 / 어떻게 바꿀지**를 적어 주세요. 바꿀 방법은 구체적으로(색 값, 크기 px, 문구 바꿀 말까지).
-- **좋은 점은 빼고, 최소 12개.** 중요한 것부터.
-- 한 곳에서만 보이는 문제라도 다른 화면에도 같은 문제가 있으면 같이 적어 주세요.
-- 마지막에 "가장 먼저 고칠 3개"를 따로 골라 주세요.
+- **왜**: 9회차까지 Claude 검토가 "기록이 맞게 저장되나"만 봐서, 보기 좋은지·느낌·구조·상황별 화면·문구를 놓쳤어요(에릭님 아이폰 캡처: 혼자 기록 화면).
+- **물은 것**: '많이 쓴 상태'(긴 닉네임, 게임 3개·판 5개, 저장 뒤 화면까지) 캡처 63장(390)+9장(360)을 보내고, 역할 다섯 개로 따로 물었어요. 고장만 찾지 말 것, 문제마다 화면·이유·바꿀 방법, 좋은 점은 빼고 최소 12개. 원문: `ai-review/log/2026-11-26-role1~5.md`, 캡처: `ai-review/shots/before/`.
+  1. 시각 디자이너(토스·오늘의집·당근 비교) 2. 브랜드·느낌 3. 구조·목적 4. 상황별 사용자(혼자·커플·모임 기록 담당·일반 멤버·처음) 5. 문구
+
+**받아들여 고친 것** (같은 문제를 앱 전체에서 같이 고침)
+
+| 의견 | 고친 것 |
+|---|---|
+| 구조: 기록 시트에 '규칙 질문', '누가 먼저? 뽑기'가 섞임 | 게임 카드 오른쪽 ⋯ 안으로 옮김(규칙 질문 보기·누가 먼저·팀 나누기). 이미 뽑은 선·팀은 그대로 보여요 |
+| 구조: 홈 맨 위에 일정이 셋이나 있어 기록이 밀림 | 일정은 가장 가까운 하나만. 큰 버튼에 이미 나온 오늘 일정은 다시 안 보여요. 나머지는 "일정 N개 더 보기" |
+| 상황(혼자): 이겼어요/졌어요, "닉네임 점수"가 여럿일 때와 같음 | 혼자면 **성공/실패**, 점수 칸 이름은 "점수", 펼침에 점수 칸 중복 없앰(+ 사진·메모), 홈 줄도 "성공 1 · 최고 64점" |
+| 문구: "1번째 판" | "1판" (펼치기·지우기 안내까지) |
+| 문구: 사진·영상 옆 "선택" | "오늘 사진·영상 · 안 넣어도 돼요" (판마다 사진과 헷갈리지 않게 '오늘'을 붙임) |
+| 문구: "본판만" | "확장 없이" |
+| 문구: "빼기" | "지우기" (안내 문장도) |
+| 문구: "보드게임좋아하는에릭님은 적기만 해요" (긴 닉네임) | "게임엔 안 끼고 적기만 해요" |
+| 문구: "누가 이겼어요? 적기 · 3판 비어 있어요" | "승자 안 적은 판 3개 · 지금 적기" |
+| 문구: "지민님, 현우님 기록장에도 들어가요" | "지민·현우님 기록장에도 들어갔어요" |
+| 시각: 카드와 바탕 구분 약함, 회색 글씨 흐림, 글씨 10~11px | 카드 흰색(#ffffff)·선 한 단계 진하게, 가장 흐린 글씨 #75685d→#6b5e53, 10~11px 글씨 26곳을 12px로 |
+| 시각·느낌: 결산 배너 진갈색이 튐 | 연한 금빛으로(어두운 모드는 그대로) |
+| 느낌: 승자 고르는 순간이 밋밋함 | 누르면 칩이 살짝 튀고 왕관이 금색, 폰이 아주 짧게 떨림 |
+| 느낌: 저장 직후 "오늘의 승자"가 서류 같음 | 왕관과 1초짜리 색종이. 움직임 줄이기 설정이면 안 움직여요 |
+
+**동의하지 않은 것 (이유)**
+
+| 의견 | Claude 판단 |
+|---|---|
+| 시각 3: 저장 버튼이 화면 아래 꽉 붙음 | 실제로는 좌우·아래 여백과 둥근 모서리가 있어요. 사진을 잘못 읽은 것 |
+| 구조 1: 홈 큰 초록 버튼 지우기 | 큰 버튼은 '한 판 더'(판 끝날 때마다 올리기)를 2~3번에 끝내는 핵심이에요. 탭바 기록과 같은 일이 아니에요 |
+| 구조 5: 저장 직후 화면 대신 토스트 | 느낌 담당은 반대로 저장 순간을 더 살리자고 했어요. 승자 안 적은 판 안내도 여기서 해야 해요 |
+| 구조 7: 게임 정보 탭의 내 전적을 새 탭으로 | 정보·평가·질문 탭은 에릭님이 정한 구조예요 |
+| 구조 11: 닉네임 탭의 평가·질문 탭 빼기 | 내가 쓴 평가·질문을 모아 보는 곳이라 그대로 둬요 |
+| 느낌 5: "35%의 확률로 승리를 쟁취했어요!" | 숫자는 담담하게. 과한 칭찬은 오히려 AI 같아요 |
+| 느낌 6: "우리가 짐" → "아쉬운 한 판!" | ⑧에서 진 사람 배려는 '담담하게'로 정했어요 |
+| 상황 6: 사람 고르기에 ㄱㄴㄷ 색인, 게임 순서 끌어서 바꾸기 | 검색창과 '자주 같이 한'이 이미 있어요. 게임 순서는 한 순서대로가 맞아요 |
+| 문구 9: 가요/아직 몰라요/못 가요 바꾸기 | 에릭님이 정한 말이에요 |
+| 문구 19·17: "틀렸어요", "이 판만 다를 때" | 지금 앱에 없는 말이에요(옛 목록을 본 듯) |
+
+**미룬 것**: 커플 화면 의견(1:1 대신 함께한 횟수, 커플 알림 문구)은 커플 스레드로 넘김. 모임 목록·모임 일정 탭 구조는 모임 설계와 같이 봐요. 소연 '내 판만 보기', 하루 상세에서 내 이름 굵게, 게임 정보 최고 점수 표시는 다음 차례.
