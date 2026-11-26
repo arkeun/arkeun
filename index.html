@@ -2630,7 +2630,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
     const best = t.list.length ? t.list[0][1] : 0; const tier = t.list.filter(([, c]) => c === best);
     const wc = Object.fromEntries(t.list); const du = duoOf(plays); const duo = du && (wc[du[1]] || 0) > (wc[du[0]] || 0) ? [du[1], du[0]] : du;
     const top = !t.list.length ? [] : duo ? [`${dn(duo[0])} ${nf(wc[duo[0]] || 0)} : ${nf(wc[duo[1]] || 0)} ${dn(duo[1])}`]
-      : tier.length > 2 ? [`${dn(tier[0][0])} 등 ${nf(tier.length)}명 각 ${nf(best)}승`] : tier.length > 1 ? [`${tier.map(([n]) => dn(n)).join('·')} 각 ${nf(best)}승`]
+      : tier.length > 2 ? [`${dn(tier[0][0])} 등 ${nf(tier.length)}명 각 ${nf(best)}승`] : tier.length > 1 ? [`${tier.map(([n]) => dn(n)).join('·')} ${nf(best)}:${nf(best)}`]
       : t.list.length >= 2 ? [html`${dn(t.list[0][0])} ${nf(best)}승<span className="r2"> · ${dn(t.list[1][0])} ${nf(t.list[1][1])}승</span>`] : [`${dn(t.list[0][0])} ${nf(best)}승`];
     const bits = [...(t.coopN ? [`우리가 ${nf(t.coopW)}승 ${nf(t.coopN - t.coopW)}패`] : []), ...top];
     const even = duo && !t.coopN && (wc[duo[0]] || 0) === (wc[duo[1]] || 0); // 1 : 1 동점엔 왕관 없이
@@ -2649,7 +2649,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const cpl = variant ? null : (st.couples || []).find(c => day.plays.every(p => p.people.length === 1 && p.people[0] === c.partner));
   const resultLine = (plays, solo) => { const w = winLine(plays, solo); return w && (!Array.isArray(w) || w.length) ? w : null; };
   return html`<div className=${'play card dense' + (inGroupView ? ' ingv' : '') + (variant === 'couple' ? ' couplev' : cpl ? ' cplday' : '')} style=${cpl ? { '--cc': coupleColor(cpl) } : null}>
-    <button className="when" onClick=${() => !full && NAV.day && NAV.day(day.date)} aria-label=${`${d.getMonth() + 1}월 ${d.getDate()}일 결과 전체 보기`}><span className="d">${d.getDate()}</span><span className=${'m' + (d.getDay() === 0 || d.getDay() === 6 ? ' we' : '')}>${DOW[d.getDay()]}요일</span></button>
+    <button className="when" onClick=${() => !full && NAV.day && NAV.day(day.date, typeof inGroupView === 'string' ? inGroupView : null)} aria-label=${`${d.getMonth() + 1}월 ${d.getDate()}일 결과 전체 보기`}><span className="d">${d.getDate()}</span><span className=${'m' + (d.getDay() === 0 || d.getDay() === 6 ? ' we' : '')}>${DOW[d.getDay()]}요일</span></button>
     <div style=${{ minWidth: 0 }}>
       <div className="dh">${menu ? html`<div className="dm-scrim" onClick=${() => setMenu(false)}></div>` : null}<span className="dh-t">${cpl ? html`<button className="cpname linkbtn inl" onClick=${() => NAV.couple && NAV.couple(cpl.id)}>${cpl.name || html`${ME.name} <span className="hrt">♥</span> ${cpl.partner}`} ›</button>` : gn.length && !inGroupView ? html`<b>${gn.length > 2 ? gn.slice(0, 2).join(' · ') + ' 외' : gn.join(' · ')}</b>` : null}</span>
         <button className="dots dh-more" aria-label="이 날 메뉴" aria-expanded=${menu} onClick=${() => setMenu(!menu)}>⋯</button>${menu ? html`<div className="daymenu">
@@ -2664,13 +2664,13 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
         const media = gl.plays.flatMap(p => p.media || []);
         return html`<div key=${k} className=${'grow2' + (isOpen ? ' open' : '')}>
           <div className="gr-main"><button className="gr-cv" onClick=${() => open(g.id)} aria-label=${g.ko + ' 게임 화면'}><${Cover} g=${g} size="xs"/></button>
-            <button className="gr-line" onClick=${() => full ? setOpenG(isOpen ? k : null) : NAV.day && NAV.day(day.date)} aria-expanded=${full ? isOpen : undefined} aria-label=${first ? `${g.ko} · 처음 한 게임` : undefined}>
+            <button className="gr-line" onClick=${() => full ? setOpenG(isOpen ? k : null) : NAV.day && NAV.day(day.date, typeof inGroupView === 'string' ? inGroupView : null)} aria-expanded=${full ? isOpen : undefined} aria-label=${first ? `${g.ko} · 처음 한 게임` : undefined}>
               <b>${g.ko}</b>${!full && gl.plays.some(p => p.exps && p.exps.length) ? html`<span className="xpmark" title="확장 포함">+확장</span>` : null}${n > 1 ? html` <span className="times num">${nf(n)}판</span>` : null}${(x => x ? html`<span className="gr-res">${x}</span>` : null)(resultLine(gl.plays, solo))}${!inGroupView && gl.plays.every(p => p.scribe) ? html` <span className="chip">${ME.name} 빠짐</span>` : null}${full && multiSeg && gl.sg.people.length !== allPpl.length ? html`<span className="gr-w">· ${gl.sg.people.length ? gl.sg.people.join(', ') + '만' : '혼자'}</span>` : null}</button>${first ? html`<span className="gr-first" aria-hidden="true">처음</span>` : null}</div>
           ${isOpen && n > 1 ? html`<${ManyRounds} plays=${gl.plays} solo=${solo} numOf=${numOf}/>` : null}
           ${isOpen && n === 1 ? html`<div className="gr-detail">${gl.plays.map(p => { const b = roundSummary({ ...p, winners: [], ranks: {}, coop: null, draw: false }, solo); return html`<div key=${p.id} className="rline">${b.length ? joinBits(b) : null}${p.from ? html` <span className="nores">${p.from}님이 남김</span>` : null}</div>`; })}
             <${MediaView} small items=${media} label=${`${g.ko} 사진`}/></div>` : null}
         </div>`; })}
-        ${rows.length > shownRows.length ? html`<button className="linkbtn gr-more" onClick=${() => NAV.day(day.date)}>외 ${nf(rows.length - shownRows.length)}개 게임 더 보기 ›</button>` : null}</div>
+        ${rows.length > shownRows.length ? html`<button className="linkbtn gr-more" onClick=${() => NAV.day(day.date, typeof inGroupView === 'string' ? inGroupView : null)}>외 ${nf(rows.length - shownRows.length)}개 게임 더 보기 ›</button>` : null}</div>
     </div>
     ${photos.length ? html`<div className="thumb1"><${MediaView} small items=${photos} label=${`${d.getMonth() + 1}월 ${d.getDate()}일 사진`}/>${photos.length > 1 ? html`<span className="more-n num">+${nf(photos.length - 1)}</span>` : null}</div>` : null}
   </div>`;
@@ -2900,15 +2900,16 @@ function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay
   <//>`;
 }
 /* ---------- 하루 결과 전체 ---------- */
-function DaySheet({ st, date, close, open, editDay, shareDay, removeFromId, back }) {
+function DaySheet({ st, date, close, open, editDay, shareDay, removeFromId, back, plays0, inGroupView, gname }) {
   const Wrap = back ? Page : Sheet; if (back) close = () => {};
-  const ps = st.plays.filter(p => p.date === date);
+  const ps = plays0 || st.plays.filter(p => p.date === date);
   const d = parse(date);
   const day = ps.length ? byDay(ps)[0] : null;
   const firsts = useMemo(() => firstPlayIds(st.plays, st.since), [st.plays]);
   return html`<${Wrap} title=${`${d.getMonth() + 1}월 ${d.getDate()}일 ${DOW[d.getDay()]}요일`} close=${back || close}>
-    ${day ? html`<div className="dayfull"><${DayGroup} day=${day} st=${st} open=${id => { close(); open(id); }} edit=${x => { close(); editDay(x); }} firsts=${firsts} removeFrom=${removeFromId} share=${x => { close(); shareDay(x); }} full/></div>
-      ${day.plays.some(p => !p.from) ? html`<div className="sheet-foot two"><button className="btn" onClick=${() => { close(); shareDay(date); }}>공유</button><button className="btn primary" onClick=${() => { close(); editDay(date); }}>고치기</button></div>` : null}` :
+    ${gname ? html`<div className="hint" style=${{ margin: '0 0 8px' }}>${gname} · 이날 모임 기록 전부 (${nf(ps.length)}판)</div>` : null}
+    ${day ? html`<div className="dayfull"><${DayGroup} day=${day} st=${st} inGroupView=${inGroupView} open=${id => { close(); open(id); }} edit=${x => { close(); editDay(x); }} firsts=${firsts} removeFrom=${removeFromId} share=${x => { close(); shareDay(x); }} full/></div>
+      ${!inGroupView && day.plays.some(p => !p.from) ? html`<div className="sheet-foot two"><button className="btn" onClick=${() => { close(); shareDay(date); }}>공유</button><button className="btn primary" onClick=${() => { close(); editDay(date); }}>고치기</button></div>` : null}` :
       html`<${Empty} title="이 날은 기록이 없어요"/>`}
   <//>`;
 }
@@ -4378,16 +4379,19 @@ async function cardShare(el, name, text, plain, say) {
 function ShareRankSheet({ title, sub, rows, few, close, say }) {
   const [theme, setTheme0] = useState(() => { try { return localStorage.getItem('bg-share-theme') || 'night'; } catch (e) { return 'night'; } });
   const setTheme = t => { setTheme0(t); try { localStorage.setItem('bg-share-theme', t); } catch (e) {} };
-  const ref = useRef(null); const tops = rows.filter(r => r.i === 1); const rest = rows.filter(r => r.i !== 1);
-  const text = `${title} ${sub}\n` + rows.map(r => `${r.i}. ${r.n} ${r.pct} (${nf(r.vs)}판 ${nf(r.w)}승)`).join('\n');
+  const ref = useRef(null); const tops = rows.filter(r => r.i === 1);
+  // 같은 순위는 자르지 않아요: 셋 이상 같은 순위는 '공동 3위 김민수 외 5명' 한 줄로. 1위 아래로 네 줄까지
+  const grp = []; rows.filter(r => r.i !== 1).forEach(r => { const last = grp[grp.length - 1]; last && last.i === r.i ? last.rs.push(r) : grp.push({ i: r.i, rs: [r] }); });
+  const lines = []; for (const x of grp) { const add = x.rs.length > 2 ? [{ ...x.rs[0], n: `${x.rs[0].n} 외 ${nf(x.rs.length - 1)}명`, tie: true, me: x.rs.some(r => r.me) }] : x.rs.map(r => ({ ...r, tie: x.rs.length > 1 })); if (lines.length && lines.length + add.length > 4) break; lines.push(...add); }
+  const text = `${title} ${sub}\n` + rows.slice(0, 10).map(r => `${r.i}. ${r.n} ${r.pct} (${nf(r.vs)}판 ${nf(r.w)}승)`).join('\n');
   const plain = async () => { try { if (navigator.share) { await navigator.share({ text }); return; } await navigator.clipboard.writeText(text); say('순위를 복사했어요 · 단톡방에 붙여 넣으면 돼요'); } catch (e) { if (!(e && e.name === 'AbortError')) say('복사가 막혀 있어요. 카드를 길게 눌러 캡처해 주세요'); } };
   return html`<${Sheet} title="순위 공유" close=${close}>
     <div className="sc2-themes" role="tablist" aria-label="카드 색">${[['night', '밤'], ['paper', '종이'], ['mint', '민트'], ['pink', '분홍']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${theme === k} className=${'sc2-dot t-' + k} onClick=${() => setTheme(k)}><i></i>${l}</button>`)}</div>
     <div className=${'sc2 rk2 t-' + theme} ref=${ref}>
       <div className="sc2-top"><span className="sc2-brand">♟ 보드게임 기록장</span><span className="sc2-dd num">${today().slice(2).replace(/-/g, '.')}</span></div>
       <div className="sc2-date"><b>${title}</b><span>${sub}</span></div>
-      ${tops.length ? html`<div className="sc2-hero"><span className="sc2-crown">👑</span><span className="sc2-hl">${tops.length > 1 ? '공동 1위' : '1위'}</span><b className=${'sc2-name' + (tops.length > 1 ? ' sm' : '')}>${tops.length > 3 ? `${tops.slice(0, 2).map(r => r.n).join(' · ')} 외 ${nf(tops.length - 2)}명` : tops.map(r => r.n).join(' · ')}</b><span className="sc2-best">${tops[0].pct}</span></div>` : null}
-      <div className="sc2-list">${rest.map(r => html`<div key=${r.i + r.n} className=${'sc2-g' + (r.me ? ' me' : '')}><span className="n"><i className="num">${nf(r.i)}</i> ${r.n}</span><span className="w">${r.pct} · ${nf(r.vs)}판 ${nf(r.w)}승</span></div>`)}</div>
+      ${tops.length ? html`<div className="sc2-hero"><span className="sc2-crown">👑</span><span className="sc2-hl">${tops.length > 1 ? '공동 1위' : '1위'}</span><b className=${'sc2-name' + (tops.length > 1 ? ' sm' : '')}>${tops.length > 3 ? `${tops.slice(0, 2).map(r => r.n).join(' · ')} 외 ${nf(tops.length - 2)}명` : tops.map(r => r.n).join(' · ')}</b><span className="sc2-best">${tops[0].pct}</span><span className="sc2-hl">${nf(tops[0].vs)}판 ${nf(tops[0].w)}승</span></div>` : null}
+      <div className="sc2-list">${lines.map(r => html`<div key=${r.i + r.n} className=${'sc2-g' + (r.me ? ' me' : '')}><span className="n"><i className="num">${r.tie ? `공동 ${nf(r.i)}위` : nf(r.i)}</i> ${r.n}</span><span className="w">${r.pct} · ${nf(r.vs)}판 ${nf(r.w)}승</span></div>`)}</div>
       ${few ? html`<div className="sc2-g more">아직 판이 적어서 순위가 자주 바뀌어요</div>` : null}
     </div>
     <div className="sheet-foot two"><button className="btn" onClick=${plain}>글로 보내기</button><button className="btn primary" onClick=${() => cardShare(ref.current, `${title}-순위.png`, text, plain, say)}>그림으로 공유</button></div>
@@ -4996,7 +5000,7 @@ function EventCard({ e, g, st, upEv, staff, compact, onOpen }) {
       <button className=${'btn sm' + (mine === 'no' ? ' on' : '')} aria-pressed=${mine === 'no'} onClick=${() => setMine(mine === 'no' ? null : 'no')}>${mine === 'no' ? '✓ ' : ''}못 가요</button>
 </div>`}
     ${e.date && e.date <= today() && (mine === 'go' || staff) && NAV.play ? (() => { const done = st.plays.filter(p => p.groupId === g.id && p.date === e.date).length;
-      return html`<button className="btn block evrec" onClick=${() => done && NAV.day ? NAV.day(e.date) : NAV.play({ people: (e.came || []).length ? e.came : going, grp: g.id, date: e.date })}>${done ? `이날 기록 ${N(done)}판 보기` : (e.came || []).length ? `온 사람 ${N(e.came.length)}명으로 기록하기` : '이 일정 기록하기'}</button>`; })() : null}
+      return html`<button className="btn block evrec" onClick=${() => done && NAV.day ? NAV.day(e.date, (staff ? 'staff:' : 'g:') + g.id) : NAV.play({ people: (e.came || []).length ? e.came : going, grp: g.id, date: e.date })}>${done ? `이날 기록 ${N(done)}판 보기` : (e.came || []).length ? `온 사람 ${N(e.came.length)}명으로 기록하기` : '이 일정 기록하기'}</button>`; })() : null}
     ${going.length + maybe.length + wait.length || staff ? html`<button className="linkbtn evlist" onClick=${() => setRoster(true)}>${e.date && e.date <= today() && staff ? '명단 · 온 사람 체크' : '명단 보기'} ›</button>` : null}
     ${roster ? html`<${Roster} e=${e} g=${g} st=${st} upEv=${upEv} staff=${staff} close=${() => setRoster(false)}/>` : null}
     ${compact ? html`<button className="linkbtn" onClick=${onOpen}>일정 탭에서 보기</button>` : html`
@@ -5219,7 +5223,7 @@ function GroupHome({ g, st, upGroup, say, open, setTab, setPost, setWrite, setMk
     ${myRank ? html`<button className="hrow" onClick=${toRank}><span className="hr-l">내 순위</span><span className="hr-v">전체 기간 <b>${N(myRank.i)}위</b> · ${myRank.rate}</span><span className="chev">›</span></button>` : null}
 
     <div className="hsec"><div className="hs-h"><h2 className="sec">최근 기록</h2>${ps.length ? html`<button className="linkbtn" onClick=${() => setTab('log')}>전체</button>` : null}</div>
-      ${lastDays.length ? html`<${DayList} inGroupView=${staff ? 'staff:' + g.id : true} plays=${ps.filter(p => lastDays.some(d => d.date === p.date))} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>` :
+      ${lastDays.length ? html`<${DayList} inGroupView=${staff ? 'staff:' + g.id : 'g:' + g.id} plays=${ps.filter(p => lastDays.some(d => d.date === p.date))} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>` :
         html`<div className="hint">아직 이 모임으로 남긴 기록이 없어요. ${NAV.play ? html`<button className="linkbtn inl" onClick=${() => NAV.play({ people: ['나'], grp: g.id })}>첫 기록 남기기</button>` : null}</div>`}</div>
 
     <button className="hrow" onClick=${() => setTab('board')}><span className="hr-l">게시판</span><span className="hr-v">${recent[0] ? recent[0].title : '아직 글이 없어요'}</span>${newPosts ? html`<span className="hr-n">새 글 ${N(newPosts)}</span>` : null}<span className="chev">›</span></button>
@@ -5327,7 +5331,8 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
   const pct = r => r.w ? `${Math.round(r.w / r.vs * 1000) / 10}%` : '아직 승 없음';
   // 큰 모임은 전체 기간에 5판 이상만. 첫 정모처럼 아무도 못 넘으면 1판부터 보여요
   // 판이 적을 땐(승부 난 판이 10판 안 되거나 모인 날이 3일 안 될 때, 큰 모임에서 5판 넘긴 사람이 없을 때) 순위가 자주 바뀐다고 알려요
-  const fewG = (showRank || tab === 'home') && !game && per === 'all' && ((dec => dec.length < 10 || new Set(dec.map(p => p.date)).size < 3)(rankPs.filter(p => modeOf(p) !== 'coop' && decided(p))) || (minN > 1 && !groupBoard(rankPs, names).some(r => r.vs >= minN)));
+  // 게임 하나·기간을 골라도 같은 기준으로 알려요(공유 그림과 같게)
+  const fewG = (showRank || tab === 'home') && ((dec => dec.length < 10 || new Set(dec.map(p => p.date)).size < 3)(rankPs.filter(p => modeOf(p) !== 'coop' && decided(p))) || (!game && per === 'all' && minN > 1 && !groupBoard(rankPs, names).some(r => r.vs >= minN)));
   const board = showRank || tab === 'home' ? (b0 => { const b = b0.filter(r => r.vs >= (game ? 1 : per === 'all' ? minN : 1)); return b.length ? b : b0.filter(r => r.vs >= 1); })(groupBoard(rankPs, names)) : [];
   const rankI = r => board.findIndex(x => x.w === r.w && x.vs === r.vs) + 1;
   const myRow = board.find(r => r.n === '나');
@@ -5390,7 +5395,7 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
           ${board.length > 10 ? html`<button className="btn ghost block" onClick=${() => setAllRank(!allRank)}>${allRank ? '접기' : '전체 보기'}</button>` : null}
 ` :
         html`<div className="note">${per === 'all' ? '아직 순위를 낼 만큼 판이 없어요.' : `${perL}에는 아직 승부가 난 판이 없어요.`}</div>`}</div>` : null}
-      ${ps.length && !showRank ? html`<${DayList} inGroupView=${staff ? 'staff:' + g.id : true} key=${game || 'all'} plays=${game ? ps.filter(p => p.gameId === game) : ps} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>` : null}` : null}
+      ${ps.length && !showRank ? html`<${DayList} inGroupView=${staff ? 'staff:' + g.id : 'g:' + g.id} key=${game || 'all'} plays=${game ? ps.filter(p => p.gameId === game) : ps} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>` : null}` : null}
 
     ${cur === 'mem' ? html`<${MemTab} g=${g} st=${st} upGroup=${upGroup} say=${say} openPerson=${openPerson} inviteToGroup=${inviteToGroup} inviting=${inviting} setInviting=${setInviting} manage=${manage} setManage=${setManage} transfer=${transfer}/>` : null}
 
@@ -5400,7 +5405,7 @@ function GroupScreen({ gid, st, back, open, openPerson, editDay, removeFromId, l
       <div className="hint" style=${{ margin: '4px 0 10px' }}>운영진이 보고 처리해요. 신고한 ${rep.what === 'post' ? '글' : '댓글'}은 ${ME.name}님에게 바로 안 보여요.</div>
       <div className="rp-pick">${REPORT_WHY.map(w => html`<button key=${w} className="prow" onClick=${() => { upGroup(g.id, y => ({ ...y, myHidden: [...(y.myHidden || []), rep.ref], reports: [...(y.reports || []), { id: 'r' + uid(), ...rep, reason: w, by: '나', at: Date.now(), state: 'review' }] })); setRep(null); say('신고했어요 · 운영진이 확인해요'); }}>${w}</button>`)}</div>
     <//>` : null}
-    ${rkShare ? html`<${ShareRankSheet} title=${g.name} sub=${`${perL} 순위${game && GAME[game] ? ` · ${GAME[game].ko}` : ''}`} rows=${board.filter(r => r.w > 0).slice(0, 5).map(r => ({ i: rankI(r), n: nm(r.n), me: r.n === '나', pct: pct(r), w: r.w, vs: r.vs }))} few=${fewG || (dec => dec.length < 10 || new Set(dec.map(p => p.date)).size < 3)(rankPs.filter(p => modeOf(p) !== 'coop' && decided(p)))} close=${() => setRkShare(false)} say=${say}/>` : null}
+    ${rkShare ? html`<${ShareRankSheet} title=${g.name} sub=${`${perL} 순위${game && GAME[game] ? ` · ${GAME[game].ko}` : ''}`} rows=${board.filter(r => r.w > 0).map(r => ({ i: rankI(r), n: nm(r.n), me: r.n === '나', pct: pct(r), w: r.w, vs: r.vs }))} few=${fewG} close=${() => setRkShare(false)} say=${say}/>` : null}
   </div>`;
 }
 
@@ -5908,7 +5913,7 @@ function App() {
   NAV.log = q => { setSheet(null); setHq(q); setStack(s => ({ ...s, home: null })); setTab('home'); try { history.replaceState(null, '', '#home'); } catch (e) {} window.scrollTo(0, 0); };
   NAV.person = openPerson;
   NAV.what = who => setSheet({ kind: 'what', who });
-  NAV.day = d => { setSheet(null); pushStack('d:' + d); window.scrollTo(0, 0); };
+  NAV.day = (d, gv) => { setSheet(null); pushStack('d:' + d + (gv ? '|' + gv : '')); window.scrollTo(0, 0); };
   NAV.play = preset => startPlay(null, false, preset);
   NAV.more = (id, t, other) => startPlay(id, false, null, t, other);
   NAV.fix = x => setSheet({ kind: 'fix', ...x });
@@ -5964,7 +5969,9 @@ function App() {
     screen = mineG ? html`<${GroupScreen} key=${'g:' + pid} gid=${pid} ...${props} st=${st} back=${back}/>` : p ? html`<${GroupIntro} key=${detail} g=${p} st=${st} back=${back} open=${open} say=${say} saved=${(st.savedGroups || []).includes(pid)} toggleSave=${() => toggleSaveGroup(pid)}
       req=${(st.joinReq || {})[pid]} onJoin=${() => joinPub(p)} onAsk=${ans => askPub(p, ans)} onCancelAsk=${() => cancelAsk(pid)} visit=${st.visitEv || {}} onVisit=${visitEv}/>` : html`<div className="screen"><button className="backbtn" onClick=${back}>${I.back}뒤로</button><${Empty} title="모임이 없어요">없어진 모임이에요.<//></div>`; }
   else if (typeof detail === 'string' && detail.startsWith('x:')) screen = html`<${ExpDetail} key=${detail} xid=${detail.slice(2)} st=${stv} back=${back} open=${open} toggleExp=${toggleExp} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>`;
-  else if (typeof detail === 'string' && detail.startsWith('d:')) screen = html`<${DaySheet} key=${detail} st=${stv} date=${detail.slice(2)} back=${back} open=${open} editDay=${editDay} shareDay=${shareDay} removeFromId=${removeFromId}/>`;
+  else if (typeof detail === 'string' && detail.startsWith('d:')) { const [dd, gv] = detail.slice(2).split('|'); const gg = gv && (st.groups || []).find(x => x.id === gv.replace(/^(staff|g):/, ''));
+    // 모임에서 연 하루는 그 모임 판 전부(기록 담당이 적은 판·다른 사람이 적은 판 포함)를 보여 줘요
+    screen = gg ? html`<${DaySheet} key=${detail} st=${st} plays0=${groupPlaysOf(st, gg).filter(p => p.date === dd)} inGroupView=${gv} gname=${gg.name} date=${dd} back=${back} open=${open} editDay=${editDay} shareDay=${shareDay} removeFromId=${removeFromId}/>` : html`<${DaySheet} key=${detail} st=${stv} date=${dd} back=${back} open=${open} editDay=${editDay} shareDay=${shareDay} removeFromId=${removeFromId}/>`; }
   else if (typeof detail === 'string' && detail.startsWith('p:')) screen = html`<${PersonSheet} key=${detail} st=${stv} name=${detail.slice(2)} back=${back} open=${open} linkFriend=${linkFriend} block=${block}/>`;
   else if (typeof detail === 'string' && detail.startsWith('pg:')) { const [, gid, ...nm] = detail.split(':'); screen = html`<${PersonGame} key=${detail} st=${stv} name=${nm.join(':')} gid=${+gid} back=${back} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay}/>`; }
   else if (typeof detail === 'string' && detail.startsWith('g:')) screen = html`<${GroupScreen} key=${detail} gid=${detail.slice(2)} ...${props} st=${st} back=${back}/>`;
