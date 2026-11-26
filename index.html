@@ -1413,7 +1413,10 @@ select.qa-sort { border: 0; background: none; font: inherit; font-size: 13px; co
 .rank .v small { color: var(--ink-3); font-size: 12px; margin-left: 4px; }
 .rank.me { border-top: 1px dashed var(--line); margin-top: 4px; }
 .gpplx summary .chg { color: var(--accent); margin-left: 4px; font-weight: 600; }
-.whoask { margin-top: 10px; min-height: 48px; font-weight: 700; }
+.whoask { margin-top: 10px; min-height: 48px; font-weight: 700; background: #fff3dc !important; border-color: #efc77e !important; color: #6b4300 !important; }
+:root[data-theme="dark"] .whoask { background: #3a2e1a !important; color: #f3d9a6 !important; border-color: #6b5220 !important; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .whoask { background: #3a2e1a !important; color: #f3d9a6 !important; border-color: #6b5220 !important; } }
+.solo-on { font-size: 14px; color: var(--ink-2); padding: 6px 0 2px; }
 
 .ya-share { position: absolute; top: 10px; right: 10px; z-index: 2; min-height: 36px; padding: 0 14px; border: 0; border-radius: 18px; background: rgba(0,0,0,.55); color: #fff; font-weight: 700; font-size: 14px; }
 .sheet:has(.sheet-foot.stick) { padding-bottom: 0; }
@@ -1615,7 +1618,7 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 .gl-ev .gl-when.td { color: var(--accent); }
 .gl-me { margin-left: 8px; flex: none; font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-3); }
 .gl-me.go { color: #fff; background: var(--accent); border-color: var(--accent); }
-.gl-me.none { border-style: dashed; }
+.gl-me.none { border-style: dashed; color: var(--ink-2); border-color: #cdbfac; }
 .pickcard .why { color: var(--accent); font-weight: 600; margin-top: 2px; }
 .pickcard .r2 { display: flex; gap: 14px; margin-top: 4px; }
 .welcome { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding-bottom: 40px; }
@@ -3873,8 +3876,8 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
       ${!items.length && !otherG && savedDay.length && justNow && GAME[justNow.gameId] && justNow.date === date ? html`<button className="again" onClick=${() => addGame(justNow.gameId, justNow.table || 0)}><span className="t">${justNow.table ? `${justNow.table}테이블 ` : ''}${GAME[justNow.gameId].ko} 한 판 더</span><span className="d">${nextPpl(justNow).length ? whoAgain(nextPpl(justNow)) : '혼자'} · ${GAME[justNow.gameId].ko} ${nf(st.plays.filter(p => p.date === date && p.gameId === justNow.gameId && (p.table || 0) === (justNow.table || 0)).length + 1)}번째 판</span></button>` : null}
       ${!items.length && !editing && !savedDay.length && !pre && lastDay ? html`<button className="again" onClick=${copyLast}><span className="t">지난번처럼</span><span className="d">${relDay(lastDay.date)} · ${[...new Set(lastDay.plays.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].slice(0, 3).join(', ')}${new Set(lastDay.plays.map(p => p.gameId)).size > 3 ? ' 외' : ''} · 사람·게임 그대로 한 판씩</span></button>` : null}
     </div>
-    <div className="field step"><h3 className="stephd"><span className="sn">1</span>누구랑 했어요?<span className="sub">${people.length ? (tOn ? tables['나'] === 0 : meOff) ? `${nf(people.length)}명 · ${ME.name}님은 적기만` : tOn ? `${nf(people.length + 1)}명 · ${ME.name}님은 ${tables['나'] || curT}테이블` : `${ME.name} 포함 ${nf(people.length + 1)}명` : ''}</span><button className="pill solochip" aria-pressed=${!people.length} onClick=${() => { if (people.length) { setSoloPrev(people); people.forEach(n => togglePerson(n, true)); setSoloOn(true); } else if (soloOn && soloPrev.length) { soloPrev.forEach(n => togglePerson(n)); setSoloOn(false); } else setSoloOn(!soloOn); }}>혼자</button></h3>
-      <${PeoplePicker} st=${st} people=${people} links=${links} toggle=${n => togglePerson(n)} addPerson=${addPerson}/>
+    <div className="field step"><h3 className="stephd"><span className="sn">1</span>누구랑 했어요?<span className="sub">${people.length ? (tOn ? tables['나'] === 0 : meOff) ? `${nf(people.length)}명 · 적기만 해요` : tOn ? `${nf(people.length + 1)}명 · ${ME.name}님은 ${tables['나'] || curT}테이블` : `${ME.name} 포함 ${nf(people.length + 1)}명` : ''}</span><button className="pill solochip" aria-pressed=${!people.length} onClick=${() => { if (people.length) { setSoloPrev(people); people.forEach(n => togglePerson(n, true)); setSoloOn(true); } else if (soloOn && soloPrev.length) { soloPrev.forEach(n => togglePerson(n)); setSoloOn(false); } else setSoloOn(!soloOn); }}>혼자</button></h3>
+      ${soloOn && !people.length ? html`<div className="solo-on">혼자 했어요 <button className="linkbtn inl" onClick=${() => setSoloOn(false)}>같이 한 사람 넣기</button></div>` : html`<${PeoplePicker} st=${st} people=${people} links=${links} toggle=${n => togglePerson(n)} addPerson=${addPerson}/>`}
       ${backAsk ? html`<div className="backask"><span>${backAsk.out ? `앞 판 결과에는 ${backAsk.n}님이 그대로 있어요.` : `${backAsk.n}님은 다음 판부터 들어가요.`}</span><button className="linkbtn inl" onClick=${applyBack}>${backAsk.out ? '앞 판에서도 빼기' : '앞 판에도 넣기'}</button><button className="x" aria-label="닫기" onClick=${() => setBackAsk(null)}>×</button></div>` : null}
       ${people.length >= 2 ? html`<div className="scribe-row">${html`<button className="pill sm" aria-pressed=${tOn ? tables['나'] === 0 || tables['나'] === undefined && meOff : meOff} onClick=${() => tOn ? (() => { const off = !(tables['나'] === 0 || tables['나'] === undefined && meOff); setMeOff(off); setTables(tb => ({ ...tb, '나': off ? 0 : curT })); setItems(its => its.map(it => it.t ? { ...it, meOut: off || it.t !== curT } : it)); })() : setMeOffAll(!meOff)}>${meOff ? '✓ ' : ''}게임엔 안 끼고 적기만 해요</button>`}
         ${people.length >= 4 ? html`<button className="pill sm" aria-pressed=${tOn} onClick=${() => tOn ? (setTables(null), setTEdit(false), setItems(its => its.map(it => ({ ...it, t: 0, meOut: meOff })))) : startTables()}>${tOn ? '✓ 테이블 나눔' : '테이블 나누기'}</button>` : null}
