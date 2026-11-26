@@ -62,7 +62,7 @@ def ask_gemini(meta, prompt, texts, images):
     parts = [{"text": prompt}] + [{"text": t} for t in texts]
     for p, mime, b64 in images:
         parts += [{"text": f"그림: {p}"}, {"inline_data": {"mime_type": mime, "data": b64}}]
-    models = [meta["model"]] if meta["model"] else ["gemini-flash-lite-latest", "gemini-3-flash-preview", "gemini-2.5-flash-lite", "gemma-4-31b-it", "gemini-flash-latest"]
+    models = [meta["model"]] if meta["model"] else ["gemini-3-flash-preview", "gemini-flash-latest", "gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemma-4-31b-it"]
     errors = []
     for m in models:
       for attempt in range(5):
