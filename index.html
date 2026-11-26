@@ -2000,6 +2000,135 @@ body:has(.samplebar) .screen { padding-bottom: calc(150px + env(safe-area-inset-
 
 body:has(.samplebar) .toast { bottom: calc(126px + env(safe-area-inset-bottom, 0px)); }
 
+/* ===== 커플 공간 v2 (모임 탭에서 분리, 앱 안의 작은 앱) ===== */
+.cpspace { --cc-soft: color-mix(in srgb, var(--cc) 10%, var(--bg)); --cc-ink: color-mix(in srgb, var(--cc) 82%, #000); background: linear-gradient(var(--cc-soft), var(--bg) 420px); min-height: 100vh; }
+.cpspace .btn.cpbtn.primary, .cpspace .btn.primary.cpbtn { background: var(--cc); border-color: var(--cc); color: #fff; }
+.cpspace h2.sec { margin-top: 24px; }
+.cmk { display: inline-block; width: 1em; height: 1em; vertical-align: -0.12em; color: var(--cc, #d9667a); }
+.cmk.h { width: auto; line-height: 1; }
+.cp-mk { color: var(--cc); }
+/* 홈 위: 큰 사진 */
+.cp-hero { position: relative; margin: -8px -16px 0; height: min(58vh, 380px); min-height: 320px; overflow: hidden; border-radius: 0 0 28px 28px; background: linear-gradient(165deg, color-mix(in srgb, var(--cc) 22%, #fff), color-mix(in srgb, var(--cc) 48%, #fff)); }
+.cp-hero-ph { position: absolute; inset: 0; }
+.cp-hero.ph::after { content: ""; position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.5)); pointer-events: none; }
+.cp-hero.ph::before { content: ""; position: absolute; inset: 0 0 auto; height: 80px; background: linear-gradient(rgba(0,0,0,.25), transparent); pointer-events: none; z-index: 1; }
+.cp-halves { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.cp-half { position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 72px; gap: 10px; cursor: pointer; }
+.cp-half + .cp-half { border-left: 1px dashed color-mix(in srgb, var(--cc) 35%, #fff); }
+.cp-half input, .cp-more-ph input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.cp-face img, .cp-face .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 4px rgba(255,255,255,.9); }
+.cp-addph { display: inline-flex; align-items: center; gap: 2px; font-size: 12.5px; font-weight: 600; color: var(--cc-ink); background: rgba(255,255,255,.7); border-radius: 999px; padding: 4px 10px 4px 6px; max-width: calc(100% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-addph svg { width: 14px; height: 14px; flex: none; }
+.cp-more-ph { position: absolute; z-index: 2; right: 12px; top: 64px; display: inline-flex; align-items: center; gap: 2px; font-size: 12.5px; font-weight: 600; color: #fff; background: rgba(0,0,0,.32); border-radius: 999px; padding: 5px 10px 5px 6px; cursor: pointer; }
+.cp-more-ph svg { width: 14px; height: 14px; }
+.cp-top { position: absolute; z-index: 3; top: 8px; left: 8px; right: 12px; display: flex; justify-content: space-between; align-items: center; }
+.cp-ib { width: 40px; height: 40px; border: 0; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.75); color: var(--ink); }
+.cp-ib svg { width: 22px; height: 22px; }
+.cp-ib.txt { width: auto; border-radius: 999px; padding: 0 14px; font: inherit; font-size: 13.5px; font-weight: 600; }
+.cp-hero.ph .cp-ib { background: rgba(0,0,0,.28); color: #fff; }
+.cp-ib.plain { background: none; width: 40px; }
+.cp-hero-t { position: absolute; z-index: 2; left: 20px; right: 20px; bottom: 20px; color: #2b1d22; }
+.cp-hero.ph .cp-hero-t { color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.3); }
+.cp-names { font-size: 16px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.cp-hero.ph .cp-mk, .cp-hero.ph .cmk { color: #fff; }
+.cp-dday { font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-top: 2px; color: var(--cc-ink); }
+.cp-hero.ph .cp-dday { color: #fff; }
+.cp-dday span { font-size: 20px; font-weight: 700; letter-spacing: 0; margin-left: 4px; }
+.cp-noday { border: 0; background: rgba(255,255,255,.7); color: var(--cc-ink); font: inherit; font-size: 14px; font-weight: 600; border-radius: 12px; padding: 8px 12px; margin-top: 8px; text-align: left; }
+.cp-ann { margin-top: 10px; display: inline-flex; align-items: center; gap: 4px; border: 0; border-radius: 999px; padding: 6px 10px 6px 14px; font: inherit; font-size: 14px; color: var(--cc-ink); background: rgba(255,255,255,.82); }
+.cp-ann b { font-weight: 800; }
+.cp-hero.ph .cp-ann { background: rgba(255,255,255,.22); color: #fff; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); text-shadow: none; }
+.cp-ann .go, .cp-row .go, .cp-memo .go, .cp-me .go, .cp-mk-new .go { color: inherit; opacity: .6; font-size: 18px; line-height: 1; }
+/* 다른 탭 위: 얇은 머리줄 */
+.cp-bar { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 6px; margin: -8px -16px 4px; padding: 6px 8px; background: color-mix(in srgb, var(--cc) 10%, var(--bg)); }
+.cp-bar-t { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.cp-bar-t b { font-size: 15px; }
+.cp-bar-n { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-bar-ph { flex: none; width: 28px; height: 28px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; }
+.cp-bar-ph[style] { background-color: var(--sunk); }
+.cp-bar-d { flex: none; font-size: 13px; font-weight: 700; color: var(--cc-ink); }
+.cp-h1 { font-size: 22px; font-weight: 800; margin: 10px 0 12px; letter-spacing: -0.02em; }
+/* 홈 카드 */
+.cp-card { display: block; background: var(--surface); border-radius: 18px; padding: 14px 16px; margin-top: 12px; box-shadow: var(--shadow); }
+.cpspace > .cp-hero + * { margin-top: 16px; }
+.cp-k { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 700; color: var(--cc-ink); }
+.cp-k .linkbtn { font-size: 13px; padding: 0; min-height: 0; }
+.cp-nt { display: block; font-size: 18px; margin-top: 4px; }
+.cp-ng { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-r { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.cp-r .btn { min-height: 36px; }
+.cp-row, .cp-memo, .cp-mk-new { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; border: 0; background: var(--surface); border-radius: 18px; padding: 12px 14px; margin-top: 12px; font: inherit; color: inherit; box-shadow: var(--shadow); }
+.cp-row.new { background: color-mix(in srgb, var(--cc) 10%, var(--surface)); }
+.cp-ri { flex: none; width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--cc) 14%, var(--surface)); color: var(--cc-ink); }
+.cp-ri svg { width: 20px; height: 20px; }
+.cp-rt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.cp-rt b { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-rt > span { font-size: 13px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-rt > .cp-k { color: var(--cc-ink); }
+.cp-pg { display: flex; gap: 12px; align-items: center; width: 100%; border: 0; background: none; padding: 0; margin-top: 10px; text-align: left; font: inherit; color: inherit; }
+.cp-pg .cover { width: 64px; flex: none; border-radius: 10px; }
+.cp-pgt { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.cp-pgt b { font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-pgt span { font-size: 13px; color: var(--ink-3); }
+.cp-memo { background: color-mix(in srgb, var(--cc) 8%, var(--surface)); }
+.cp-memo-ph { flex: none; width: 48px; height: 48px; border-radius: 10px; overflow: hidden; }
+/* 기념일 */
+.cp-day { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.cp-day-i { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; background: color-mix(in srgb, var(--cc) 12%, var(--surface)); color: var(--cc); }
+.cp-day.game .cp-day-i { background: var(--sunk); color: var(--ink-2); }
+.cp-day.mine .cp-day-i { color: var(--star); background: color-mix(in srgb, var(--star) 14%, var(--surface)); }
+.cp-day-i svg { width: 18px; height: 18px; }
+.cp-dn { flex: none; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.cp-day.td { background: color-mix(in srgb, var(--cc) 10%, transparent); border-radius: 12px; padding-inline: 8px; }
+.cp-day.td .cp-dn { color: var(--cc-ink); }
+.cp-day.soon .cp-rt b { color: var(--ink-2); }
+.cp-annv h2.sec:first-of-type { margin-top: 12px; }
+.cp-addday { display: grid; gap: 8px; margin-top: 12px; padding: 12px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); }
+.cp-chk { display: flex; gap: 6px; align-items: center; font-size: 14px; }
+.cp-chk input { width: 18px; height: 18px; accent-color: var(--cc); }
+.cp-chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 6px; }
+.cp-chips .pill[aria-pressed="true"] { background: var(--cc); border-color: var(--cc); color: #fff; }
+.cp-marks .pill { display: inline-flex; align-items: center; gap: 6px; }
+.cp-marks .pill[aria-pressed="true"] .cmk { color: #fff; }
+/* 커플 공간 아래 탭 */
+.tabbar.cpnav { background: color-mix(in srgb, var(--cc) 6%, var(--surface)); }
+.tabbar.cpnav button[aria-current="page"] { color: var(--cc-ink); }
+.tabbar.cpnav button[aria-current="page"] svg { color: var(--cc); }
+.tabbar.cpnav button span { white-space: nowrap; font-size: 12.5px; }
+.tabbar.cpnav .cp-rec { justify-content: center; }
+.tabbar.cpnav .cp-rec .rc { width: 44px; height: 36px; border-radius: 14px; background: var(--cc); color: #fff; display: grid; place-items: center; }
+.tabbar.cpnav .cp-rec svg { color: #fff; }
+/* 밖에서 들어가는 곳: 홈 배지, 닉네임 탭 카드 (분홍은 쓰지 않고 작은 하트만) */
+.cp-badge { position: relative; display: inline-flex; align-items: center; gap: 3px; height: 32px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0 10px; font: inherit; font-size: 13px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+.cp-badge .hrt { font-size: 12px; }
+.cp-badge:not(:has(span + span)) { width: 32px; padding: 0; justify-content: center; }
+.cp-badge:not(:has(span + span)) .hrt { font-size: 15px; }
+.cpspace .linkbtn { color: var(--cc-ink); }
+.cpspace .cfirst { margin-top: 12px; }
+.cp-pre { font-size: 14px; font-weight: 600; margin-top: 6px; opacity: .85; }
+.cp-phs { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.cp-phs.one { grid-template-columns: 1fr; }
+.cp-phs > span { position: relative; overflow: hidden; }
+.cp-phs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cp-me-ph, .cp-bar-ph { position: relative; }
+.cp-bar-ph .cp-phs, .cp-me-ph .cp-phs { gap: 1px; }
+.cpspace .cw-who .bn { margin-right: 3px; }
+.cp-chips .pill .num { margin-left: 3px; }
+.cpspace .cw-who .b.new { background: var(--cc); color: #fff; }
+.cp-bn { max-width: 4.5em; overflow: hidden; text-overflow: ellipsis; }
+.cp-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 50%; background: var(--cc); box-shadow: 0 0 0 2px var(--bg); }
+.cp-mes { display: grid; gap: 8px; margin-top: 14px; }
+.cp-me { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 10px 12px; font: inherit; color: inherit; }
+.cp-me-ph { flex: none; width: 52px; height: 52px; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--sunk); }
+.cp-me-ph .avatar + .avatar { margin-left: -8px; }
+.cp-me-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.cp-me-t b { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-me-t > span { font-size: 13px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-mk-new { margin-top: 14px; border: 1px dashed var(--line); box-shadow: none; }
+.cp-mk-new > .hrt { flex: none; width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--sunk); font-size: 16px; }
+.cp-bell-h { flex: none; width: 28px; text-align: center; font-size: 16px; }
+@media (max-width: 370px) { .cp-dday { font-size: 46px; } .tabbar.cpnav button span { font-size: 11.5px; letter-spacing: -0.02em; } }
+
 </style>
 
 <div id="app"></div>
@@ -2488,10 +2617,12 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const un = mineR.flatMap(r => ((st.comments || {})[r.id] || []).filter(c => c.unread && !(st.blocked || {})[c.author]).map(c => [r, c])).sort((a, b) => b[1].date.localeCompare(a[1].date));
   const inbox = (st.inbox || []).filter(it => it.applied && !it.seen && !(st.blocked || {})[it.from]);
   const cplNew = (st.couples || []).map(c => [c, wishNew(c)]).filter(x => x[1].length);
+  // 기념일 알림: 사흘 안에 오는 날(100일 단위·주년·직접 넣은 날)
+  const cplAnn = (st.couples || []).map(c => [c, nextAnniv(c, duoPlays(st, c))]).filter(([, a]) => a && a[1] <= 3);
   const ntf = ((st.settings || {}).notify || {});
   // 가요 누른 모임 일정: 오늘·내일
   const evAl = ntf.event === false ? [] : (st.groups || []).filter(g => !g.mute).flatMap(g => (g.events || []).filter(e => e.date && (e.date === today() || e.date === daysAgo(-1)) && (e.going || []).includes('나')).map(e => [g, e]));
-  const bellIds = [...inboxGroups(inbox).map(g => 'i' + g.k), ...cplNew.map(([c, l]) => 'w' + c.id + l.length), ...(un.length && ntf.review !== false ? un.map(([, c]) => 'c' + c.id) : []), ...evAl.map(([g, e]) => 'e' + e.id + e.date)];
+  const bellIds = [...inboxGroups(inbox).map(g => 'i' + g.k),  ...cplNew.map(([c, l]) => 'w' + c.id + l.length), ...cplAnn.map(([c, a]) => 'a' + c.id + a[0] + daysAgo(-a[1])), ...(un.length && ntf.review !== false ? un.map(([, c]) => 'c' + c.id) : []), ...evAl.map(([g, e]) => 'e' + e.id + e.date)];
   // 알림을 열면 숫자는 사라지고, 새로 온 것만 다시 세요
   const seenB = new Set(st.bellSeen || []);
   const bellN = bellIds.filter(k => !seenB.has(k)).length;
@@ -2515,13 +2646,14 @@ function Home({ hq, setHq, openGroups, cm, st, open, startPlay, dismiss, removeF
   const draftLabel = st.draft && st.draft.items.length ? (() => { const it = st.draft.items[st.draft.items.length - 1]; const g = GAME[it.gameId]; 
     return `${g ? g.ko : ''} 적던 중 · 아직 저장 안 됐어요`; })() : null;
   return html`<div className="screen">
-    <div className="topbar"><h1>${ME.name} 기록장</h1><span className="tbr"><span className="seg vsw" role="group" aria-label="홈 보기 방식">${[['list', '목록'], ['cal', '달력']].map(([k, l]) => html`<button key=${k} aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</span><button className=${'bellbtn' + (bell ? ' on' : '')} aria-expanded=${bell} onClick=${openBell} aria-label="알림">${I.bell}${bellN ? html`<span className="bd num">${nf(bellN)}</span>` : null}</button></span></div>
+    <div className="topbar"><h1>${ME.name} 기록장</h1><span className="tbr">${(st.couples || []).slice(0, 1).map(c => html`<button key=${c.id} className="cp-badge" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple && NAV.couple(c.id)} aria-label=${`${c.partner}님과 커플 공간`}><span className="hrt">♥</span>${ME.name.length > 6 ? null : c.since ? html`<span className="num">${nf(dPlus(c.since))}일</span>` : html`<span className="cp-bn">${c.partner}</span>`}${wishNew(c).length ? html`<i className="cp-dot"></i>` : null}</button>`)}<span className="seg vsw" role="group" aria-label="홈 보기 방식">${[['list', '목록'], ['cal', '달력']].map(([k, l]) => html`<button key=${k} aria-pressed=${view === k} onClick=${() => setView(k)}>${l}</button>`)}</span><button className=${'bellbtn' + (bell ? ' on' : '')} aria-expanded=${bell} onClick=${openBell} aria-label="알림">${I.bell}${bellN ? html`<span className="bd num">${nf(bellN)}</span>` : null}</button></span></div>
     ${bell ? html`<${Sheet} title="알림" close=${() => setBell(false)}><div className="bellpanel">
       ${evAl.map(([g, e]) => html`<div key=${e.id} className="cnote evnote"><span className="evn-d">${e.date === today() ? '오늘' : '내일'}</span><button className="cn" onClick=${() => { setBell(false); try { sessionStorage.setItem('bg-gtab-' + g.id, 'plan'); } catch (er) {} openGroup(g.id); }}><b>${e.title || g.name}</b> ${[e.time ? fmtTime(e.time) : null, e.place].filter(Boolean).join(' · ')}<span className="ct">${g.name} · 가요 ${nf((e.going || []).length)}명</span></button></div>`)}
       <${Inbox} st=${st} dismiss=${dismiss} removeFromMine=${removeFromMine} onGo=${() => setBell(false)}/>
       ${un.length && ((st.settings || {}).notify || {}).review !== false ? (() => { const [r, c] = un[0]; const who = [...new Set(un.map(([, x]) => x.author))]; const rs = [...new Set(un.map(([x]) => x.id))];
         return html`<div className="cnote"><${Avatar} name=${c.author} size=${28}/><button className="cn" onClick=${() => { cm.read(r.id); open(r.gameId); }}><b>${c.author}</b>님${who.length > 1 ? ` 외 ${nf(who.length - 1)}명` : ''}이 ${ME.name}님 ${rs.length > 1 ? `평가 ${nf(rs.length)}개` : `${GAME[r.gameId] ? GAME[r.gameId].ko : ''} 평가`}에 댓글을 달았어요<span className="ct">"${c.text}"</span></button>
           <button className="linkbtn muted" onClick=${() => mineR.forEach(x => cm.read(x.id))}>확인</button></div>`; })() : null}
+      ${cplAnn.map(([c, a]) => html`<div key=${'a' + c.id} className="cnote"><span className="hrt cp-bell-h" style=${{ '--cc': coupleColor(c) }}>♥</span><button className="cn" onClick=${() => { setBell(false); NAV.couple && NAV.couple(c.id); }}>${a[1] ? html`${c.partner}님과 <b>${a[0]}</b>까지 ${nf(a[1])}일 남았어요` : html`오늘은 ${c.partner}님과 <b>${a[0]}</b>이에요`}</button></div>`)}
       ${cplNew.map(([c, l]) => html`<div key=${c.id} className="cnote"><${Avatar} name=${c.partner} size=${28}/><button className="cn" onClick=${() => { setBell(false); NAV.couple && NAV.couple(c.id, 'wish'); }}><b>${c.partner}</b>님이 같이 할 게임으로 <b>${GAME[l[0].id].ko}</b>${l.length > 1 ? ` 외 ${nf(l.length - 1)}개` : ''}를 찜했어요</button></div>`)}
       ${!bellIds.length ? html`<div className="note" style=${{ margin: 0 }}>새 알림이 없어요.</div>` : null}</div><//>` : null}
     ${!st.draft && justG0 ? html`<div className="recrow"><button className="recbig" onClick=${() => startPlay(justG0.gameId, false, null, justG0.table || 0)}><b>${justG0.table ? `${justG0.table}테이블 ` : ''}${GAME[justG0.gameId].ko} 한 판 더</b><span>${whoAgain(nextPpl(justG0))}</span></button><button className="recother" onClick=${() => startPlay(null, false, null, 0, true)}>다른 게임</button></div>` : html`<button className="recbig" onClick=${() => startPlay(null)}><b>${draftLabel ? '이어 적기' : playedToday ? '오늘 기록에 더하기' : '오늘 기록하기'}</b><span>${draftLabel || (playedToday && !st.draft ? '오늘 적은 기록에 새 판을 더해요' : todayEv ? `오늘 ${fmtTime(todayEv[1].time)} · ${todayEv[1].title || todayEv[0].name}` : dayGroup ? `오늘 ${DOW[todayDow]}요일 · ${dayGroup.name} 모이는 날이에요` : '')}</span></button>`}
@@ -2906,7 +3038,7 @@ function SavedSheet({ st, date, plays, close, share, openCouple, synced, editDay
     ${synced && synced.length ? html`<div className="note" style=${{ textAlign: 'center' }}>${synced.map(n => n + '님').join(', ')} 기록장에도 들어가요</div>` : null}
     ${(() => { const today0 = date === playDay(); const lastBy = []; [...plays].reverse().forEach(p => { if (GAME[p.gameId] && !lastBy.some(x => x.gameId === p.gameId && (x.table || 0) === (p.table || 0))) lastBy.push(p); });
       // 판이 막 끝난 순간: [닫기][공유하기]. '한 판 더'는 홈 큰 버튼과 토스트에만 둬요
-      return html`${cpl || (today0 && NAV.more) ? html`<div className="sc-links">${cpl ? html`<button className="linkbtn" onClick=${() => { close(); openCouple(cpl.id); }}>커플 화면</button>` : null}${today0 && NAV.more ? html`<button className="linkbtn" onClick=${() => { close(); NAV.more(null, 0, true); }}>다른 게임 적기</button>` : null}</div>` : null}
+      return html`${cpl || (today0 && NAV.more) ? html`<div className="sc-links">${cpl ? html`<button className="linkbtn" onClick=${() => { close(); openCouple(cpl.id); }}>커플 공간</button>` : null}${today0 && NAV.more ? html`<button className="linkbtn" onClick=${() => { close(); NAV.more(null, 0, true); }}>다른 게임 적기</button>` : null}</div>` : null}
       <div className=${'sheet-foot' + (share ? ' two' : '')}><button className=${'btn' + (share ? '' : ' primary')} onClick=${close}>닫기</button>${share ? html`<button className="btn primary" onClick=${share}>공유하기</button>` : null}</div>`; })()}
   <//>`;
 }
@@ -3245,7 +3377,7 @@ function Log({ st, open, startPlay, editDay, openPerson, removeFromId, shareDay 
 }
 
 /* ---------- 나 ---------- */
-function Me({ st, open, update, openPerson, openSettings, openYear, openChar, cm }) {
+function Me({ st, open, update, openPerson, openSettings, openYear, openChar, cm, editCouple }) {
   const [pq, setPq] = useState('');
   const [plim, setPlim] = useState(30);
   const [tab, setTab] = useState('stats');
@@ -3271,9 +3403,11 @@ function Me({ st, open, update, openPerson, openSettings, openYear, openChar, cm
         ${editing ? html`<form className="addrow" style=${{ marginTop: 0 }} onSubmit=${e => { e.preventDefault(); const v = nick.trim(); if (v) update(s => ({ ...s, me: v })); setEditing(false); }}>
             <input id="nick" className="input" value=${nick} maxLength="16" onInput=${e => setNick(e.target.value)} autoFocus/><button className="btn primary">저장</button></form>` :
           html`<div className="nm">${st.me} <button className="btn ghost" style=${{ padding: '2px 6px', fontSize: 13 }} onClick=${() => { setNick(st.me); setEditing(true); }}>이름 바꾸기</button></div>
-            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>${(st.couples || []).map(c => html`<button key=${c.id} className="linkbtn inl mecpl" style=${{ '--cc': coupleColor(c) }} onClick=${() => NAV.couple(c.id)}><span className="hrt">♥</span> ${c.partner} · D+${dPlus(c.since)} ›</button>`)}
+            <div className="since">${(() => { const f = st.plays.reduce((m, p) => p.date < m ? p.date : m, st.since || today()); return f === today() ? '오늘 처음 기록했어요' : `${dLabel(f)}부터 기록 중`; })()}</div>
             ${st.mePhoto ? html`<button className="linkbtn muted" onClick=${() => update(s => ({ ...s, mePhoto: null }))}>사진 빼고 캐릭터로</button>` : html`<label className="linkbtn pfadd">프로필 사진 넣기<input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { const ph = await shrinkImage(f); update(s => ({ ...s, mePhoto: ph })); } catch (er) {} } }}/></label>`}`}
       </div></div>
+    ${(st.couples || []).length ? html`<div className="cp-mes">${st.couples.map(c => html`<${CoupleCard} key=${c.id} c=${c} st=${st} onOpen=${() => NAV.couple(c.id)}/>`)}</div>` :
+      html`<button className="cp-mk-new" onClick=${() => editCouple(null)}><span className="hrt">♥</span><span className="cp-rt"><b>커플 공간 만들기</b><span>둘이 한 게임, 같이 할 게임, 기념일을 따로 모아요</span></span><span className="go">›</span></button>`}
     <div className="seg tabs" role="tablist" style=${{ margin: '16px 0 10px' }}>${[['stats', '통계'], ['reviews', '평가·질문']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}</button>`)}</div>
 
     ${tab === 'stats' ? html`    <div className="stats">
@@ -4535,40 +4669,67 @@ function ScorePad({ gameId, members, scores, onApply }) {
 }
 
 /* ---------- 커플 ---------- */
-const COUPLE_COLORS = [['rose', '#d9667a'], ['coral', '#e0835a'], ['plum', '#8a5a9e'], ['sky', '#4f86b8']];
+const COUPLE_COLORS = [['rose', '#d9667a'], ['coral', '#e0835a'], ['plum', '#8a5a9e'], ['sky', '#4f86b8'], ['mint', '#3f9a85'], ['lilac', '#8f7bd0']];
+const COUPLE_COLOR_NAME = { rose: '장미', coral: '살구', plum: '자두', sky: '하늘', mint: '민트', lilac: '라일락' };
 const coupleColor = c => (COUPLE_COLORS.find(x => x[0] === c.color) || COUPLE_COLORS[0])[1];
 const dPlus = since => Math.round((parse(today()) - parse(since)) / 86400000) + 1;
 const duoPlays = (st, c) => st.plays.filter(p => p.people.length === 1 && p.people[0] === c.partner);
-function nextAnniv(since) {
-  const d = dPlus(since); const next = Math.ceil((d + 1) / 100) * 100;
-  const s = parse(since); const yrs = parse(today()).getFullYear() - s.getFullYear();
-  let ann = new Date(s); ann.setFullYear(s.getFullYear() + yrs); if (ann < parse(today())) ann.setFullYear(ann.getFullYear() + 1);
-  const annDays = Math.round((ann - parse(today())) / 86400000);
-  const hundredDays = next - d;
-  return hundredDays <= annDays ? [`${next}일`, hundredDays] : [`${ann.getFullYear() - s.getFullYear()}주년`, annDays];
+// 둘을 잇는 표시: 하트 · 미플 둘 · 주사위 (커플 공간 안에서만, 밖은 늘 작은 하트)
+const C_MARKS = [['heart', '하트'], ['meeple', '미플'], ['dice', '주사위']];
+const cMark = c => (c && c.mark) === 'meeple' ? html`<svg className="cmk" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3.2a3.3 3.3 0 0 1 3.3 3.3c0 1-.4 1.8-1 2.4 2.6.6 6 1.6 6 3.6 0 1.3-1.6 1.7-3.3 1.6l2.6 5.2c.3.6-.1 1.3-.8 1.3h-3.6L12 16.4l-3.2 4.2H5.2c-.7 0-1.1-.7-.8-1.3L7 14.1c-1.7.1-3.3-.3-3.3-1.6 0-2 3.4-3 6-3.6a3.3 3.3 0 0 1 2.3-5.7z"/></svg>`
+  : (c && c.mark) === 'dice' ? html`<svg className="cmk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="currentColor"/><g fill="#fff"><circle cx="8.3" cy="8.3" r="1.6"/><circle cx="15.7" cy="15.7" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>`
+  : html`<span className="cmk h">♥</span>`;
+const fmtDot = s => { const x = parse(s); return `${x.getFullYear()}. ${x.getMonth() + 1}. ${x.getDate()}. (${DOW[x.getDay()]})`; };
+const MILES = [10, 50, 100, 200, 300, 500, 1000, 2000, 3000, 5000];
+// 기념일: 사귄 날 기준 100일 단위·매년, 둘이 처음 한 판, 둘이 N판째, 직접 넣은 날(매년 반복 가능)
+function coupleDays(c, ps) {
+  const t = today(); const out = [];
+  if (c.since) {
+    out.push({ k: 'since', label: '사귄 날', date: c.since, kind: 'love' });
+    const d = dPlus(c.since); const upto = Math.max(1000, Math.ceil((d + 400) / 100) * 100);
+    for (let n = 100; n <= upto; n += 100) out.push({ k: 'h' + n, label: `${nf(n)}일`, date: addDays(c.since, n - 1), kind: 'love' });
+    const s = parse(c.since); const yNow = parse(t).getFullYear() - s.getFullYear() + 1;
+    for (let y = 1; y <= yNow + 1; y++) { const a = new Date(s); a.setFullYear(s.getFullYear() + y); out.push({ k: 'y' + y, label: `${nf(y)}주년`, date: ymd(a), kind: 'love' }); }
+  }
+  const sorted = [...ps].sort((x, y) => x.date.localeCompare(y.date) || (x.at || 0) - (y.at || 0));
+  if (sorted.length) out.push({ k: 'first', label: '둘이 처음 한 판', sub: GAME[sorted[0].gameId] ? GAME[sorted[0].gameId].ko : '', date: sorted[0].date, kind: 'game' });
+  MILES.forEach(n => { if (sorted.length >= n) out.push({ k: 'm' + n, label: `둘이 ${nf(n)}판째`, sub: GAME[sorted[n - 1].gameId] ? GAME[sorted[n - 1].gameId].ko : '', date: sorted[n - 1].date, kind: 'game' }); });
+  (c.days || []).forEach(x => { if (!x.date) return; if (x.yearly) { const s = parse(x.date); let a = new Date(s); a.setFullYear(parse(t).getFullYear()); if (ymd(a) < t) a.setFullYear(a.getFullYear() + 1); out.push({ k: 'u' + x.id, id: x.id, label: x.name, sub: '매년', date: ymd(a), kind: 'mine' }); }
+    else out.push({ k: 'u' + x.id, id: x.id, label: x.name, date: x.date, kind: 'mine' }); });
+  const next = MILES.find(n => n > sorted.length);
+  return { list: out, nextMile: next ? { n: next, left: next - sorted.length } : null };
 }
+const dTo = ds => Math.round((parse(ds) - parse(today())) / 86400000);
+function nextAnniv(c, ps) {
+  const up = coupleDays(c, ps || []).list.filter(x => x.date >= today() && x.k !== 'since').sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'love' ? -1 : 1))[0];
+  return up ? [up.label, dTo(up.date)] : null;
+}
+// 커플 사진 반반: 두 장이면 반반, 한 장이면 그 한 장, 없으면 null
+const cssUrl = u => `url("${String(u).replace(/"/g, '%22')}")`;
+const cPhotoStyle = c => c.photo && c.photoThem ? { backgroundImage: `${cssUrl(c.photo)}, ${cssUrl(c.photoThem)}`, backgroundSize: '50% 100%, 50% 100%', backgroundPosition: 'left, right', backgroundRepeat: 'no-repeat' } : (c.photo || c.photoThem) ? { backgroundImage: cssUrl(c.photo || c.photoThem), backgroundSize: 'cover', backgroundPosition: 'center' } : null;
+// 사진 반반은 칸마다 따로 채워요(사진이 늘어나 보이지 않게)
+const CPhoto = ({ c }) => c.photo && c.photoThem ? html`<span className="cp-phs">${[c.photo, c.photoThem].map((u, i) => html`<span key=${i}><img src=${u} alt=""/></span>`)}</span>` : html`<span className="cp-phs one"><span><img src=${c.photo || c.photoThem} alt=""/></span></span>`;
 function CoupleCard({ c, st, onOpen }) {
-  const ps = duoPlays(st, c); const vs = ps.filter(p => modeOf(p) !== 'coop' && decided(p));
-  return html`<button className="ccard" style=${{ '--cc': coupleColor(c) }} onClick=${onOpen}>
-    <div className="cpair"><${Avatar} name=${st.me} size=${26}/><span className="heart">♥</span><${Avatar} name=${c.partner} size=${26}/></div>
-    <div className="gn">${c.name || `${ME.name} ♥ ${c.partner}`}</div>
-    <div className="gm">${c.since ? `D+${dPlus(c.since)} · ` : ''}${ps.length ? `둘이 ${nf(ps.length)}판` : '아직 둘이 한 기록 없음'}</div>
-    ${(() => { const nx = c.next && (!c.next.date || c.next.date >= today()) ? c.next : null; const both = wishOf(c).filter(w => GAME[w.id] && w.me && w.them).length; const nw = wishNew(c).length;
-      return nx ? html`<div className="gm2">다음에 같이 할 날 ${nx.date ? evDay(nx.date) : '날짜 미정'}</div>` : nw ? html`<div className="gm2">${c.partner}님이 새로 찜한 게임 ${nf(nw)}개</div>` : both ? html`<div className="gm2">둘 다 찜한 게임 ${nf(both)}개</div>` : ps.length ? html`<div className="gm2">마지막 ${relDay(ps.map(p => p.date).sort().pop())}</div>` : null; })()}
-  </button>`;
+  const ps = duoPlays(st, c); const ann = c.since ? nextAnniv(c, ps) : null; const ph = cPhotoStyle(c);
+  return html`<button className="cp-me" style=${{ '--cc': coupleColor(c) }} onClick=${onOpen}>
+    <span className="cp-me-ph">${ph ? html`<${CPhoto} c=${c}/>` : html`<${Avatar} name=${st.me} size=${26}/><${Avatar} name=${c.partner} size=${26}/>`}</span>
+    <span className="cp-me-t"><b><span className="nm">${ME.name}</span> <span className="hrt">♥</span> <span className="nm">${c.partner}</span></b>
+      <span>${[c.since ? `${nf(dPlus(c.since))}일째` : '커플 공간', ann ? (ann[1] ? `${ann[0]}까지 ${nf(ann[1])}일` : `오늘 ${ann[0]}`) : wishNew(c).length ? `${c.partner}님이 새로 찜한 게임 ${nf(wishNew(c).length)}개` : null].filter(Boolean).join(' · ')}</span></span>
+    <span className="go">›</span></button>`;
 }
 function CoupleSheet({ st, c, close, onSave, onDelete }) {
   const [partner, setPartner] = useState(c ? c.partner : '');
   const [since, setSince] = useState(c ? c.since || '' : '');
   const [name, setName] = useState(c ? c.name || '' : '');
   const [color, setColor] = useState(c ? c.color || 'rose' : 'rose');
+  const [mark, setMark] = useState(c ? c.mark || 'heart' : 'heart');
   const [photo, setPhoto] = useState(c ? c.photo || null : null);
   const [photoThem, setPhotoThem] = useState(c ? c.photoThem || null : null);
   const [pphoto, setPphoto] = useState(c ? c.partnerPhoto || null : null);
   const [ask, setAsk] = useState(false);
   const [typed, setTyped] = useState(''); const [need, setNeed] = useState(false);
   const cands = [...new Set([...Object.keys(st.friends), ...st.people])].filter(n => !(st.blocked || {})[n] && (!(st.couples || []).some(x => x.partner === n) || (c && c.partner === n)));
-  return html`<${Sheet} title=${c ? '커플 설정' : '커플 만들기'} close=${close}>
+  return html`<${Sheet} title=${c ? '커플 공간 꾸미기' : '커플 공간 만들기'} close=${close}>
     <div className="cprev" style=${{ '--cc': coupleColor({ color }), ...(photo || photoThem ? { backgroundImage: `linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.45)), url(${photo || photoThem})${photo && photoThem ? `, url(${photoThem})` : ''}`, backgroundSize: photo && photoThem ? 'cover, 50% 100%, 50% 100%' : 'cover', backgroundPosition: photo && photoThem ? 'center, left, right' : 'center', backgroundRepeat: 'no-repeat', color: '#fff' } : {}) }}><${Avatar} name=${st.me} size=${44}/><span className="heart">♥</span>${partner ? html`<${Avatar} name=${partner} size=${44}/>` : html`<span className="avatar ghost" style=${{ width: 44, height: 44 }}>?</span>`}
       <div className="t">${name || (partner ? `${ME.name} ♥ ${partner}` : '누구랑?')}</div>${since ? html`<div className="d">${dLabel(since)}부터 · D+${dPlus(since)}</div>` : null}</div>
     ${c ? null : html`<div className="field"><span className="lb">누구랑?</span>
@@ -4588,9 +4749,11 @@ function CoupleSheet({ st, c, close, onSave, onDelete }) {
     ${partner ? html`<div className="field"><span className="lb">얼굴 사진<span className="hint">선택 · 커플 화면에서 캐릭터 대신 나와요</span></span>
       <div className="dates faces"><span className="facef">${st.mePhoto ? html`<img src=${st.mePhoto} alt=""/>` : html`<${Avatar} name=${st.me} size=${56}/>`}<span>${st.me}</span><span className="hint">${st.mePhoto ? '' : '닉네임 탭에서 넣어요'}</span></span>
         <label className="facef">${pphoto ? html`<img src=${pphoto} alt=""/>` : html`<${Avatar} name=${partner} size=${56}/>`}<span>${partner}</span><span className="linkbtn">${pphoto ? '바꾸기' : '+ 사진'}</span><input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { setPphoto(await shrinkImage(f)); } catch (er) {} } }}/></label></div></div>` : null}
-    <div className="field"><span className="lb">색</span>
-      <div className="dates">${COUPLE_COLORS.map(([k, v]) => html`<button key=${k} className="swatch" aria-pressed=${color === k} aria-label=${k} style=${{ background: v }} onClick=${() => setColor(k)}></button>`)}</div></div>
-    <div className="sheet-foot"><button className="btn primary" onClick=${() => !partner ? setNeed(true) : onSave({ ...(c || {}), id: c ? c.id : 'c' + uid(), partner, since: since || null, name: name.trim(), color, photo, photoThem, partnerPhoto: pphoto })}>${c ? '저장' : '만들기'}</button>
+    <div className="field"><span className="lb">색<span className="hint">커플 공간 안에서만 써요</span></span>
+      <div className="dates">${COUPLE_COLORS.map(([k, v]) => html`<button key=${k} className="swatch" aria-pressed=${color === k} aria-label=${COUPLE_COLOR_NAME[k]} style=${{ background: v }} onClick=${() => setColor(k)}></button>`)}</div></div>
+    <div className="field"><span className="lb">이름 사이 모양</span>
+      <div className="dates cp-marks" style=${{ '--cc': coupleColor({ color }) }}>${C_MARKS.map(([k, l]) => html`<button key=${k} className="pill" aria-pressed=${mark === k} onClick=${() => setMark(k)}>${cMark({ mark: k })}${l}</button>`)}</div></div>
+    <div className="sheet-foot"><button className="btn primary" onClick=${() => !partner ? setNeed(true) : onSave({ ...(c || {}), id: c ? c.id : 'c' + uid(), partner, since: since || null, name: name.trim(), color, mark, photo, photoThem, partnerPhoto: pphoto })}>${c ? '저장' : '만들기'}</button>
 </div>
     ${c ? html`<div className="cunlink"><button className="linkbtn muted" onClick=${() => setAsk(true)}>커플 끊기</button></div>` : null}
     ${ask ? html`<div className="confirm"><span>커플을 끊을까요? 둘이 한 기록은 ${ME.name} 기록장에 그대로 남아요. 같이 할 게임 찜, 다음에 같이 할 날, 커플 사진은 지워져요.</span><div className="r"><button className="btn danger" onClick=${() => onDelete(c.id)}>끊기</button><button className="btn" onClick=${() => setAsk(false)}>취소</button></div></div>` : null}
@@ -5432,11 +5595,20 @@ const wishOf = c => (c.wish || (c.sample ? SAMPLE_CWISH() : [])).map(w => ({ ...
 const SAMPLE_THEIR = { fav: [174430, 167791, 173346, 220308, 230802, 266192], buy: [342942, 291457, 284083, 316554] };
 const theirPicks = (c, papp) => !papp ? null : c.their || (c.sample ? SAMPLE_THEIR : null);
 const wishNew = c => wishOf(c).filter(w => w.them && !w.seen && GAME[w.id]);
+const C_TABS = [['home', '홈'], ['wish', '같이 할 게임'], ['rec', ''], ['log', '기록'], ['stat', '통계']];
+const C_IC = {
+  wish: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/></svg>`,
+  log: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>`,
+  stat: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-6"/></svg>`,
+};
 function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, editCouple, updCouple, upCouple, startPlay }) {
   const recC = id => startPlay(id, false, { people: ['나', (st.couples || []).find(x => x.id === cid).partner], grp: null });
   const c = (st.couples || []).find(x => x.id === cid);
   const [cglim, setCglim] = useState(8);
-  const [tab, setTab] = useState(() => { const t = NAV.cTab || 'home'; NAV.cTab = null; return t; });
+  // 커플 공간 안의 탭은 하루 화면을 열었다 돌아와도 그대로
+  const [tab, setTab0] = useState(() => { let t = NAV.cTab; NAV.cTab = null; if (!t) { try { t = sessionStorage.getItem('bg-ctab-' + cid); } catch (e) {} } return t || 'home'; });
+  const setTab = t => { setTab0(t); setAnnOpen(false); try { sessionStorage.setItem('bg-ctab-' + cid, t); } catch (e) {} window.scrollTo(0, 0); };
+  const [annOpen, setAnnOpen] = useState(false);
   const [wf, setWf] = useState('all');
   const [newIds, setNewIds] = useState([]);
   const [wq, setWq] = useState(''); const [wOwn, setWOwn] = useState(false); const [wlim, setWlim] = useState(50);
@@ -5447,20 +5619,22 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
   const [planning, setPlanning] = useState(false);
   const [pDate, setPDate] = useState(''); const [pGames, setPGames] = useState([]);
   const [mlim, setMlim] = useState(4);
+  const [pickI, setPickI] = useState(0);
+  const [alim, setAlim] = useState(12);
+  const [addDay, setAddDay] = useState(null);
   const ps = useMemo(() => c ? duoPlays(st, c) : [], [st.plays, c]);
   const media = useMemo(() => { const out = []; const by = {}; ps.forEach(p => (by[p.date] = by[p.date] || []).push(p));
     Object.keys(by).sort().reverse().forEach(d => { ((st.photos || {})[d] || []).forEach(m => out.push({ m, d })); by[d].forEach(p => (p.media || []).forEach(m => out.push({ m, d }))); }); return out; }, [ps, st.photos]);
-  if (!c) return html`<div className="screen"><button className="back" onClick=${back}>${I.left}뒤로</button><${Empty} title="커플이 없어요">끊은 커플이에요.<//></div>`;
+  const days = useMemo(() => c ? coupleDays(c, ps) : { list: [] }, [c, ps]);
+  if (!c) return html`<div className="screen"><button className="backbtn" onClick=${back}>${I.back}뒤로</button><${Empty} title="커플 공간이 없어요">끊은 커플이에요.<//></div>`;
   const vs = ps.filter(p => modeOf(p) !== 'coop' && decided(p));
   const a = vs.filter(p => wonBy(p, '나')).length, b = vs.filter(p => wonBy(p, c.partner)).length;
   const co = ps.filter(p => modeOf(p) === 'coop' && p.coop);
-  const by = {}; ps.forEach(p => { const x = by[p.gameId] = by[p.gameId] || { n: 0, a: 0, b: 0 }; x.n++; if (modeOf(p) !== 'coop') { if (wonBy(p, '나')) x.a++; if (wonBy(p, c.partner)) x.b++; } });
+  const by = {}; ps.forEach(p => { const x = by[p.gameId] = by[p.gameId] || { n: 0, a: 0, b: 0, last: '' }; x.n++; if (p.date > x.last) x.last = p.date; if (modeOf(p) !== 'coop') { if (wonBy(p, '나')) x.a++; if (wonBy(p, c.partner)) x.b++; } });
   const games = Object.entries(by).sort((x, y) => y[1].n - x[1].n);
   const first = [...ps].sort((x, y) => x.date.localeCompare(y.date))[0];
   const dates = new Set(ps.map(p => p.date)).size;
-  const ann = c.since ? nextAnniv(c.since) : null;
-  const month = today().slice(0, 7); const mp = vs.filter(p => p.date.startsWith(month));
-  const ma = mp.filter(p => wonBy(p, '나')).length, mb = mp.filter(p => wonBy(p, c.partner)).length;
+  const ann = nextAnniv(c, ps);
   const ago = daysAgo(365); const yearAgo = media.filter(x => x.d === ago);
   const months = []; media.forEach(x => { const k = x.d.slice(0, 7); if (!months.length || months[months.length - 1].k !== k) months.push({ k, items: [] }); months[months.length - 1].items.push(x.m); });
   const thisY = today().slice(0, 4);
@@ -5469,7 +5643,6 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
   const setWish = (fn, msg) => upCouple(c.id, x => ({ ...x, wish: fn(wishOf(x)) }), msg);
   const wl = wish.filter(w => GAME[w.id]);
   const both = wl.filter(w => w.me && w.them);
-  const kinds = { both };
   const fresh = wl.filter(w => w.them && !w.seen);
   const star = id => { const w = wish.find(x => x.id === id);
     if (w && w.me) { setWish(l => l.map(x => x.id === id ? { ...x, me: false } : x).filter(x => x.me || x.them), '찜을 풀었어요'); return; }
@@ -5477,9 +5650,12 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
   const starThem = id => setWish(l => l.map(x => x.id === id ? { ...x, them: !x.them, seen: true } : x).filter(x => x.me || x.them));
   const addWish = id => { const w = wish.find(x => x.id === id); if (!w || !w.me) star(id); setAdding(false); };
   const nx = c.next && (!c.next.date || c.next.date >= today()) ? c.next : null;
-  const savePlan = () => { upCouple(c.id, x => ({ ...x, next: { date: pDate || null, games: pGames } }), '다음에 같이 할 날을 적어 뒀어요'); setPlanning(false); };
-  const startPlan = () => { setPDate(nx ? nx.date || '' : ''); setPGames(nx ? nx.games || [] : kinds.both.slice(0, 2).map(w => w.id)); setPlanning(true); setTab('home'); };
+  const savePlan = () => { upCouple(c.id, x => ({ ...x, next: { date: pDate || null, games: pGames } }), '다음 데이트를 적어 뒀어요'); setPlanning(false); };
+  const startPlan = () => { setPDate(nx ? nx.date || '' : ''); setPGames(nx ? nx.games || [] : both.slice(0, 2).map(w => w.id)); setPlanning(true); setTab('home'); };
   const d30 = daysAgo(30); const recentN = ps.filter(p => p.date >= d30).length, yearN = ps.filter(p => p.date.startsWith(thisY)).length;
+  // 오늘 이거 어때요: 둘 다 찜한 게임(없으면 찜한 게임) 중 오래 안 한 것부터
+  const pool = (both.length ? both : wl).map(w => w.id).sort((x, y) => String((by[x] || {}).last || '').localeCompare(String((by[y] || {}).last || '')));
+  const pick = pool.length ? pool[pickI % pool.length] : null;
   const wrow = w => { const on = openW === w.id; const g = GAME[w.id]; const nw = newIds.includes(w.id);
     return html`<div key=${w.id} className=${'cw' + (on ? ' on' : '')}>
       <div className="cw-top"><button className="cw-g" onClick=${() => open(w.id)}><${Cover} g=${g} size="sm"/><span className="n"><span className="nm">${g.ko}</span><span className="d">${players(g)} · ${playtime(g)}${by[w.id] ? ` · 둘이 ${nf(by[w.id].n)}판` : ''}</span>
@@ -5494,48 +5670,78 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
   const wlist = [...wl].filter(w => wf === 'all' || (wf === 'both' ? w.me && w.them : wf === 'me' ? w.me : w.them))
     .filter(w => (!wOwn || st.collection[w.id]) && (!wt || normName(GAME[w.id].ko).includes(wt) || normName(GAME[w.id].en || '').includes(wt)))
     .sort((x, y) => ((y.me && y.them) - (x.me && x.them)) || (newIds.includes(y.id) - newIds.includes(x.id)) || String(y.at || '').localeCompare(String(x.at || '')));
-  return html`<div className="screen couple" style=${{ '--cc': coupleColor(c) }}>
-    <div className=${'chero2' + (c.photo || c.photoThem ? ' ph' : '')}>
-      <div className="ch-halves">${[['photo', c.photo, st.mePhoto, st.me, '내 사진'], ['photoThem', c.photoThem, c.partnerPhoto, c.partner, `${c.partner}님 사진`]].map(([k, src, face, n, lab]) => src ? html`<div key=${k} className="ch-half"><img src=${src} alt=${lab}/></div>` :
-        html`<label key=${k} className="ch-half empty"><input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { updCouple(c.id, { [k]: await shrinkImage(f) }); } catch (er) {} } }}/>
-          <span className="ch-slot">${face ? html`<img src=${face} alt=""/>` : html`<${Avatar} name=${n} size=${48}/>`}<span className="ch-addt">${I.plus}<span className="ch-lab">${lab}</span></span></span></label>`)}</div>
-      <span className="ch-seam" aria-hidden="true">♥</span>
-      <button className="ch-back" onClick=${back} aria-label="뒤로">${I.back}</button><button className="ch-set" onClick=${() => editCouple(c)}>설정</button>
-      <div className="ch-txt"><div className="t">${c.name || html`${ME.name} <span className="heart">♥</span> ${c.partner}`}</div>
-        ${c.since ? html`<div className="dday num">D+${dPlus(c.since)}</div>` : html`<button className="linkbtn" onClick=${() => editCouple(c)}>사귄 날 넣기</button>`}</div></div>
-    ${ann ? html`<div className="annpill">${ann[0]}까지 ${ann[1] ? `${ann[1]}일` : '오늘이에요'}</div>` : null}
-    <div className="csum">${ps.length ? html`둘이 함께한 <b className="num">${nf(ps.length)}</b>판 · 같이 논 날 <b className="num">${nf(dates)}</b>일` : '둘이 한 판을 모아 두는 곳이에요'}</div>
-    <div className="seg tabs ctabs" role="tablist">${[['home', '홈'], ['wish', '같이 할 게임'], ['log', '기록'], ['stat', '모아 보기']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${tab === k} onClick=${() => setTab(k)}>${l}</button>`)}</div>
+  const ph = cPhotoStyle(c);
+  const names = html`<span className="nm">${ME.name}</span> <span className="cp-mk">${cMark(c)}</span> <span className="nm">${c.partner}</span>`;
+  const annTxt = ann ? (ann[1] ? html`${ann[0]}까지 <b className="num">${nf(ann[1])}</b>일` : html`오늘 <b>${ann[0]}</b>이에요`) : null;
+  // 위: 홈은 큰 사진, 다른 탭은 얇은 머리줄
+  const head = tab === 'home' && !annOpen ? html`<div className=${'cp-hero' + (ph ? ' ph' : '')}>
+      ${ph ? html`<div className="cp-hero-ph"><${CPhoto} c=${c}/></div>` : html`<div className="cp-halves">${[['photo', st.mePhoto, st.me, '내 사진'], ['photoThem', c.partnerPhoto, c.partner, `${c.partner}님 사진`]].map(([k, face, n, lab]) => html`<label key=${k} className="cp-half"><input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { updCouple(c.id, { [k]: await shrinkImage(f) }); } catch (er) {} } }}/>
+          <span className="cp-face">${face ? html`<img src=${face} alt=""/>` : html`<${Avatar} name=${n} size=${64}/>`}</span><span className="cp-addph">${I.plus}${lab}</span></label>`)}</div>`}
+      ${ph && !(c.photo && c.photoThem) ? html`<label className="cp-more-ph"><input type="file" accept="image/*" onChange=${async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { updCouple(c.id, { [c.photo ? 'photoThem' : 'photo']: await shrinkImage(f) }); } catch (er) {} } }}/>${I.plus}${c.photo ? `${c.partner}님 사진` : '내 사진'}</label>` : null}
+      <div className="cp-top"><button className="cp-ib" onClick=${back} aria-label="커플 공간 나가기">${I.back}</button><button className="cp-ib txt" onClick=${() => editCouple(c)}>꾸미기</button></div>
+      <div className="cp-hero-t"><div className="cp-names">${c.name ? c.name : names}</div>
+        ${c.since ? html`<div className="cp-pre">함께한 지</div><div className="cp-dday num">${nf(dPlus(c.since))}<span>일째</span></div>` : html`<button className="cp-noday" onClick=${() => editCouple(c)}>사귄 날을 넣으면 함께한 날을 세어 줘요 ›</button>`}
+        ${annTxt ? html`<button className="cp-ann" onClick=${() => setAnnOpen(true)}><span>${annTxt}</span><span className="go">›</span></button>` : !c.since && ps.length ? html`<button className="cp-ann" onClick=${() => setAnnOpen(true)}>기념일 보기<span className="go">›</span></button>` : null}</div>
+    </div>` : html`<div className="cp-bar"><button className="cp-ib plain" onClick=${annOpen ? () => setAnnOpen(false) : back} aria-label=${annOpen ? '뒤로' : '커플 공간 나가기'}>${I.back}</button>
+      <span className="cp-bar-t">${annOpen ? html`<b>기념일</b>` : html`<span className="cp-bar-ph">${ph ? html`<${CPhoto} c=${c}/>` : html`<${Avatar} name=${c.partner} size=${28}/>`}</span><b className="cp-bar-n">${c.name || html`<span className="cp-mk">${cMark(c)}</span> ${c.partner}`}</b>${c.since ? html`<span className="num cp-bar-d">${nf(dPlus(c.since))}일째</span>` : null}`}</span>
+      ${annOpen ? html`<span className="cp-ib plain"></span>` : html`<button className="cp-ib plain" onClick=${() => editCouple(c)} aria-label="꾸미기·설정">${I.gear}</button>`}</div>`;
 
-    ${tab === 'home' ? html`
+  const homeTab = html`
       ${planning ? html`<div className="cnext edit"><div className="lb">다음에 같이 할 날</div>
           <input className="input" type="date" min=${today()} value=${pDate} onChange=${e => setPDate(e.target.value)}/>
           <div className="lb" style=${{ marginTop: 10 }}>할 게임<span className="hint"> · 찜한 게임에서 골라요</span></div>
-          <div className="dates">${[...new Set([...both, ...wl, ...wl.filter(w => pGames.includes(w.id))])].filter(w => pGames.includes(w.id) || [...both, ...wl].indexOf(w) < 12).map(w => html`<button key=${w.id} className="pill sm" aria-pressed=${pGames.includes(w.id)} onClick=${() => setPGames(pGames.includes(w.id) ? pGames.filter(x => x !== w.id) : [...pGames, w.id])}>${GAME[w.id].ko}</button>`)}
+          <div className="dates">${[...new Set([...both, ...wl])].filter((w, i) => pGames.includes(w.id) || i < 12).map(w => html`<button key=${w.id} className="pill sm" aria-pressed=${pGames.includes(w.id)} onClick=${() => setPGames(pGames.includes(w.id) ? pGames.filter(x => x !== w.id) : [...pGames, w.id])}>${GAME[w.id].ko}</button>`)}
             ${!wl.length ? html`<span className="hint">아직 찜한 게임이 없어요. 날짜만 적어도 돼요.</span>` : null}</div>
-          <div className="r"><button className="btn primary" disabled=${!pDate && !pGames.length} onClick=${savePlan}>적어 두기</button><button className="btn" onClick=${() => setPlanning(false)}>취소</button>
+          <div className="r"><button className="btn primary cpbtn" disabled=${!pDate && !pGames.length} onClick=${savePlan}>적어 두기</button><button className="btn" onClick=${() => setPlanning(false)}>취소</button>
             ${nx ? html`<button className="linkbtn muted" onClick=${() => { upCouple(c.id, x => ({ ...x, next: null }), '지웠어요'); setPlanning(false); }}>지우기</button>` : null}</div></div>` :
-        nx ? html`<div className="cnext"><div className="lb">다음에 같이 할 날</div><div className="t">${nx.date ? evDay(nx.date) : '날짜 미정'}</div>${nx.games && nx.games.filter(id => GAME[id]).length ? html`<div className="g">${nx.games.filter(id => GAME[id]).map(id => GAME[id].ko).join(' · ')}</div>` : null}
-          <div className="r">${nx.date && nx.date <= today() ? html`<button className="btn primary" onClick=${() => recC(nx.games && nx.games[0] || null)}>오늘 한 거 기록하기</button>` : null}<button className="btn" onClick=${startPlan}>바꾸기</button></div>
-          ${papp ? html`<div className="hint">미리보기라 ${c.partner}님에게는 아직 안 보여요.</div>` : null}</div>` :
-        html`<button className="cnext empty" onClick=${startPlan}><span className="t">다음에 같이 할 날 정하기</span><span className="d">날짜와 할 게임을 적어 두면 여기 맨 위에 보여요</span></button>`}
-      <div className="cacts"><button className="btn" onClick=${() => NAV.what && NAV.what([c.partner])}>둘이 할 게임 고르기</button><button className="btn" onClick=${() => { setTab('wish'); setAdding(true); }}>같이 할 게임 찜하기</button></div>
-      ${fresh.length ? html`<button className="cwait" onClick=${() => setTab('wish')}><span><b>${c.partner}님이 새로 찜한 게임 ${nf(fresh.length)}개</b></span><span>${fresh.slice(0, 2).map(w => GAME[w.id].ko).join(', ')}${nf(fresh.length > 2 ? ' 외' : '')}</span><span className="go">›</span></button>` : null}
-      ${wl.length ? html`<h2 className="sec">${both.length ? '둘 다 찜한 게임' : '찜한 게임'}<button className="more" onClick=${() => setTab('wish')}>전체 ›</button></h2>
-        <div className="ntrow">${(both.length ? both : wl).slice(0, 4).map(w => html`<button key=${w.id} className="ms-b" onClick=${() => open(w.id)} aria-label=${GAME[w.id].ko}><span className="ms-art"><${Cover} g=${GAME[w.id]}/></span><span className="ntn">${GAME[w.id].ko}</span></button>`)}</div>` : null}
+        nx ? html`<div className="cp-card cp-next"><span className="cp-k">다음 데이트</span><b className="cp-nt">${nx.date ? evDay(nx.date) : '날짜는 아직'}</b><span className="cp-ng">${[nx.date ? fmtDot(nx.date) : null, ...(nx.games || []).filter(id => GAME[id]).map(id => GAME[id].ko)].filter(Boolean).join(' · ')}</span>
+          <span className="cp-r">${nx.date && nx.date <= today() ? html`<button className="btn sm primary cpbtn" onClick=${() => recC(nx.games && nx.games[0] || null)}>오늘 한 거 기록하기</button>` : null}<button className="btn sm" onClick=${startPlan}>바꾸기</button></span></div>` :
+        html`<button className="cp-row" onClick=${startPlan}><span className="cp-ri">${C_IC.log}</span><span className="cp-rt"><b>다음 데이트 정하기</b><span>날짜와 할 게임을 적어 두면 여기 보여요</span></span><span className="go">›</span></button>`}
+      ${fresh.length ? html`<button className="cp-row new" onClick=${() => setTab('wish')}><${Avatar} name=${c.partner} size=${32}/><span className="cp-rt"><b>${c.partner}님이 새로 찜했어요</b><span>${fresh.slice(0, 2).map(w => GAME[w.id].ko).join(', ')}${fresh.length > 2 ? ` 외 ${nf(fresh.length - 2)}개` : ''}</span></span><span className="go">›</span></button>` : null}
+      ${pick ? html`<div className="cp-card cp-pick"><div className="cp-k">오늘 둘이 이거 어때요?${pool.length > 1 ? html`<button className="linkbtn" onClick=${() => setPickI(pickI + 1)}>다른 거</button>` : null}</div>
+          <button className="cp-pg" onClick=${() => open(pick)}><${Cover} g=${GAME[pick]}/><span className="cp-pgt"><b>${GAME[pick].ko}</b><span>${[both.some(w => w.id === pick) ? '둘 다 찜' : `${wish.find(w => w.id === pick).me ? ME.name : c.partner}님이 찜`, by[pick] ? `마지막 ${relDay(by[pick].last)}` : '둘이 아직 안 해 봤어요'].join(' · ')}</span></span></button>
+          <div className="cp-r"><button className="btn sm primary cpbtn" onClick=${() => recC(pick)}>이걸로 기록하기</button>${NAV.what ? html`<button className="btn sm" onClick=${() => NAV.what([c.partner])}>다른 게임 찾기</button>` : null}</div></div>` :
+        html`<button className="cp-row" onClick=${() => { setTab('wish'); setAdding(true); }}><span className="cp-ri">${C_IC.wish}</span><span className="cp-rt"><b>같이 하고 싶은 게임 찜하기</b><span>둘 다 찜한 게임을 여기서 골라 줘요</span></span><span className="go">›</span></button>`}
       ${(() => { const t = today(); const hit = [1, 2, 3, 4, 5].map(y => [y, `${+t.slice(0, 4) - y}${t.slice(4)}`]).map(([y, d]) => [y, d, ps.filter(p => p.date === d)]).find(x => x[2].length);
-        if (!hit) return null; const [y, d, dps] = hit; const gn = [...new Set(dps.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].filter(Boolean);
-        return html`<button className="cmemo" onClick=${() => NAV.day && NAV.day(d)}><span className="lb">${nf(y)}년 전 오늘</span><span className="t">둘이 ${gn.slice(0, 2).join(', ')}${gn.length > 2 ? ` 외 ${nf(gn.length - 2)}개` : ''} 했어요</span><span className="chev">›</span></button>`; })()}
+        if (!hit) return null; const [y, d, dps] = hit; const gn = [...new Set(dps.map(p => GAME[p.gameId] ? GAME[p.gameId].ko : ''))].filter(Boolean); const m = media.find(x => x.d === d);
+        return html`<button className="cp-memo" onClick=${() => NAV.day && NAV.day(d)}>${m ? html`<span className="cp-memo-ph"><${MediaView} items=${[m.m]} small/></span>` : null}<span className="cp-rt"><span className="cp-k">${nf(y)}년 전 오늘</span><b>둘이 ${gn.slice(0, 2).join(', ')}${gn.length > 2 ? ` 외 ${nf(gn.length - 2)}개` : ''} 했어요</b></span><span className="go">›</span></button>`; })()}
       ${ps.length ? html`<h2 className="sec">최근에 둘이 한 게임<button className="more" onClick=${() => setTab('log')}>전체 ›</button></h2>` : null}
       ${ps.length ? (() => { const gs = []; [...ps].sort((x, y) => y.date.localeCompare(x.date) || (y.at || 0) - (x.at || 0)).forEach(p => { const g = gs.find(x => x.date === p.date && x.gameId === p.gameId); if (g) g.ps.push(p); else gs.push({ date: p.date, gameId: p.gameId, ps: [p] }); });
-        // 같은 날 같은 게임은 한 줄: '패치워크 2판 · 에릭 1 : 1 지민'
         return gs.slice(0, 3).map(g => { const p = g.ps[0]; const n = g.ps.length; const dec = g.ps.filter(x => modeOf(x) !== 'coop' && decided(x)); const a = dec.filter(x => wonBy(x, '나')).length, b = dec.filter(x => wonBy(x, c.partner)).length;
           return html`<button key=${g.date + g.gameId} className="crecent" onClick=${() => NAV.day && NAV.day(g.date)}><span className="dt">${relDay(g.date)}</span><span className="g">${GAME[p.gameId] ? GAME[p.gameId].ko : ''}${n > 1 ? html` <span className="num cn">${nf(n)}판</span>` : null}</span><span className="r">${n === 1 ? joinBits(roundSummary({ ...p, memo: '', scores: {} }, false)) : dec.length ? html`${a !== b ? html`<span className="crown">${a > b ? ME.name : c.partner} ${nf(Math.max(a, b))}승</span>` : `${ME.name} ${nf(a)} : ${nf(b)} ${c.partner}`}` : null}</span></button>`; }); })() :
-        html`<div className="cfirst"><b>둘이 한 첫 게임을 남겨 볼까요?</b><span>${c.partner}님이 들어간 채로 열려요. 둘이 한 판은 여기 모여요.</span><button className="btn primary" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button></div>`}
-      ${media.length ? html`<h2 className="sec">추억<button className="more" onClick=${() => { setTab('log'); setLogv('mem'); }}>전체 ›</button></h2><div className="cmem">${media.slice(0, 4).map((x, i) => html`<button key=${i} className="cmem-b" onClick=${() => NAV.day && NAV.day(x.d)} aria-label=${`${dLabel(x.d)} 기록 보기`}><${MediaView} items=${[x.m]} small/><span className="cmem-d">${dLabel(x.d)}</span></button>`)}</div>` : null}
-    ` : null}
+        html`<div className="cfirst"><b>둘이 한 첫 게임을 남겨 볼까요?</b><span>${c.partner}님이 들어간 채로 열려요. 둘이 한 판은 여기 모여요.</span><button className="btn primary cpbtn" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button></div>`}
+      ${media.length ? html`<h2 className="sec">추억<button className="more" onClick=${() => { setTab('log'); setLogv('mem'); }}>전체 ›</button></h2><div className="cmem">${media.slice(0, 4).map((x, i) => html`<button key=${i} className="cmem-b" onClick=${() => NAV.day && NAV.day(x.d)} aria-label=${`${dLabel(x.d)} 기록 보기`}><${MediaView} items=${[x.m]} small/><span className="cmem-d">${dLabel(x.d)}</span></button>`)}</div>` : null}`;
 
-    ${tab === 'wish' ? html`
+  const annView = (() => { const t = today(); const up = days.list.filter(x => x.date >= t && x.k !== 'since').sort((a, b) => a.date.localeCompare(b.date)).slice(0, 6);
+    const past = days.list.filter(x => x.date < t || x.k === 'since').sort((a, b) => b.date.localeCompare(a.date));
+    const row = x => { const n = dTo(x.date); return html`<div key=${x.k} className=${'cp-day ' + x.kind + (n === 0 ? ' td' : '')}><span className="cp-day-i">${x.kind === 'game' ? I.dice : x.kind === 'mine' ? '★' : cMark(c)}</span>
+      <span className="cp-rt"><b>${x.label}</b><span>${fmtDot(x.date)}${x.sub ? ` · ${x.sub}` : ''}</span></span><span className="cp-dn num">${n === 0 ? '오늘' : n > 0 ? `D-${nf(n)}` : ''}</span>
+      ${x.kind === 'mine' ? html`<button className="dots" aria-label="지우기" onClick=${() => upCouple(c.id, y => ({ ...y, days: (y.days || []).filter(d => d.id !== x.id) }), '기념일을 지웠어요')}>⋯</button>` : null}</div>`; };
+    return html`<div className="cp-annv">
+      ${!c.since ? html`<button className="cp-row" onClick=${() => editCouple(c)}><span className="cp-ri">${cMark(c)}</span><span className="cp-rt"><b>사귄 날 넣기</b><span>100일·200일·주년을 알아서 세어 줘요</span></span><span className="go">›</span></button>` : null}
+      <h2 className="sec">다가오는 날</h2>
+      ${up.map(row)}
+      ${days.nextMile ? html`<div className="cp-day game soon"><span className="cp-day-i">${I.dice}</span><span className="cp-rt"><b>둘이 ${nf(days.nextMile.n)}판째</b><span>앞으로 ${nf(days.nextMile.left)}판 더 하면 돼요</span></span><span className="cp-dn"></span></div>` : null}
+      ${addDay ? html`<form className="cp-addday" onSubmit=${e => { e.preventDefault(); if (!addDay.name.trim() || !addDay.date) return; upCouple(c.id, y => ({ ...y, days: [...(y.days || []), { id: uid(), name: addDay.name.trim(), date: addDay.date, yearly: addDay.yearly }] }), '기념일을 넣었어요'); setAddDay(null); }}>
+          <input className="input" placeholder="이름 (예: 지민 생일, 첫 여행)" maxLength="16" value=${addDay.name} onInput=${e => setAddDay({ ...addDay, name: e.target.value })} autoFocus/>
+          <input className="input" type="date" value=${addDay.date} onChange=${e => setAddDay({ ...addDay, date: e.target.value })}/>
+          <label className="cp-chk"><input type="checkbox" checked=${addDay.yearly} onChange=${e => setAddDay({ ...addDay, yearly: e.target.checked })}/>매년 챙기기</label>
+          <div className="cp-r"><button className="btn primary cpbtn" disabled=${!addDay.name.trim() || !addDay.date}>넣기</button><button type="button" className="btn" onClick=${() => setAddDay(null)}>취소</button></div></form>` :
+        html`<button className="btn block" style=${{ marginTop: 10 }} onClick=${() => setAddDay({ name: '', date: '', yearly: true })}>${I.plus}기념일 직접 넣기</button>`}
+      <h2 className="sec">지나온 날</h2>
+      ${past.slice(0, alim).map(row)}
+      ${past.length > alim ? html`<${MoreBtn} left=${past.length - alim} unit="개" onClick=${() => setAlim(alim + 30)}/>` : null}
+    </div>`; })();
+
+  const best = games.map(([id]) => { let m = null; ps.filter(p => p.gameId === +id).forEach(p => Object.entries(p.scores || {}).forEach(([n, v]) => { const x = +v; if (v !== '' && !isNaN(x) && (!m || x > m.v)) m = { v: x, n, date: p.date }; })); return m ? [id, m] : null; }).filter(Boolean).slice(0, 5);
+
+  return html`<div className="screen couple cpspace" style=${{ '--cc': coupleColor(c) }}>
+    ${head}
+    ${annOpen ? annView : null}
+    ${!annOpen && tab === 'home' ? homeTab : null}
+
+    ${!annOpen && tab === 'wish' ? html`
+      <h1 className="cp-h1">같이 할 게임</h1>
       ${(() => { const tp = theirPicks(c, papp); if (!tp) return null;
         const items = [...tp.buy.map(id => [id, 'buy']), ...tp.fav.filter(id => !tp.buy.includes(id)).map(id => [id, 'fav'])].filter(([id]) => GAME[id]);
         if (!items.length) return null; const gifts = c.gifts || [];
@@ -5545,10 +5751,10 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
             return html`<div key=${id} className="tp-c"><button className="tp-art" onClick=${() => open(id)} aria-label=${g.ko}><${Cover} g=${g}/>${k === 'buy' ? html`<span className="tp-tag">사고 싶어 해요</span>` : null}</button>
               <span className="tp-n">${g.ko}</span>
               <span className="tp-act"><button className=${'pill sm' + (mine ? ' on' : '')} aria-pressed=${!!mine} onClick=${() => mine ? null : star(id)}>${mine ? '♥ 같이 하자고 함' : '같이 하자'}</button>
-                ${k === 'buy' && !own ? html`<button className="pill sm" aria-pressed=${gift} onClick=${() => upCouple(c.id, x => ({ ...x, gifts: gift ? (x.gifts || []).filter(i => i !== id) : [...(x.gifts || []), id] }), gift ? '선물 후보에서 뺐어요' : `선물 후보에 담았어요. ${c.partner}님에게는 안 보여요`)}>${gift ? '🎁 선물 후보' : '🎁 선물'}</button>` : null}</span></div>`; })}</div></section>`; })()}
+                ${k === 'buy' && !own ? html`<button className="pill sm" aria-pressed=${gift} onClick=${() => upCouple(c.id, x => ({ ...x, gifts: gift ? (x.gifts || []).filter(i => i !== id) : [...(x.gifts || []), id] }), gift ? '선물 후보에서 뺐어요' : `선물 후보에 담았어요. ${c.partner}님에게는 안 보여요`)}>${gift ? '선물 후보' : '선물'}</button>` : null}</span></div>`; })}</div></section>`; })()}
       ${adding ? html`<div className="cwadd"><${GamePicker} onPick=${id => addWish(id)} favs=${st.favs} np=${2} onCustom=${() => {}}/><button className="btn block" style=${{ marginTop: 8 }} onClick=${() => setAdding(false)}>닫기</button></div>` :
-        html`<button className="btn block primary" onClick=${() => setAdding(true)}>${I.plus}같이 할 게임 찜하기</button>`}
-      ${wl.length ? html`<div className="seg cwf" role="tablist">${[['all', '전체', wl.length], ['both', '둘 다', both.length], ['me', ME.name, wl.filter(w => w.me).length], ['them', c.partner, wl.filter(w => w.them).length]].map(([k, l, n]) => html`<button key=${k} role="tab" aria-pressed=${wf === k} onClick=${() => setWf(k)}><span className="fl">${l}</span> <span className="num">${nf(n)}</span></button>`)}</div>
+        html`<button className="btn block primary cpbtn" onClick=${() => setAdding(true)}>${I.plus}같이 할 게임 찜하기</button>`}
+      ${wl.length ? html`<div className="cp-chips" role="tablist">${[['all', '전체', wl.length], ['both', '둘 다', both.length], ['me', ME.name, wl.filter(w => w.me).length], ['them', c.partner, wl.filter(w => w.them).length]].map(([k, l, n]) => html`<button key=${k} role="tab" className="pill sm" aria-pressed=${wf === k} onClick=${() => setWf(k)}><span className="fl">${l}</span> <span className="num">${nf(n)}</span></button>`)}</div>
         ${wl.length > 12 ? html`<div className="cw-find"><div className="search">${I.games}<input type="search" placeholder="찜한 게임 찾기" value=${wq} onInput=${e => { setWq(e.target.value); setWlim(50); }}/></div><button className="pill sm" aria-pressed=${wOwn} onClick=${() => { setWOwn(!wOwn); setWlim(50); }}>보관함에 있는 것</button></div>` : null}
         ${wlist.slice(0, wlim).map(wrow)}
         ${wlist.length > wlim ? html`<${MoreBtn} left=${wlist.length - wlim} unit="개" onClick=${() => setWlim(wlim + 50)}/>` : null}
@@ -5558,28 +5764,32 @@ function CoupleScreen({ cid, st, back, open, editDay, removeFromId, shareDay, ed
       ${wish.some(w => w.sample) ? html`<div className="note">처음 둘러보기용 예시 목록이에요. 예시 데이터를 지우면 같이 지워져요.</div>` : null}
     ` : null}
 
-    ${tab === 'log' ? html`<div className="seg ltabs" role="tablist">${[['log', '기록'], ['mem', '추억']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${logv === k} onClick=${() => setLogv(k)}>${l}</button>`)}</div>` : null}
-    ${tab === 'log' && logv === 'mem' ? html`
+    ${!annOpen && tab === 'log' ? html`<h1 className="cp-h1">둘이 한 기록</h1><div className="seg tabs ltabs" role="tablist">${[['log', '기록'], ['mem', '사진']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${logv === k} onClick=${() => setLogv(k)}>${l}</button>`)}</div>` : null}
+    ${!annOpen && tab === 'log' && logv === 'mem' ? html`
       ${yearAgo.length ? html`<div className="yago"><${MediaView} items=${yearAgo.map(x => x.m).slice(0, 1)} label="1년 전 오늘"/><div className="ya-t"><b>1년 전 오늘</b><span>${(() => { const p = ps.find(x => x.date === ago); return p && GAME[p.gameId] ? GAME[p.gameId].ko + (p.memo ? ` · ${p.memo}` : '') : ''; })()}</span></div>${NAV.share ? html`<button className="ya-share" onClick=${() => NAV.share(ago)}>공유하기</button>` : null}</div>` : null}
       ${months.length ? html`${months.slice(0, mlim).map(m => html`<section key=${m.k}><div className="mhd">${m.k.slice(0, 4) === thisY ? '' : m.k.slice(0, 4) + '년 '}${+m.k.slice(5)}월 <span className="muted num">${nf(m.items.length)}</span></div><${MediaView} grid items=${m.items} label=${`${+m.k.slice(5)}월 사진`}/></section>`)}
         ${months.length > mlim ? html`<${MoreBtn} left=${months.length - mlim} unit="달" onClick=${() => setMlim(mlim + 6)}/>` : null}` :
         html`<${Empty} title="아직 사진이 없어요">둘이 기록할 때 사진을 넣으면 여기에 쌓여요.<//>`}` : null}
-
-    ${tab === 'log' && logv === 'log' ? html`<${DayList} inGroupView plays=${ps} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay} variant="couple" empty=${html`<${Empty} title="아직 둘이 한 판이 없어요" action=${html`<button className="btn primary" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button>`}>기록할 때 ${c.partner}님만 넣으면 여기에 모여요.<//>`}/>
+    ${!annOpen && tab === 'log' && logv === 'log' ? html`<${DayList} inGroupView plays=${ps} st=${st} open=${open} editDay=${editDay} removeFromId=${removeFromId} shareDay=${shareDay} variant="couple" empty=${html`<${Empty} title="아직 둘이 한 판이 없어요" action=${html`<button className="btn primary cpbtn" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button>`}>기록할 때 ${c.partner}님만 넣으면 여기에 모여요.<//>`}/>
       <div className="note">${c.partner}님하고 둘이서만 한 판이 모여요. 여럿이 한 판은 모임이나 친구 전적에서 보여요.</div>` : null}
 
-    ${tab === 'stat' && !ps.length ? html`<${Empty} title="둘이 한 판이 쌓이면 여기 보여요" action=${html`<button className="btn primary" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button>`}>자주 한 게임, 같이 논 날이 모여요.<//>` : null}
-    ${tab === 'stat' && ps.length ? html`
+    ${!annOpen && tab === 'stat' ? html`<h1 className="cp-h1">통계</h1>` : null}
+    ${!annOpen && tab === 'stat' && !ps.length ? html`<${Empty} title="둘이 한 판이 쌓이면 여기 보여요" action=${html`<button className="btn primary cpbtn" onClick=${() => recC(null)}>둘이 한 게임 기록하기</button>`}>자주 한 게임, 같이 논 날이 모여요.<//>` : null}
+    ${!annOpen && tab === 'stat' && ps.length ? html`
       <div className="cstat4"><div><b className="num">${nf(ps.length)}</b><span>함께한 판</span></div><div><b className="num">${nf(games.length)}</b><span>해 본 게임</span></div><div><b className="num">${nf(dates)}</b><span>같이 논 날</span></div><div><b className="num">${nf(recentN)}</b><span>최근 30일</span></div></div>
       <div className="cmeta">
         ${games.length && GAME[games[0][0]] ? html`<span>가장 많이 한 게임 <b>${GAME[games[0][0]].ko}</b> ${nf(games[0][1].n)}판</span>` : null}
         <span>올해 <b>${nf(yearN)}판</b></span>
         ${first ? html`<span>첫 판 <b>${relDay(first.date)}</b> ${GAME[first.gameId] ? GAME[first.gameId].ko : ''}</span>` : null}
         ${co.length ? html`<span>협력 게임 <b>${nf(co.filter(p => p.coop === 'win').length)}승 ${nf(co.filter(p => p.coop !== 'win').length)}패</b></span>` : null}</div>
-      ${vs.length ? html`<h2 className="sec">맞대결</h2><div className="cscore"><div><${Avatar} name=${st.me} size=${30}/><b className="num">${nf(a)}</b></div><span className="vs">승패 적은 ${nf(vs.length)}판</span><div><b className="num">${nf(b)}</b><${Avatar} name=${c.partner} size=${30}/></div></div>
-      ${vs.length ? html`<div className="cbar"><i style=${{ width: `${a / Math.max(1, a + b) * 100}%` }}></i></div>` : null}` : null}
+      ${vs.length ? html`<h2 className="sec">둘의 승부</h2><div className="cscore"><div><${Avatar} name=${st.me} size=${30}/><b className="num">${nf(a)}</b></div><span className="vs">승패가 갈린 ${nf(vs.length)}판</span><div><b className="num">${nf(b)}</b><${Avatar} name=${c.partner} size=${30}/></div></div>
+      <div className="cbar"><i style=${{ width: `${a / Math.max(1, a + b) * 100}%` }}></i></div>` : null}
+      ${best.length ? html`<h2 className="sec">둘의 최고 점수</h2>${best.map(([id, m]) => html`<button key=${id} className="cgame" onClick=${() => open(+id)}><${Cover} g=${GAME[id]} size="sm"/><span className="n">${GAME[id].ko}<span className="d">${m.n === '나' ? ME.name : m.n} · ${relDay(m.date)}</span></span><span className="v num">${nf(m.v)}점</span></button>`)}` : null}
       ${games.length ? html`<h2 className="sec">게임별</h2>${games.slice(0, cglim).map(([id, x]) => html`<button key=${id} className="cgame" onClick=${() => open(+id)}><${Cover} g=${GAME[id]} size="sm"/>
         <span className="n">${GAME[id].ko}<span className="d">${nf(x.n)}판</span></span>${COOP.has(+id) ? html`<span className="v">협력</span>` : html`<span className="v num"><span className=${x.a > x.b ? 'w' : ''}>${nf(x.a)}</span> : <span className=${x.b > x.a ? 'w' : ''}>${nf(x.b)}</span></span>`}</button>`)}${games.length > cglim ? html`<${MoreBtn} left=${games.length - cglim} unit="개" onClick=${() => setCglim(cglim + 30)}/>` : null}` : null}` : null}
+
+    <nav className="tabbar cpnav" aria-label="커플 공간 메뉴">${C_TABS.map(([k, l]) => k === 'rec' ? html`<button key=${k} className="cp-rec" onClick=${() => recC(null)} aria-label=${`${c.partner}님과 한 게임 기록하기`}><span className="rc">${I.plus}</span></button>` :
+      html`<button key=${k} aria-current=${tab === k && !annOpen ? 'page' : undefined} onClick=${() => setTab(k)}>${k === 'home' ? I.home : C_IC[k]}<span>${l}</span></button>`)}</nav>
   </div>`;
 }
 
@@ -5655,7 +5865,7 @@ function GroupPicker({ st, people, toggle, freq }) {
 function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editCouple, openPerson, openPub, toggleSaveGroup, setMyArea }) {
   const [gsec, setGsec] = useState(() => { try { return localStorage.getItem('bg-gsec') || 'mine'; } catch (e) { return 'mine'; } });
   const pickG = k => { setGsec(k); try { localStorage.setItem('bg-gsec', k); } catch (e) {} };
-  const [sec, setSec] = useState(() => { try { return localStorage.getItem('bg-hub') || 'grp'; } catch (e) { return 'grp'; } });
+  const [sec, setSec] = useState(() => { try { const v = localStorage.getItem('bg-hub'); return v === 'fr' ? 'fr' : 'grp'; } catch (e) { return 'grp'; } }); // 커플은 모임 탭에서 빠졌어요(홈 배지·닉네임 탭으로)
   const pickSec = k => { setSec(k); try { localStorage.setItem('bg-hub', k); } catch (e) {} };
   const [q, setQ] = useState('');
   const [sort, setSort] = useState('act');
@@ -5676,11 +5886,9 @@ function GroupsList({ st, back, openGroup, newGroup, pinGroup, openCouple, editC
   // 다가오는 일정: 가요 누른 일정 + 일주일 안에 있는데 아직 답 안 한 일정
   const myEvs = useMemo(() => upcomingEvs(st), [st.groups]);
   return html`<div className="screen">
-    <div className="topbar">${back ? html`<button className="backbtn" onClick=${back}>${I.back}뒤로</button>` : html`<h1>모임</h1>`}<span className="tbr">${sec === 'grp' ? html`<button className="btn" onClick=${newGroup}>+ 모임 만들기</button>` : sec === 'cpl' ? html`<button className="btn" onClick=${() => editCouple(null)}>+ 커플 만들기</button>` : null}</span></div>
+    <div className="topbar">${back ? html`<button className="backbtn" onClick=${back}>${I.back}뒤로</button>` : html`<h1>모임</h1>`}<span className="tbr">${sec === 'grp' ? html`<button className="btn" onClick=${newGroup}>+ 모임 만들기</button>` : null}</span></div>
     ${back ? html`<h1 style=${{ margin: '0 0 10px' }}>모임</h1>` : null}
-    <div className="seg hubseg" role="tablist">${[['cpl', '커플'], ['fr', '친구'], ['grp', '모임']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${sec === k} onClick=${() => pickSec(k)}>${l}</button>`)}</div>
-    ${sec === 'cpl' ? html`${(st.couples || []).length ? html`<div className="cpllist">${st.couples.map(c => html`<${CoupleCard} key=${c.id} c=${c} st=${st} onOpen=${() => openCouple(c.id)}/>`)}</div>` :
-        html`<${Empty} title="커플 공간이 아직 없어요" action=${html`<button className="btn primary" onClick=${() => editCouple(null)}>커플 만들기</button>`}>둘이 한 게임과 함께한 날을 따로 모아 봐요. 모임과는 따로 있어요.<//>`}` : null}
+    <div className="seg hubseg" role="tablist">${[['grp', '모임'], ['fr', '친구']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${sec === k} onClick=${() => pickSec(k)}>${l}</button>`)}</div>
     ${sec === 'fr' ? html`<${PeopleList} st=${st} openPerson=${openPerson}/>` : null}
     ${sec === 'grp' ? html`<div className="seg tabs gsub" role="tablist">${[['mine', `내 모임${(st.groups || []).length ? ' ' + st.groups.length : ''}`], ['find', '모임 찾기']].map(([k, l]) => html`<button key=${k} role="tab" aria-pressed=${gsec === k} onClick=${() => pickG(k)}>${l}</button>`)}</div>` : null}
     ${sec === 'grp' && gsec === 'find' ? html`<${FindGroups} st=${st} openPub=${openPub} newGroup=${newGroup} toggleSaveGroup=${toggleSaveGroup} setMyArea=${setMyArea}/>` : null}
@@ -6010,8 +6218,8 @@ function App() {
       if (mine.length) say(`예시를 보며 적은 ${nf(mine.length)}판을 내 기록장으로 옮겼어요`); }}/>` : null}
     ${inv ? html`<${Sheet} title="모임 초대" close=${() => { setInv(null); clearInvite(); }}><div className="inv-card"><${Avatar} name=${inv.by} size=${44}/><div><b>${inv.by}님이 '${inv.g}'에 초대했어요</b><span>${[inv.a, `멤버 ${N((inv.m || []).length + 1)}명`].filter(Boolean).join(' · ')}</span></div></div>
       <div className="sheet-foot two"><button className="btn" onClick=${() => { setInv(null); clearInvite(); }}>나중에</button><button className="btn primary" onClick=${() => joinInvite(null)}>들어가기</button></div><//>` : null}
-    <nav className="tabbar" aria-label="메뉴">${TABS.map(([k, l, ic]) => k === 'rec' ? html`<button key=${k} className="rectab" onClick=${() => startPlay(null)} aria-label="오늘 한 게임 기록하기"><span className="rc">${ic}</span><span>기록</span></button>` :
-      html`<button key=${k} aria-current=${tab === k ? 'page' : undefined} onClick=${() => go(k)}>${ic}<span className=${k === 'me' ? 'tnk' : null}>${k === 'me' ? ME.name : l}</span></button>`)}</nav>
+    ${typeof detail === 'string' && detail.startsWith('c:') && (st.couples || []).some(x => 'c:' + x.id === detail) ? null : html`<nav className="tabbar" aria-label="메뉴">${TABS.map(([k, l, ic]) => k === 'rec' ? html`<button key=${k} className="rectab" onClick=${() => startPlay(null)} aria-label="오늘 한 게임 기록하기"><span className="rc">${ic}</span><span>기록</span></button>` :
+      html`<button key=${k} aria-current=${tab === k ? 'page' : undefined} onClick=${() => go(k)}>${ic}<span className=${k === 'me' ? 'tnk' : null}>${k === 'me' ? ME.name : l}</span></button>`)}</nav>`}
     ${sheet && sheet.kind === 'play' ? html`<${PlaySheet} key=${sheet.edit || 'new'} otherG=${sheet.other} moreT=${sheet.table || 0} again=${sheet.again} preset=${sheet.preset} staffG=${sheet.staffG} st=${st} gameId=${sheet.id} editDate=${sheet.edit} close=${() => setSheet(null)} onSave=${savePlay} onDeleteDay=${deleteDay} saveDraft=${saveDraft} discardDraft=${discardDraft} addCustom=${addCustom} setRule=${setRule} onEditDay=${d => editDay(d)}/>` : null}
     ${sheet && sheet.kind === 'person' ? html`<${PersonSheet} st=${st} name=${sheet.name} close=${() => setSheet(null)} open=${open} linkFriend=${linkFriend} block=${block}/>` : null}
     ${sheet && sheet.kind === 'fix' ? html`<${FixSheet} st=${st} from=${sheet.from} date=${sheet.date} close=${() => setSheet(null)} onSend=${sendFix}/>` : null}
