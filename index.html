@@ -2188,6 +2188,30 @@ body:has(.samplebar) .toast { bottom: calc(126px + env(safe-area-inset-bottom, 0
 .gday-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 52px; padding: 0 0 4px; }
 .gday-t { min-width: 0; display: flex; flex-direction: column; } .gday-t b { font-size: 15px; color: var(--ink); } .gday-t span { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dm-b.gm-fix { color: var(--ink); }
+
+/* 11/27 제미나이 3차: 결과는 끝까지, 더 보기 투명 줄, 사진은 게임 줄 아래, 토스트 */
+.play.card .gr-res .nm { max-width: 7.5em !important; }
+.play.card:not(.couplev) .gr-line { gap: 6px; justify-content: flex-start; }
+.play.card:not(.couplev) .gr-line > b { min-width: 1.5em !important; }
+.play.card:not(.couplev) .gr-line > .gr-res { max-width: calc(100% - 1.5em) !important; margin-left: auto; }
+.play.card:not(.couplev) .gr-line > .gr-res::before { content: none !important; }
+.gr-more.gr-gap { height: 28px !important; min-height: 28px !important; margin: 0 !important; padding: 0 !important; font-weight: 500; border: 0 !important; background: transparent !important; border-radius: 8px; }
+.gr-more.gr-gap::before { inset: -8px 0 !important; }
+.gr-more.gr-gap:active { background: var(--sunk) !important; }
+.dphotos { position: relative; display: flex; margin-top: 6px; }
+.dphotos .photos { display: flex !important; gap: 8px; margin: 0; }
+.dphotos .photos img, .dphotos .photos .vthumb { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; }
+.dphotos .more-n { align-self: center; margin-left: 8px; font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+.toast { display: flex; align-items: center; gap: 8px; min-height: 48px; width: min(calc(100vw - 32px), 448px); max-width: none; padding: 0 16px; border-radius: 12px; background: var(--ink); color: var(--surface); font-size: 14px; font-weight: 500; white-space: normal; word-break: keep-all; box-sizing: border-box; }
+.toast .t-undo { margin-left: auto; margin-right: -8px; min-height: 44px; padding: 0 12px; background: transparent; border: 0; color: var(--accent-soft); font-weight: 700; text-decoration: none; flex: none; }
+.rline { display: flex; align-items: center; gap: 8px; min-height: 36px; }
+.rline .rn { flex: 0 1 auto; min-width: 0; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rline .rn .rpp { color: var(--ink-2); font-weight: 500; }
+.rline .rr { flex: none; margin-left: auto; white-space: nowrap; }
+.recb { font-size: 12px; font-weight: 700; color: var(--star); white-space: nowrap; }
+.savedday .sd-d { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal; line-height: 1.4; }
+.savedday { margin-bottom: 10px; }
+.play.card .gr-res .nm.nm2 { max-width: 3.6em !important; }
 </style>
 
 <div id="app"></div>
@@ -2778,18 +2802,25 @@ function Who({ names, st }) {
   if (!names.length) return '혼자';
   return names.map((n, i) => html`<${React.Fragment} key=${n}>${i ? ', ' : ''}${st.friends[n] && NAV.person ? html`<button className="pname" onClick=${() => NAV.person(n)}>${n}</button>` : n}<//>`);
 }
-function ManyRounds({ plays, solo, numOf }) {
+function ManyRounds({ plays, solo, numOf, st }) {
   const [lim, setLim] = useState(5);
   const t = winTally(plays);
   const rows = plays.map((p, i) => [p, numOf && numOf[p.id] || i + 1]);
+  // 판마다 같이 한 사람이 다르면 판 번호 옆에 그 판 사람을 같이 적어요
+  const diffPpl = plays.some(p => p.people.slice().sort().join('|') !== plays[0].people.slice().sort().join('|'));
   const media = plays.flatMap(p => p.media || []);
   return html`<div className="gr-detail">
     <div className="tally">${t.list.map(([n, c]) => html`<span key=${n} className="tl"><b>${nf(dn(n))}</b> ${nf(c)}승</span>`)}${t.coopN ? html`<span className="tl">우리가 <b>${t.coopW}</b>승 <b>${nf(t.coopN - t.coopW)}</b>패</span>` : null}</div>
-    ${rows.slice(0, lim).map(([p, k]) => { const b = roundSummary({ ...p, exps: [] }, solo); return html`<div key=${p.id} className="rline"><span className="rn">${nf(k)}번째</span> ${b.length ? joinBits(b) : html`<span className="muted">결과 없음</span>`}</div>`; })}
+    ${rows.slice(0, lim).map(([p, k]) => { const me1 = !p.people.length && (p.scores || {})['나'] != null && p.scores['나'] !== ''; const b = me1 ? [`${nf(+p.scores['나'])}점`, ...roundSummary({ ...p, scores: {}, exps: [] }, true)] : roundSummary({ ...p, exps: [] }, solo); const rec = st && isRecPlay(st, p);
+      return html`<div key=${p.id} className="rline"><span className="rn">${nf(k)}판${diffPpl ? html`<span className="rpp"> · ${p.people.length ? p.people.map(dn).join('·') : '혼자'}</span>` : null}</span><span className="rr">${b.length ? joinBits(b) : html`<span className="muted">결과 없음</span>`}${rec ? html` <span className="recb">★ 최고 기록</span>` : null}</span></div>`; })}
     ${rows.length > lim ? html`<button className="linkbtn" onClick=${() => setLim(lim + 20)}>다음 판 더 보기 </button>` : null}
     <${MediaView} small items=${media} label="사진"/>
   </div>`;
 }
+// 혼자 점수 판이 그때까지의 최고 기록을 넘었는지 (홈 줄과 하루 화면이 같은 기준)
+const isRecPlay = (st, p) => { if (p.people.length || (p.scores || {})['나'] == null || p.scores['나'] === '') return false; const low = ruleOf(st, p.gameId) === 'low'; const v = +p.scores['나'];
+  const past = st.plays.filter(x => x.id !== p.id && x.gameId === p.gameId && !x.people.length && (x.scores || {})['나'] != null && x.scores['나'] !== '' && (x.date < p.date || x.date === p.date && (x.at || 0) < (p.at || 0))).map(x => +x.scores['나']);
+  return past.length > 0 && (low ? v < Math.min(...past) : v > Math.max(...past)); };
 // '한 판 더' 버튼 아래 글: 셋까지는 이름을 다, 넷부터 '외 N명'. 둘이면 '둘이서', 혼자면 점수만
 const nextPpl = p => p.next || p.people; // 한 판 더를 열 때 쓸 사람
 const whoAgain = ppl => !ppl.length ? '점수만 적으면 돼요' : ppl.length === 1 ? `${dn(ppl[0])}님과 둘이서 그대로` : ppl.length <= 3 ? `${ppl.map(dn).join(', ')} 그대로` : `${ppl.slice(0, 2).map(dn).join(', ')} 외 ${nf(ppl.length - 2)}명 그대로`;
@@ -2798,13 +2829,14 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const own = day.plays.some(p => !p.from);
   const d = parse(day.date);
   // 모임 화면에선 테이블이 달라도 같은 게임은 한 줄로 모아요
-  const key = p => inGroupView ? 'all' : p.people.slice().sort().join('|');
+  // 하루 전체 화면은 같은 게임을 한데 모으고 판마다 사람을 적어요(사람이 달라도 따로 떨어지지 않게)
+  const key = p => inGroupView || full ? 'all' : p.people.slice().sort().join('|');
   const segs = [];
-  // 오늘 카드는 방금 판이 위로(판마다 올릴 때 접힌 곳에 숨지 않게), 지난 날은 처음 판부터
-  (day.date === playDay() ? [...day.plays].sort((a, b) => (b.at || 0) - (a.at || 0)) : day.plays).forEach(p => {
+  // 오늘 카드는 방금 판이 위로(홈 '한 판 더' 버튼과 같은 게임이 맨 위), 친구가 보내 준 판은 그 아래. 지난 날은 처음 판부터
+  (day.date === playDay() ? [...day.plays].sort((a, b) => (a.from ? 1 : 0) - (b.from ? 1 : 0) || (b.at || 0) - (a.at || 0)) : day.plays).forEach(p => {
     let seg = segs.find(s => s.k === key(p));
     if (!seg) { seg = { k: key(p), people: p.people, games: [] }; segs.push(seg); }
-    if (inGroupView && seg.people !== p.people) seg.people = [...new Set([...seg.people, ...p.people])];
+    if ((inGroupView || full) && seg.people !== p.people) seg.people = [...new Set([...seg.people, ...p.people])];
     let gl = seg.games.find(x => x.gameId === p.gameId);
     if (!gl) { gl = { gameId: p.gameId, from: p.from || null, plays: [] }; seg.games.push(gl); }
     gl.plays.push(p);
@@ -2821,7 +2853,7 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
   const duoOf = plays => { const ps = new Set(plays.flatMap(p => p.scribe ? p.people : ['나', ...p.people])); return ps.size === 2 && plays.every(p => modeOf(p) !== 'coop') ? [...ps] : null; };
   const winLine = (plays, solo) => {
     // 홈 줄에서는 이름이 길면 이름만 줄이고 점수·승수는 끝까지 보여요
-    const D = n => full ? dn(n) : html`<span className="nm">${dn(n)}</span>`;
+    const D = n => full ? dn(n) : html`<span className="nm">${dn(n)}</span>`; const D2 = n => { const x = dn(n); return full || x.length <= 4 ? x : x.slice(0, 3) + '…'; }; // 이름이 둘이면 둘 다 조금 짧게
     if (solo) { const sc = plays.map(p => (p.scores || {})['나']).filter(v => v != null && v !== '' && !isNaN(+v)).map(Number);
       const cw = plays.filter(p => p.coop === 'win').length, cl = plays.filter(p => p.coop === 'lose').length;
       const wl = cw + cl ? (plays.length === 1 ? (cw ? '성공' : '실패') : [cw ? `성공 ${nf(cw)}` : '', cl ? `실패 ${nf(cl)}` : ''].filter(Boolean).join(' · ')) : '';
@@ -2831,15 +2863,15 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
         return html`<span className="solosc">${wl ? `${wl} · ` : null}${rec ? html`<span className="rec">★ 최고 ${nf(b)}점</span>` : plays.length > 1 ? `최고 ${nf(b)}점` : `${nf(b)}점`}</span>`; } }
     if (plays.length === 1) { const rk = plays[0].ranks || {}; const f1 = Object.keys(rk).filter(n => rk[n] === 1);
       // 홈 줄에는 1등만: 2등부터는 하루 화면에서 봐요 (360px에서 결과가 잘리지 않게)
-      if (!full && Object.keys(rk).length > 1 && f1.length) return html`<span className="crown">${f1.length > 2 ? html`${D(f1[0])} 외 ${nf(f1.length - 1)}명` : f1.map((n, j) => html`${j ? '·' : ''}${D(n)}`)} 1등</span>`;
-      const w1 = plays[0].winners || []; if (!full && !solo && modeOf(plays[0]) !== 'coop' && !TEAM.has(plays[0].gameId) && w1.length && w1.length <= 2 && !plays[0].draw) return html`<span className="crown">${w1.map((n, j) => html`${j ? '·' : ''}${D(n)}`)} 승</span>`;
+      if (!full && Object.keys(rk).length > 1 && f1.length) return html`<span className="crown">${f1.length > 2 ? html`${D(f1[0])} 외 ${nf(f1.length - 1)}명` : f1.map((n, j) => html`${j ? '·' : ''}${(f1.length > 1 ? D2 : D)(n)}`)} 1등</span>`;
+      const w1 = plays[0].winners || []; if (!full && !solo && modeOf(plays[0]) !== 'coop' && !TEAM.has(plays[0].gameId) && w1.length && w1.length <= 2 && !plays[0].draw) return html`<span className="crown">${w1.map((n, j) => html`${j ? '·' : ''}${(w1.length > 1 ? D2 : D)(n)}`)} 승</span>`;
       return joinBits(roundSummary({ ...plays[0], scores: {}, memo: '', minutes: '', ...(full ? {} : { exps: [] }) }, solo)); }
     const t = winTally(plays);
     // 이긴 사람이 많으면 줄이 잘리지 않게 1등만: '현우 9승', 공동 1등은 '현우·에릭 각 9승'
     const best = t.list.length ? t.list[0][1] : 0; const tier = t.list.filter(([, c]) => c === best);
     const wc = Object.fromEntries(t.list); const du = duoOf(plays); const duo = du && (wc[du[1]] || 0) > (wc[du[0]] || 0) ? [du[1], du[0]] : du;
-    const top = !t.list.length ? [] : duo ? [html`${D(duo[0])} ${nf(wc[duo[0]] || 0)} : ${nf(wc[duo[1]] || 0)} ${D(duo[1])}`]
-      : tier.length > 2 ? [html`${D(tier[0][0])} 등 ${nf(tier.length)}명 각 ${nf(best)}승`] : tier.length > 1 ? [html`${tier.map(([n], j) => html`${j ? '·' : ''}${D(n)}`)} ${nf(best)}:${nf(best)}`]
+    const top = !t.list.length ? [] : duo ? [html`${D2(duo[0])} ${nf(wc[duo[0]] || 0)} : ${nf(wc[duo[1]] || 0)} ${D2(duo[1])}`]
+      : tier.length > 2 ? [html`${D(tier[0][0])} 등 ${nf(tier.length)}명 각 ${nf(best)}승`] : tier.length > 1 ? [html`${tier.map(([n], j) => html`${j ? '·' : ''}${D2(n)}`)} ${nf(best)}:${nf(best)}`]
       : t.list.length >= 2 ? [html`${D(t.list[0][0])} ${nf(best)}승<span className="r2"> · ${D(t.list[1][0])} ${nf(t.list[1][1])}승</span>`] : [html`${D(t.list[0][0])} ${nf(best)}승`];
     const bits = [...(t.coopN ? [`우리가 ${nf(t.coopW)}승 ${nf(t.coopN - t.coopW)}패`] : []), ...top];
     const even = duo && !t.coopN && (wc[duo[0]] || 0) === (wc[duo[1]] || 0); // 1 : 1 동점엔 왕관 없이
@@ -2876,13 +2908,13 @@ function DayGroup({ day, st, open, edit, firsts, removeFrom, share, variant, ful
           <div className="gr-main"><button className="gr-cv" onClick=${() => open(g.id)} aria-label=${g.ko + ' 게임 화면'}><${Cover} g=${g} size="xs"/></button>
             <button className="gr-line" onClick=${() => full ? setOpenG(isOpen ? k : null) : NAV.day && NAV.day(day.date, typeof inGroupView === 'string' ? inGroupView : null)} aria-expanded=${full ? isOpen : undefined} aria-label=${first ? `${g.ko} · 처음 한 게임` : undefined}>
               <b>${g.ko}</b>${!full && gl.plays.some(p => p.exps && p.exps.length) ? html`<span className="xpmark" title="확장 포함">+확장</span>` : null}${n > 1 ? html` <span className="times num">${nf(n)}판</span>` : null}${(x => x ? html`<span className="gr-res">${x}</span>` : null)(resultLine(gl.plays, solo))}${!inGroupView && gl.plays.every(p => p.scribe) ? html` <span className="chip">${ME.name} 빠짐</span>` : null}${full && multiSeg && gl.sg.people.length !== allPpl.length ? html`<span className="gr-w">· ${gl.sg.people.length ? gl.sg.people.join(', ') + '만' : '혼자'}</span>` : null}</button>${first ? html`<span className="gr-first" aria-hidden="true">처음</span>` : null}</div>
-          ${isOpen && n > 1 ? html`<${ManyRounds} plays=${gl.plays} solo=${solo} numOf=${numOf}/>` : null}
-          ${isOpen && n === 1 ? html`<div className="gr-detail">${gl.plays.map(p => { const b = roundSummary({ ...p, winners: [], ranks: {}, coop: null, draw: false }, solo); return html`<div key=${p.id} className="rline">${b.length ? joinBits(b) : null}${p.from ? html` <span className="nores">${p.from}님이 남김</span>` : null}</div>`; })}
+          ${isOpen && n > 1 ? html`<${ManyRounds} plays=${gl.plays} solo=${solo} numOf=${numOf} st=${st}/>` : null}
+          ${isOpen && n === 1 ? html`<div className="gr-detail">${gl.plays.map(p => { const b = roundSummary({ ...p, winners: [], ranks: {}, coop: null, draw: false }, solo); return html`<div key=${p.id} className="rline">${b.length ? joinBits(b) : null}${isRecPlay(st, p) ? html` <span className="recb">★ 최고 기록</span>` : null}${p.from ? html` <span className="nores">${p.from}님이 남김</span>` : null}</div>`; })}
             <${MediaView} small items=${media} label=${`${g.ko} 사진`}/></div>` : null}
         </div>`; })}
         </div>
+      ${photos.length ? html`<div className="dphotos" aria-label="이날 사진"><${MediaView} small items=${photos.slice(0, 4)} label=${`${d.getMonth() + 1}월 ${d.getDate()}일 사진`}/>${photos.length > 4 ? html`<span className="more-n num">+${nf(photos.length - 4)}</span>` : null}</div>` : null}
     </div>
-    ${photos.length ? html`<div className="thumb1"><${MediaView} small items=${photos} label=${`${d.getMonth() + 1}월 ${d.getDate()}일 사진`}/>${photos.length > 1 ? html`<span className="more-n num">+${nf(photos.length - 1)}</span>` : null}</div>` : null}
   </div>`;
 }
 
@@ -3507,7 +3539,7 @@ const SHARED_CUSTOM = [
   { id: -9004, ko: '우리동네 반상회', adders: 11 },
 ].map(g => ({ en: '다른 이용자가 추가한 게임', year: null, pmin: null, pmax: null, tmin: null, tmax: null, age: null, custom: true, shared: true, ...g }));
 const normName = t => (t || '').toLowerCase().replace(/[\s·:\-_.,!?'"]/g, '');
-function GamePicker({ onPick, favs, onCustom, np, noFocus }) {
+function GamePicker({ onPick, favs, onCustom, np, noFocus, mine }) {
   const [q, setQ] = useState('');
   const [force, setForce] = useState(false);
   const t = q.trim(), n = normName(t);
@@ -3517,7 +3549,7 @@ function GamePicker({ onPick, favs, onCustom, np, noFocus }) {
   const gmeta = g => [players(g), playtime(g)].filter(Boolean).join(' · ');
   return html`<div>
     <div className="search">${I.games}<input id="pick-search" type="search" placeholder="한글이나 영어 이름 일부만 적어도 돼요" value=${q} onInput=${e => { setQ(e.target.value); setForce(false); }} autoFocus=${!noFocus} autoComplete="off"/></div>
-    ${!t ? html`<div className="pick-sub">${np >= 2 ? `${nf(np)}명이 많이 하는 게임` : '많이 기록하는 게임'}</div><div className="pick-list">${GAMES.filter(g => g.id > -30000 && !g.custom && (!(np >= 2) || !g.pmin || (g.pmin <= np && (!g.pmax || np <= g.pmax)))).slice(0, 8).map(g => html`<${GameRow} key=${g.id} g=${g} onOpen=${onPick} meta=${gmeta(g)} side=${(favs || []).includes(g.id) ? '★' : ''}/>`)}</div>` : null}
+    ${!t ? html`<div className="pick-sub">${(mine || []).length ? '내 보관함·자주 한 게임' : np >= 2 ? `${nf(np)}명이 많이 하는 게임` : '많이 기록하는 게임'}</div><div className="pick-list">${(() => { const fit = g => !(np >= 2) || !g.pmin || (g.pmin <= np && (!g.pmax || np <= g.pmax)); const m = (mine || []).map(id => GAME[id]).filter(g => g && fit(g)); return [...m, ...GAMES.filter(g => g.id > -30000 && !g.custom && fit(g) && !m.includes(g))]; })().slice(0, 8).map(g => html`<${GameRow} key=${g.id} g=${g} onOpen=${onPick} meta=${gmeta(g)} side=${(favs || []).includes(g.id) ? '★' : ''}/>`)}</div>` : null}
     ${t ? html`<div className="pick-list">${list.map(g => html`<${GameRow} key=${g.id} g=${g} onOpen=${onPick} meta=${g.custom ? '직접 추가한 게임' : normName(g.ko).includes(n) ? gmeta(g) : g.en} side=${(favs || []).includes(g.id) ? '★' : ''}/>`)}
       ${shared.length ? html`<div className="pick-sub">다른 사람이 먼저 추가한 게임이에요. 같은 게임이면 이걸 골라주세요.</div>
         ${shared.map(g => html`<button key=${g.id} className="prow" onClick=${() => { onCustom(g); setQ(''); }}><span className="avatar ghost">${g.ko[0]}</span><span className="pn">${g.ko}</span><span className="pt">${nf(g.adders)}명이 기록 중</span></button>`)}` : null}
@@ -3582,7 +3614,7 @@ function RoundRow({ single, onFrom, onMe, base = 0, i, r, gameId, gamePeople, op
     ${options.length ? html`<button className="rppl" aria-expanded=${showPpl} onClick=${() => setShowPpl(!showPpl)}>${rp.length + (meOut ? 0 : 1) <= 1 ? '혼자' : `사람 ${nf(rp.length + (meOut ? 0 : 1))}명`}${r.people ? html`<span className="rppl-x">앞 판과 달라요</span>` : null}<span className="chg">${showPpl ? '접기' : '바꾸기'}</span></button>
       ${showPpl ? html`<div className="rppl-box">${!single ? html`<div className="seg rppl-seg" role="group" aria-label="어디까지 바꿀까요"><button aria-pressed=${!only} onClick=${() => setOnly(false)}>이 판부터 쭉</button><button aria-pressed=${only} onClick=${() => setOnly(true)}>이 판만</button></div>` : null}
         <div className="dates rppl-d"><button className="pill sm" aria-pressed=${!meOut} onClick=${onMe}>${ME.name}</button>${options.map(n => html`<button key=${n} className="pill sm" aria-pressed=${rp.includes(n)} onClick=${() => only ? toggleRp(n) : onFrom(n)}>${n}</button>`)}</div></div>` : null}` : null}
-    ${!solo ? html`<div className="whoq">${mode === 'rank' ? '몇 등 했어요?' : mode === 'coop' ? '게임 결과는요?' : '누가 이겼어요?'}${prev && decided(prev) && !decided(r) ? html`<button className="linkbtn sameprev" onClick=${() => pick({ mode: prev.mode, winners: [...(prev.winners || [])], ranks: { ...(prev.ranks || {}) }, coop: prev.coop, draw: !!prev.draw })}>앞 판처럼: ${joinBits(roundSummary({ ...prev, exps: [], scores: {}, memo: '' }, solo))}</button>` : null}</div>` : null}
+    ${!solo ? html`<div className="whoq">${mode === 'rank' ? '몇 등 했어요?' : mode === 'coop' ? '게임 결과는요?' : '누가 이겼어요?'}${prev && decided(prev) && !decided(r) ? html`<button className="linkbtn sameprev" onClick=${() => pick({ mode: prev.mode, winners: [...(prev.winners || [])], ranks: { ...(prev.ranks || {}) }, coop: prev.coop, draw: !!prev.draw })}>결과만 앞 판처럼: ${joinBits(roundSummary({ ...prev, exps: [], scores: {}, memo: '' }, solo))}</button>` : null}</div>` : null}
     ${mode === 'win' ? html`<div className="wpills">${members.map(n => html`<button key=${n} className="wp" aria-pressed=${r.winners.includes(n)} aria-label=${`${nf(i + 1)}판 ${dn(n)} 승`}
         onClick=${() => { if (!r.winners.includes(n)) try { navigator.vibrate && navigator.vibrate(8); } catch (er) {} pick({ draw: false, winners: r.winners.includes(n) ? r.winners.filter(x => x !== n) : [...r.winners, n] }); }}>${r.winners.includes(n) ? html`<span className="crownic" aria-hidden="true">♛</span>` : null}${dn(n)}</button>`)}
         <button className="wp draw" aria-pressed=${!!r.draw} onClick=${() => pick({ draw: !r.draw, winners: [] })}>무승부</button></div>
@@ -3794,6 +3826,8 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
   const [openR, setOpenR] = useState(null);
   const [toolK, setToolK] = useState(null); // 게임 카드 ⋯: 규칙 질문·누가 먼저·팀 나누기 (기록과 다른 일이라 접어 둬요)
   // 혼자 점수 최고: 저장된 판(오늘 앞 판 포함) + 이 시트에서 앞에 적은 판까지
+  // 게임 찾기 첫 목록: 많이 한 게임 → 보관함 순
+  const myGames = useMemo(() => { const c = {}; st.plays.forEach(p => { c[p.gameId] = (c[p.gameId] || 0) + 1; }); const played = Object.keys(c).sort((a, b) => c[b] - c[a]).map(Number); return [...played, ...Object.keys(st.collection || {}).map(Number).filter(id => !c[id])]; }, [st.plays, st.collection]);
   const bestIn = (it, i) => { const b0 = bestSolo(it.gameId); const low = ruleOf(st, it.gameId) === 'low'; const v = it.rounds.slice(0, i).filter(r => !(r.people || it.people).length && (r.scores || {})['나'] != null && r.scores['나'] !== '').map(r => +r.scores['나']); if (b0 != null) v.push(b0); return v.length ? (low ? Math.min(...v) : Math.max(...v)) : null; };
   const bestSolo = gid => { const v = others.filter(p => p.gameId === gid && !p.people.length && p.date <= date && (p.scores || {})['나'] != null).map(p => +p.scores['나']); return v.length ? (ruleOf(st, gid) === 'low' ? Math.min(...v) : Math.max(...v)) : null; };
   const [focusK, setFocusK] = useState(null); const [undoR, setUndoR] = useState(null);
@@ -3968,7 +4002,7 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
       <div className="stephint">게임을 누를 때마다 한 판씩 늘어요.</div>
       ${tOn ? html`<div className="tblpick"><span className="lb2">어느 테이블 게임이에요?</span><div className="seg tblseg" role="group" aria-label="테이블">${Array.from({ length: tN }, (_, i) => i + 1).map(t => html`<button key=${t} aria-pressed=${curT === t} onClick=${() => setCurT(t)}>${t}테이블</button>`)}</div>
         <div className="hint">${tPeople(curT).length || tables['나'] === curT ? [...(tables['나'] === curT ? [ME.name] : []), ...tPeople(curT)].join(', ') : '아직 앉은 사람이 없어요. 위에서 자리를 정해요.'}</div></div>` : null}
-      ${searching ? html`<div className="gsearch-open"><${GamePicker} onPick=${addGame} favs=${favs} np=${people.length + (meOff ? 0 : 1)} noFocus=${!searchTap} onCustom=${name => addGame(addCustom(name))}/><button className="btn ghost block" onClick=${() => setSearching(false)}>닫기</button></div>` :
+      ${searching ? html`<div className="gsearch-open"><${GamePicker} onPick=${addGame} mine=${myGames} favs=${favs} np=${people.length + (meOff ? 0 : 1)} noFocus=${!searchTap} onCustom=${name => addGame(addCustom(name))}/><button className="btn ghost block" onClick=${() => setSearching(false)}>닫기</button></div>` :
         html`<button className="fakesearch" onClick=${() => { setSearchTap(true); setSearching(true); }}>${I.games}<span>게임 이름으로 찾기</span></button>`}
       ${searching || !anyQuick ? null : html`<div className="seg" role="group" aria-label="게임 고르기" style=${{ marginBottom: 10 }}>
         ${[...(people.length ? [['with', '자주 같이 한']] : []), ['fav', '즐겨찾기'], ['recent', '최근'], ['shelf', '보관함']].map(([k, l]) => html`<button key=${k} aria-pressed=${qt === k} onClick=${() => setQtab(k)}>${l}</button>`)}</div>`}
@@ -6325,7 +6359,7 @@ function App() {
     ${sheet && sheet.kind === 'shelfimg' ? html`<${ShelfImageSheet} st=${st} close=${() => setSheet(null)} say=${say}/>` : null}
     ${sheet && sheet.kind === 'barcode' ? html`<${BarcodeSheet} st=${st} close=${() => setSheet(null)} toggleOwn=${toggleOwn}/>` : null}
     ${sheet && sheet.kind === 'review' ? html`<${ReviewSheet} st=${st} gameId=${sheet.id} close=${() => setSheet(null)} onSave=${saveReview} onDelete=${delReview}/>` : null}
-    ${full ? html`<div className="toast" role="alert">저장 공간이 꽉 찼어요. 사진을 몇 장 빼주세요.</div>` : toast ? html`<div className="toast" role="status">${toast.m || toast}${toast.undo ? html`<button className="t-undo t-back" onClick=${toast.undo}>되돌리기</button>` : null}${toast.more ? html`<button className="t-more" onClick=${toast.more}>한 판 더</button>` : null}</div>` : null}
+    ${full ? html`<div className="toast" role="alert">저장 공간이 꽉 찼어요. 사진을 몇 장 빼주세요.</div>` : toast ? html`<div className="toast" role="status">${toast.m || toast}${toast.undo ? html`<button className="t-undo t-back" onClick=${toast.undo}>되돌리기</button>` : null}</div>` : null}
   <//>`;
 }
 
