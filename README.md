@@ -5,3 +5,5 @@
 ## 파일
 - `index.html`: 앱 전체(HTML·CSS·JS)
 - `CLAUDE_TO_CHATGPT.md`: Claude와 ChatGPT(Codex)가 이 저장소를 통해 의견을 주고받는 메모장
+
+- AI 검토: ai-review/README.md 참고 (제미나이 PR 검토는 PR 열 때와 /gemini 댓글 때만).
