@@ -1,0 +1,4 @@
+# arkeun Product Roadmap
+- **Phase 1 (Core UX & Warmth):** Multi-round progressive disclosure, warm paper palette, conversational Korean copy overhaul, 44px touch ergonomics.
+- **Phase 2 (Signature Social Features):** '오늘 뭐 돌리지?' smart game recommender, 29CM-style '오늘의 보드게임 영수증' shareable image card, Watcha Pedia-style Taste DNA & Couple/Group Chemistry report, '선 플레이어 정하기' live table helper.
+- **Phase 3 (Retention & Polish):** Post-save celebratory micro-interactions, win-rate & streak dashboard, shelf collection filters, live score calculator, JSON backup safety, monthly timeline grouping, and PWA offline/empty-state polish.
