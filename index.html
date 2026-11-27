@@ -10,7 +10,7 @@
 .tblpick { margin: 0 0 10px; } .tblpick .lb2 { font-size: 13px; font-weight: 600; color: var(--ink-2); } .tblpick .hint { margin-top: 4px; }
 .tbltag { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); font-size: 12px; font-weight: 700; line-height: 18px; vertical-align: 1px; }
 .gr-line .tbltag { margin: 0 0 0 4px; }
-.warnline { color: #b5562f; margin-top: 6px; }
+.warnline { color: var(--danger, #B84A39); margin-top: 6px; }
 .evlist { display: block; margin-top: 8px; font-size: 13px; }
 .roster .mrow { gap: 10px; } .roster .mrow .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .meline { background: color-mix(in srgb, var(--accent) 9%, var(--surface)) !important; border-radius: 10px; }
@@ -71,36 +71,43 @@
 <style>
 /* 레이아웃: 폰 폭 한 줄 앱 화면, 데스크톱에선 가운데 480px 기둥 + 하단 탭바 */
 :root {
-  --bg: #f7f2ea;
-  --surface: #ffffff;
-  --sunk: #efe7db;
-  --ink: #2a231e;
-  --ink-2: #5f544b;
-  --ink-3: #6b5e53;
-  --line: #e2d5c3;
-  --accent: #237a52;
-  --accent-ink: #ffffff;
-  --accent-soft: #e2f0e5;
-  --star: #e2a020;
-  --star-empty: #d3d6cf;
-  --danger: #b4372c;
-  --heat-0: #ece4d8; --heat-1: #b6d6c3; --heat-2: #6fb08b; --heat-3: #1d6b48;
-  --shadow: 0 1px 2px rgba(60,40,20,.06), 0 6px 24px rgba(60,40,20,.08);
-  --shelf-board: #c99a64;
+  --bg: #FAF8F5;
+  --surface: #F5F2EB;
+  --sunk: #ECE7DF;
+  --ink: #2C2825;
+  --ink-2: #6E675F;
+  --ink-3: #7A7269;
+  --line: #ECE7DF;
+  --line-strong: #DFD8CD;
+  --accent: #C86D51;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #F7E8E2;
+  --amber: #D99B52;
+  --amber-soft: #FAF0E1;
+  --sage: #6B8E78;
+  --sage-soft: #E8F0EB;
+  --star: #D99B52;
+  --star-empty: #DDD6CB;
+  --danger: #B84A39;
+  --heat-0: #ECE7DF; --heat-1: #C8DBD0; --heat-2: #93B49F; --heat-3: #6B8E78;
+  --shadow: 0 1px 2px rgba(44,40,37,.04), 0 6px 20px rgba(44,40,37,.05);
+  --shelf-board: #C9A276;
   --f-body: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --f-num: var(--f-body);
-  --accent-fill: var(--accent); --accent-fill-ink: var(--accent-ink);
+  --accent-fill: #C86D51; --accent-fill-ink: #FFFFFF;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #171411; --surface: #221d19; --sunk: #2c2620; --ink: #f1ebe3; --ink-2: #c4b9ad; --ink-3: #a59889;
-  --line: #4a4037; --accent: #5cc690; --accent-ink: #0d1a13; --accent-soft: #1f3a2c; --star: #f0b23a; --star-empty: #40372f;
-  --shelf-board: #5a5246; --danger: #e2685c; --heat-0: #2c2620; --heat-1: #24513a; --heat-2: #2f8a5c; --heat-3: #4fbf87;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.35); color-scheme: dark; --accent-fill: #1f7a52; --accent-fill-ink: #fff; } }
+  --line: #4a4037; --line-strong: #5a4f45; --accent: #DF866B; --accent-ink: #1D1411; --accent-soft: #3B2620; --star: #E5AC66; --star-empty: #40372f;
+  --amber: #E5AC66; --amber-soft: #382C1E; --sage: #86AC94; --sage-soft: #213027;
+  --shelf-board: #5a5246; --danger: #e2685c; --heat-0: #2C2620; --heat-1: #2F4739; --heat-2: #4A7059; --heat-3: #6B8E78;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.35); color-scheme: dark; --accent-fill: #C86D51; --accent-fill-ink: #FFFFFF; } }
 :root[data-theme="dark"] {
   --bg: #171411; --surface: #221d19; --sunk: #2c2620; --ink: #f1ebe3; --ink-2: #c4b9ad; --ink-3: #a59889;
-  --line: #4a4037; --accent: #5cc690; --accent-ink: #0d1a13; --accent-soft: #1f3a2c; --star: #f0b23a; --star-empty: #40372f;
-  --shelf-board: #5a5246; --danger: #e2685c; --heat-0: #2c2620; --heat-1: #24513a; --heat-2: #2f8a5c; --heat-3: #4fbf87;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.35); color-scheme: dark; --accent-fill: #1f7a52; --accent-fill-ink: #fff; }
+  --line: #4a4037; --line-strong: #5a4f45; --accent: #DF866B; --accent-ink: #1D1411; --accent-soft: #3B2620; --star: #E5AC66; --star-empty: #40372f;
+  --amber: #E5AC66; --amber-soft: #382C1E; --sage: #86AC94; --sage-soft: #213027;
+  --shelf-board: #5a5246; --danger: #e2685c; --heat-0: #2C2620; --heat-1: #2F4739; --heat-2: #4A7059; --heat-3: #6B8E78;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 24px rgba(0,0,0,.35); color-scheme: dark; --accent-fill: #C86D51; --accent-fill-ink: #FFFFFF; }
 
 * { box-sizing: border-box; }
 html, body { background: var(--bg); margin: 0; }
@@ -1386,10 +1393,18 @@ select.qa-sort { border: 0; background: none; font: inherit; font-size: 13px; co
 .mecpl { display: block; color: var(--cc); font-weight: 700; font-size: 13px; margin-top: 2px; padding: 0; min-height: 32px; }
 
 .review .on-game.top { margin: 0; color: var(--ink); font-size: 15px; gap: 8px; }
-.round.folded { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: none; font: inherit; color: inherit; min-height: 44px; padding: 6px 2px; }
-.round.folded .rn { font-size: 13px; color: var(--ink-3); flex: none; }
-.round.folded .fr { flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.round.folded .chev { color: var(--ink-3); }
+.round.folded { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 6px 12px 6px 8px; margin-top: 6px; border: 1px solid var(--line); border-radius: 999px; background: var(--sunk); font: inherit; color: var(--ink); text-align: left; }
+.round.folded.empty { border-style: dashed; background: var(--surface); color: var(--ink-2); }
+.round.folded .rn { font-size: 12.5px; font-weight: 700; color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; flex: none; }
+.round.folded .fr { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.round.folded.empty .fr { color: var(--ink-3); }
+.round.folded .chev { flex: none; font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.rrow .rn { display: inline-flex; align-items: center; gap: 6px; }
+.rrow .rdel { margin-left: 0; min-height: 32px; padding: 4px 10px; flex: none; }
+.rfoot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
+.rfoot > button { min-height: 44px; }
+.rfoldbtn { border: 0; background: none; min-height: 44px; padding: 0 4px; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-3); flex: none; }
+.add-round-btn { display: block; width: 100%; min-height: 44px; margin-top: 8px; border: 1px dashed var(--line); border-radius: 12px; background: var(--surface); color: var(--accent); font: inherit; font-size: 13.5px; font-weight: 600; }
 .whoq { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .whoq .linkbtn.sameprev { font-size: 14px; min-height: 44px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
 
@@ -1877,7 +1892,7 @@ h2.sec { font-size: 16px; margin: 22px 0 8px; }
 .play.card.dense { padding: 12px 12px 10px; }
 .dayfull .play.card { margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
 
-.gyear, .yearbtn { background: linear-gradient(135deg, #f8ead0, #f0d9a8) !important; color: #4a3518 !important; }
+.gyear, .yearbtn { background: linear-gradient(135deg, #FBF0DF, #F3DFBE) !important; color: #4a3518 !important; }
 .yearbtn .go { color: #4a3518 !important; }
 :root[data-theme="dark"] .gyear, :root[data-theme="dark"] .yearbtn { background: linear-gradient(135deg, #4a3a2e, #6b5240) !important; color: #fff7ee !important; }
 .stat { border-radius: 16px; }
@@ -2151,6 +2166,24 @@ body:has(.samplebar) .toast { bottom: calc(126px + env(safe-area-inset-bottom, 0
   background-size: 8px 8px; animation: confetti 1.1s ease-in forwards; }
 @keyframes confetti { 0% { transform: translateY(-20px); opacity: 1; } 100% { transform: translateY(140px); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .wp[aria-pressed="true"], .savedcard.win .sc-big::before { animation: none; } .savedcard.win::after { display: none; } }
+
+/* TASK-02: 따뜻한 종이 질감 + 테라코타·앰버·세이지 */
+body { background-color: var(--bg); background-image: radial-gradient(rgba(44, 40, 37, 0.024) 0.75px, transparent 0); background-size: 14px 14px; }
+.play.card, .card, .inbox, .bellpanel, .ccard, .ccard1, .gcard, .cnext, .cwait, .hcal, .item, .stat, .hgw-card, .cstat4 > div, .recother { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.search input, .fakesearch { background: var(--surface); border: 1px solid var(--line-strong, var(--line)); }
+.sheet { background: var(--bg); }
+.sheet .input, .sc .input, .soloscore input, .psearch .search input { background: var(--bg); border: 1px solid var(--line-strong, #DFD8CD); }
+.tabbar { background: rgba(245, 242, 235, 0.94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--line); }
+:root[data-theme="dark"] .tabbar { background: rgba(34, 29, 25, 0.94); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabbar { background: rgba(34, 29, 25, 0.94); } }
+.pill { background: var(--bg); }
+.pill[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.round.folded { background: var(--bg); }
+.tabbar button[aria-current="page"] svg, .linkbtn, .round.folded .chev { color: var(--accent); }
+.crown::before { background: var(--amber); }
+.xpmark, .chip.first, .pill.sm.done, .pill.done { background: var(--sage-soft); color: var(--sage); border-color: color-mix(in srgb, var(--sage) 35%, var(--line)); }
+.savedcard { background: var(--sage-soft); }
+.savedcard.win .sc-big::before { color: var(--amber); }
 </style>
 
 <div id="app"></div>
@@ -3481,7 +3514,7 @@ function GamePicker({ onPick, favs, onCustom, np, noFocus }) {
 }
 const newRound = (prev, exps) => ({ mode: prev ? prev.mode : 'win', winners: [], ranks: {}, coop: null, draw: false, scores: {}, minutes: '', memo: '', exps: exps || [], people: null });
 const playDay = () => today();
-function RoundRow({ single, onFrom, onMe, base = 0, i, r, gameId, gamePeople, options, xopts, onChange, onRemove, open, setOpen, rule, setRule, newbies, folded, unfold, last, prev, best, meOut, tools }) {
+function RoundRow({ single, onFrom, onMe, base = 0, i, r, gameId, gamePeople, options, xopts, onChange, onRemove, open, setOpen, rule, setRule, newbies, folded, unfold, onCollapse, totalRounds = 1, last, prev, best, meOut, tools }) {
   const set = patch => onChange({ ...r, ...patch });
   const pick = patch => set({ ...patch, autoPick: false });
   // 점수를 적으면 규칙대로 승자·순위를 미리 골라둠. 직접 누르면 그게 우선
@@ -3521,8 +3554,9 @@ function RoundRow({ single, onFrom, onMe, base = 0, i, r, gameId, gamePeople, op
   const tieLast = () => { const n = r.lastRank; if (!n || !ranks[n]) return; const prevK = Math.max(0, ...order.filter(([x]) => x !== n).map(([, k]) => k)); if (!prevK) return; set({ ranks: { ...ranks, [n]: prevK } }); };
   const scoreRank = ranksFromScores(r.scores || {}, rule);
   const canAutoRank = Object.keys(scoreRank).length >= 2;
-  if (folded) { const b = roundSummary({ ...r, exps: [], scores: {}, memo: '' }, solo); const my = (r.scores || {})['나']; if (solo && my != null && my !== '') b.unshift(`${nf(+my)}점`);
-    return html`<button className="round folded" onClick=${unfold} aria-label=${`${nf(base + i + 1)}판 펼치기`}><span className="rn">${nf(base + i + 1)}판</span><span className="fr">${b.length ? joinBits(b) : '아직 결과 없음'}</span><span className="chev">›</span></button>`; }
+  if (folded) { const b = roundSummary({ ...r, exps: r.exps || [], scores: {}, memo: '' }, solo); const my = (r.scores || {})['나']; if (solo && my != null && my !== '') b.unshift(`${nf(+my)}점`);
+    if (b.length && !solo) { if (Object.values(r.scores || {}).some(v => v !== '' && v != null)) b.push('점수'); if (r.memo) b.push('메모'); if ((r.media || []).length) b.push('사진'); if (r.people) b.push(`${nf(members.length)}명`); }
+    return html`<button type="button" className=${'round folded' + (!b.length ? ' empty' : '')} onClick=${unfold} aria-label=${`${nf(base + i + 1)}판 펼치기`}><span className="rn">${nf(base + i + 1)}판</span><span className="fr">${b.length ? joinBits(b) : '아직 결과 없음'}</span><span className="chev">수정 ›</span></button>`; }
   return html`<div className="round">
     <div className="rrow"><span className="rn">${nf(base + i + 1)}판${onRemove && !(r.winners || []).length && !Object.keys(r.ranks || {}).length && !r.coop && !r.draw && !Object.keys(r.scores || {}).length ? html`<button className="rdel" onClick=${onRemove} aria-label=${`${nf(base + i + 1)}판 지우기`}>지우기</button>` : null}</span>
       ${solo ? html`<label className="soloscore"><span>점수</span><input className="input num" inputMode="numeric" value=${(r.scores || {})['나'] ?? ''} onInput=${e => { const v = e.target.value.replace(/[^\d\-]/g, ''); const sc = { ...(r.scores || {}) }; if (v === '') delete sc['나']; else sc['나'] = v; set({ scores: sc }); }} aria-label=${ME.name + ' 점수'}/>${best != null ? html`<em>${(r.scores || {})['나'] !== undefined && (rule === 'low' ? +r.scores['나'] < best : +r.scores['나'] > best) ? '★ 최고 기록' : `최고 ${nf(best)}점`}</em>` : null}</label>` : html`<div className="modes" role="group" aria-label="결과 적는 방식">
@@ -3561,7 +3595,7 @@ function RoundRow({ single, onFrom, onMe, base = 0, i, r, gameId, gamePeople, op
     })() : null}
     ${!open && extra ? html`<div className="rx">${joinBits(roundSummary({ ...r, winners: [], ranks: {}, coop: null, draw: false, exps: [] }))}</div>` : null}
     <div className="rfoot"><button className=${'more' + (extra ? ' has' : '')} onClick=${setOpen} aria-expanded=${open}>${open ? '접기' : solo ? (extra ? '사진·메모 고치기' : '+ 사진·메모') : extra ? '점수·사진·메모 고치기' : '+ 점수·사진·메모'}</button>
-     </div>
+      ${!single && onCollapse ? html`<button type="button" className="rfoldbtn" onClick=${onCollapse}>${i === totalRounds - 1 ? '한 줄로 접기' : '현재 판으로'}</button>` : null}</div>
     ${!solo && last && (tools || r.first || r.teams) ? html`<div className="tools"><button className="tool" onClick=${pickFirst}>${r.first ? html`선: <b>${dn(r.first)}</b> · 다시` : '누가 먼저? 뽑기'}</button>
       ${members.length >= 4 ? html`<button className="tool" onClick=${splitTeams}>${r.teams ? '팀 다시 나누기' : '팀 나누기'}</button>` : null}
       ${newbies && newbies.filter(n => members.includes(n)).length ? html`<span className="newb">처음 해 본 사람: ${newbies.filter(n => members.includes(n)).join(', ')}</span>` : null}</div>
@@ -3740,7 +3774,7 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
   const [openR, setOpenR] = useState(null);
   const [toolK, setToolK] = useState(null); // 게임 카드 ⋯: 규칙 질문·누가 먼저·팀 나누기 (기록과 다른 일이라 접어 둬요)
   const bestSolo = gid => { const v = others.filter(p => p.gameId === gid && !p.people.length && p.date <= date && (p.scores || {})['나'] != null).map(p => +p.scores['나']); return v.length ? (ruleOf(st, gid) === 'low' ? Math.min(...v) : Math.max(...v)) : null; };
-  const [unf, setUnf] = useState({}); // 끝난 판은 한 줄로 접고, 누르면 펼침
+  const [activeR, setActiveR] = useState({}); // 게임마다 펼친 판 하나만, 나머지는 한 줄로 접음 (-1이면 모두 접음)
   const [searching, setSearching] = useState(() => (!st.plays.length && !(st.favs || []).length && !Object.keys(st.collection || {}).length) || (!editing && !gameId && st.plays.some(p => p.date === playDay() && !p.from))); // 처음이거나 오늘 더하기면 검색칸을 펼쳐 둬요
   const [searchTap, setSearchTap] = useState(false);
   const [err, setErr] = useState('');
@@ -3816,13 +3850,14 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
   useEffect(() => { if (!gameId || editing || !savedDay.length) return; const it = items.find(x => x.gameId === gameId); if (!it) return; 
     setTimeout(() => { const el = document.querySelector('.sheet .items .item:last-child .rounds > :last-child'); if (el) el.scrollIntoView({ block: 'center' }); const inp = el && el.querySelector('input.num, .soloscore input'); if (inp && !it.people.length) inp.focus(); }, 250); }, []);
   const addGame = (id, tt) => { const t = tOn ? (tt || curT) : 0; if (tt && tOn) setCurT(tt); const k = id + ':' + t;
-    if (items.some(it => ik(it) === k)) upd(k, it => ({ ...it, rounds: [...it.rounds, nextRound(it)] }));
+    if (items.some(it => ik(it) === k)) { upd(k, it => ({ ...it, rounds: [...it.rounds, nextRound(it)] })); setActiveR(a => ({ ...a, [k]: (items.find(x => ik(x) === k)?.rounds.length || 0) })); setOpenR(null); }
     else setItems(its => { const sameT = its.filter(x => (x.t || 0) === t); return [...its, { gameId: id, t, meOut: meOutFor(t), rounds: [firstRound(id)], people: t ? tPeople(t) : sameT.length ? sameT[sameT.length - 1].people.filter(n => people.includes(n)) : people }]; });
     setSearching(false); setErr('');
     setTimeout(() => { const el = document.querySelector('.sheet .items .item:last-child .rounds > :last-child'); if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); const f = el.querySelector('.soloscore input'); if (f) setTimeout(() => f.focus({ preventScroll: true }), 300); } }, 120); };
-  const plusOne = k => upd(k, it => ({ ...it, rounds: [...it.rounds, nextRound(it)] }));
-  const minus = k => { setItems(its => its.map(it => ik(it) === k ? { ...it, rounds: it.rounds.slice(0, -1) } : it).filter(it => it.rounds.length)); setOpenR(null); };
-  const removeRound = (k, i) => { setItems(its => its.map(it => ik(it) === k ? { ...it, rounds: it.rounds.filter((_, j) => j !== i) } : it).filter(it => it.rounds.length)); setOpenR(null); };
+  const plusOne = k => { const curLen = items.find(x => ik(x) === k)?.rounds.length || 0; upd(k, it => ({ ...it, rounds: [...it.rounds, nextRound(it)] })); setActiveR(a => ({ ...a, [k]: curLen })); setOpenR(null); };
+  const resetAct = k => setActiveR(a => { const n = { ...a }; delete n[k]; return n; });
+  const minus = k => { resetAct(k); setItems(its => its.map(it => ik(it) === k ? { ...it, rounds: it.rounds.slice(0, -1) } : it).filter(it => it.rounds.length)); setOpenR(null); };
+  const removeRound = (k, i) => { resetAct(k); setItems(its => its.map(it => ik(it) === k ? { ...it, rounds: it.rounds.filter((_, j) => j !== i) } : it).filter(it => it.rounds.length)); setOpenR(null); };
   // 테이블에 사람 넣기: 고른 테이블로 옮겨요. 그 테이블 게임에도 바로 들어가요
   const seat = n => { const t = curT; const nt = { ...(tables || {}), [n]: (tables || {})[n] === t ? 0 : t };
     setTables(nt); setItems(its => its.map(it => !it.t ? it : n === '나' ? { ...it, meOut: nt['나'] !== it.t } : { ...it, people: nt[n] === it.t ? [...new Set([...it.people, n])] : it.people.filter(x => x !== n) })); };
@@ -3917,14 +3952,16 @@ function PlaySheet({ otherG, again, st, gameId, editDate, close, onSave, onDelet
         const g = GAME[it.gameId]; const ppl = it.people; const gc = {}; others.forEach(p => p.gameId === it.gameId && p.people.forEach(n => gc[n] = (gc[n] || 0) + 1)); const opts = [...new Set([...people, ...ppl])].sort((a, b) => (gc[b] || 0) - (gc[a] || 0));
         const firstTime = !others.some(p => p.gameId === it.gameId);
         const K = ik(it); const pn = ppl.length + (it.meOut ? 0 : 1);
+        const rawAct = activeR[K]; const actIdx = rawAct === -1 ? -1 : rawAct != null ? Math.min(rawAct, it.rounds.length - 1) : it.rounds.length - 1;
         return html`<div key=${K} className="item">
           <div className="irow"><${Cover} g=${g} size="sm"/><div style=${{ minWidth: 0 }}><div className="name">${it.t ? html`<span className="tbltag">${it.t}테이블</span>` : null}${g.ko}</div>
             <div className="meta">${firstTime && others.filter(p => !p.from).length >= 3 ? html`<span className="chip first">처음 해봐요</span> ` : null}${ppl.length ? `${nf(pn)}명${it.meOut ? ` · ${ME.name} 빠짐` : ''}` : '혼자'}</div>${toolK === K ? html`<div className="gtools"><button className="tool" onClick=${() => NAV.qna(it.gameId)}>규칙 질문 보기</button></div>` : null}</div>
             <button className="gtoolbtn" aria-label=${g.ko + ' 게임 도구'} aria-expanded=${toolK === K} onClick=${() => setToolK(toolK === K ? null : K)}>⋯</button>${addMode || !editing ? null : html`<div className="stepper"><button aria-label="한 판 빼기" onClick=${() => minus(K)}>−</button><span className="num">${nf(it.rounds.length + baseOf(it.gameId, it.t))}</span><button aria-label="한 판 더" onClick=${() => plusOne(K)}>+</button></div>`}</div>
           ${g.pmax && Math.max(...it.rounds.map(r => (r.people || ppl).length + (it.meOut ? 0 : 1))) > g.pmax ? html`<div className="hint warnline">${jo(g.ko, '은', '는')} ${nf(g.pmax)}명까지예요. ${tOn ? '자리를 다시 볼까요?' : html`<button className="linkbtn inl" onClick=${startTables}>테이블 나누기</button>`}</div>` : null}
           <div className="rounds">${it.rounds.map((r, i) => { const key = K + ':' + i;
-            return html`<${RoundRow} key=${i} single=${it.rounds.length === 1} onFrom=${n => toggleFrom(K, i, n)} onMe=${() => toggleGamePerson(K, '나')} base=${baseOf(it.gameId, it.t)} i=${i} r=${r} meOut=${it.meOut} gameId=${it.gameId} gamePeople=${ppl} options=${opts} xopts=${xoptsFor(it.gameId)} open=${openR === key} setOpen=${() => setOpenR(openR === key ? null : key)} tools=${toolK === K} best=${bestSolo(it.gameId)} last=${i === it.rounds.length - 1} prev=${i ? it.rounds[i - 1] : null} folded=${i < it.rounds.length - 1 && !unf[key]} unfold=${() => setUnf(u => ({ ...u, [key]: true }))}
+            return html`<${RoundRow} key=${i} single=${it.rounds.length === 1} onFrom=${n => toggleFrom(K, i, n)} onMe=${() => toggleGamePerson(K, '나')} base=${baseOf(it.gameId, it.t)} i=${i} r=${r} meOut=${it.meOut} gameId=${it.gameId} gamePeople=${ppl} options=${opts} xopts=${xoptsFor(it.gameId)} open=${openR === key} setOpen=${() => setOpenR(openR === key ? null : key)} tools=${toolK === K} best=${bestSolo(it.gameId)} last=${i === it.rounds.length - 1} prev=${i ? it.rounds[i - 1] : null} totalRounds=${it.rounds.length} folded=${it.rounds.length > 1 && i !== actIdx} unfold=${() => { setActiveR(a => ({ ...a, [K]: i })); setOpenR(null); }} onCollapse=${() => { setActiveR(a => ({ ...a, [K]: i === it.rounds.length - 1 ? -1 : it.rounds.length - 1 })); setOpenR(null); }}
               newbies=${others.filter(p => !p.from).length >= 3 ? ppl.filter(n => others.filter(p => p.people.includes(n)).length >= 3 && !others.some(p => p.gameId === it.gameId && p.people.includes(n))) : []} rule=${ruleOf(st, it.gameId)} setRule=${k => setRule(it.gameId, k)} onRemove=${() => removeRound(K, i)} onChange=${nr => upd(K, x => ({ ...x, rounds: x.rounds.map((y, j) => j === i ? nr : y) }))}/>`; })}</div>
+          ${addMode ? null : html`<button type="button" className="add-round-btn" onClick=${() => plusOne(K)}>+ 한 판 더 추가하기</button>`}
         </div>`; })}</div>` : null}
     </div>
 
